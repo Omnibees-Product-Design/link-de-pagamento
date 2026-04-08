@@ -1,0 +1,126 @@
+.container {
+  flex: 1;
+  padding: 54px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 420px;
+}
+
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-gray-800);
+  line-height: normal;
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-gray-800);
+  line-height: 20px;
+}
+
+.guestGreeting {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.guestName {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-gray-800);
+}
+
+.guestMessage {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-gray-800);
+}
+
+.stepSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stepNumberActive,
+.stepLabelActive {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lastRow {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.dateField {
+  flex: 1;
+}
+
+.continueButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: var(--input-height);
+  min-width: 180px;
+  padding: 8px 20px;
+  background: var(--color-button-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--input-border-radius);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.continueButton:hover {
+  background: var(--color-primary);
+}
+
+.stepDisabled {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 29px 10px;
+  margin-left: -10px;
+  margin-right: -10px;
+  border-top: 1px solid var(--color-gray-300);
+}
+
+.stepDisabled:last-child {
+  border-bottom: 1px solid var(--color-gray-300);
+}
+
+.stepNumberDisabled,
+.stepLabelDisabled {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+}

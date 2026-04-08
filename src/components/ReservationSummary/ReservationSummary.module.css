@@ -1,0 +1,94 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 392px;
+}
+
+.hotelInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  line-height: 20px;
+}
+
+.hotelName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-gray-800);
+}
+
+.roomType {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-gray-800);
+}
+
+.cancellation {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-success);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid var(--color-gray-300);
+  padding-top: 30px;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 30px;
+}
+
+.detailLabel {
+  width: 121px;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--color-gray-800);
+}
+
+.detailValue {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--color-gray-800);
+}
+
+.detailValueBold {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 20px;
+  color: var(--color-gray-800);
+}
+
+.nights {
+  font-weight: 400;
+  color: var(--color-gray-500);
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+  border-top: 1px solid var(--color-gray-300);
+  padding-top: 30px;
+}
+
+.totalLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-gray-800);
+}
+
+.totalValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-800);
+  text-align: right;
+}

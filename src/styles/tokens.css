@@ -1,0 +1,24 @@
+:root {
+  /* Colors */
+  --color-gray-800: #273240;
+  --color-gray-500: #9C9C9C;
+  --color-gray-400: #C5C5C5;
+  --color-gray-300: #E6E6E6;
+  --color-gray-200: #EDEDED;
+  --color-gray-50: #FCFCFC;
+  --color-white: #FFFFFF;
+  --color-primary: #F5AF04;
+  --color-button-primary: #FEC437;
+  --color-secondary-blue: #4E4076;
+  --color-success: #409644;
+  --color-success-light: #4BAF4F;
+  --color-success-border: #C8E7CA;
+
+  /* Typography */
+  --font-family: 'Open Sans', sans-serif;
+
+  /* Sizing */
+  --input-height: 48px;
+  --input-border-radius: 4px;
+  --sidebar-width: 683px;
+}
