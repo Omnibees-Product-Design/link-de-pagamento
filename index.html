@@ -1665,10 +1665,8 @@
       }
     });
 
-    // Atualiza barra de progresso DS (33% → 66% → 100%)
-    const progressMap = { personal: '33%', address: '66%', payment: '100%' };
-    const fill = document.getElementById('progress-fill');
-    if (fill && progressMap[target]) fill.style.width = progressMap[target];
+    // Atualiza a barra de progresso com base nos campos preenchidos
+    updateProgress();
 
     // Scroll suave até a seção
     const el = document.getElementById('sec-' + target);
@@ -1719,7 +1717,52 @@
       el.value = v;
     });
 
+    /* Registra listeners de progresso e calcula estado inicial */
+    attachProgressListeners();
+    updateProgress();
   });
+
+  /* ── Progress bar dinâmica (por campo preenchido) ── */
+  const TRACKED_FIELDS = [
+    // Seção 1 — Dados Pessoais
+    { id: 'f-nome',       type: 'md' },
+    { id: 'f-email',      type: 'md' },
+    { id: 'f-tel',        type: 'input' },
+    { id: 'f-doc-num',    type: 'input' },
+    { id: 'f-nasc',       type: 'md' },
+    // Seção 2 — Endereço
+    { id: 'f-cep',        type: 'md' },
+    { id: 'f-logradouro', type: 'md' },
+    { id: 'f-numero',     type: 'md' },
+    { id: 'f-estado',     type: 'md-select' },
+    { id: 'f-bairro',     type: 'md' },
+    // Seção 3 — Pagamento
+    { id: 'f-card-num',   type: 'md' },
+    { id: 'f-card-name',  type: 'md' },
+    { id: 'f-expiry',     type: 'md' },
+    { id: 'f-cvv',        type: 'md' },
+  ];
+
+  function updateProgress() {
+    const total  = TRACKED_FIELDS.length;
+    const filled = TRACKED_FIELDS.filter(f => {
+      const el = document.getElementById(f.id);
+      return el && (el.value || '').toString().trim().length > 0;
+    }).length;
+
+    const pct = Math.round((filled / total) * 100);
+    const fill = document.getElementById('progress-fill');
+    if (fill) fill.style.width = pct + '%';
+  }
+
+  function attachProgressListeners() {
+    TRACKED_FIELDS.forEach(f => {
+      const el = document.getElementById(f.id);
+      if (!el) return;
+      const evt = f.type === 'md-select' ? 'change' : 'input';
+      el.addEventListener(evt, updateProgress);
+    });
+  }
 
   /* ── Mapa país ISO → DDI ── */
   const COUNTRY_DDI = {
