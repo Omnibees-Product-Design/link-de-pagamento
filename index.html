@@ -1721,6 +1721,36 @@
 
   });
 
+  /* ── Mapa país ISO → DDI ── */
+  const COUNTRY_DDI = {
+    br: { code: '+55'  },
+    co: { code: '+57'  },
+    mx: { code: '+52'  },
+    us: { code: '+1'   },
+    pt: { code: '+351' },
+    ar: { code: '+54'  },
+    cl: { code: '+56'  },
+    es: { code: '+34'  },
+    fr: { code: '+33'  },
+    de: { code: '+49'  },
+    it: { code: '+39'  },
+    gb: { code: '+44'  },
+  };
+
+  /* Sincroniza o DDI do telefone com o país selecionado */
+  function syncDDI(iso) {
+    const ddi = COUNTRY_DDI[iso];
+    if (!ddi) return;
+    const flagEl  = document.getElementById('ddi-flag');
+    const codeEl  = document.getElementById('ddi-code');
+    const options = document.querySelectorAll('.ddi-option');
+    if (flagEl)  flagEl.className = 'fi fi-' + iso;
+    if (codeEl)  codeEl.textContent = ddi.code;
+    options.forEach(o => {
+      o.classList.toggle('selected', o.dataset.country === iso);
+    });
+  }
+
   /* ── Custom Select (País) ── */
   (function initCustomSelect() {
     const wrap     = document.getElementById('cs-pais');
@@ -1764,6 +1794,8 @@
         // Atualiza trigger com flag-icon real (data-iso) + nome do país
         const iso = opt.dataset.iso;
         valueEl.innerHTML = '<span class="cs-option-flag fi fi-' + iso + '"></span> ' + opt.dataset.value;
+        // Sincroniza DDI do telefone com o país selecionado
+        syncDDI(iso);
         close();
       });
     });
