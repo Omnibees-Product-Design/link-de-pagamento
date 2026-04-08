@@ -362,8 +362,8 @@
     .hc-total-label { font-size: 14px; font-weight: 700; color: #242424; }
     .hc-total-value { font-size: 24px; font-weight: 700; color: #242424; text-align: right; }
 
-    /* Segurança (painel direito) */
-    .security { margin-top: 20px; padding-top: 16px; border-top: 1px solid #EBEBEB; max-width: 380px; }
+    /* Segurança (painel esquerdo) */
+    .security { margin-top: 4px; padding-top: 16px; border-top: 1px solid #EBEBEB; }
     .security-label { font-size: 10px; color: #242424; margin-bottom: 8px; }
     .security-badges {
       display: flex;
@@ -716,9 +716,9 @@
     /* margin-top: 8px iguala o offset do floating label do campo de data */
     .row-action .btn-yellow            { flex: 0 0 180px; width: 180px; margin-top: 8px; }
 
-    /* Submit row */
-    .submit-row { display: flex; gap: 10px; padding-top: 4px; max-width: 380px; }
-    .submit-row md-outlined-button { flex: 0 0 110px; }
+    /* Submit row — ambos os botões iguais (180px) conforme Figma */
+    .submit-row { display: flex; gap: 20px; padding-top: 4px; max-width: 380px; }
+    .submit-row md-outlined-button { flex: 1; }
     .submit-row .btn-yellow        { flex: 1; }
 
     /* Wrapper card número */
@@ -1114,18 +1114,25 @@
     /* ── CEP row with link ── */
     .row-cep-action {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
       margin-top: 8px;
     }
+    /* CEP ocupa ~180px; link aparece ao lado como ação secundária */
+    .row-cep-action md-outlined-text-field {
+      flex: 0 0 180px;
+      width: 180px;
+      max-width: 180px;
+    }
     .cep-link {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: #0C83D9;
       text-decoration: none;
       white-space: nowrap;
       cursor: pointer;
       flex-shrink: 0;
+      margin-top: 8px; /* alinha com o centro do campo (offset label flutuante) */
     }
     .cep-link:hover { text-decoration: underline; }
 
@@ -1285,6 +1292,26 @@
         <span class="hc-total-value tabular-nums">R$ 5.120,00</span>
       </div>
 
+    </div><!-- /hotel-card -->
+
+    <!-- Selos de segurança — painel esquerdo (Figma node 28161-134963) -->
+    <div class="security">
+      <div class="security-label">Este link é protegido por:</div>
+      <md-chip-set class="security-badges">
+        <md-assist-chip label="LGPD Compliance" tabindex="0" has-icon="">
+          <md-icon slot="icon" aria-hidden="true">assignment</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="PCI Compliant" tabindex="-1" has-icon="">
+          <md-icon slot="icon" aria-hidden="true">lock</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="SSL Secure" tabindex="-1" has-icon="">
+          <md-icon slot="icon" aria-hidden="true">verified_user</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="256-bit Encryption" tabindex="-1" has-icon="">
+          <md-icon slot="icon" aria-hidden="true">security</md-icon>
+        </md-assist-chip>
+      </md-chip-set>
+      <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
     </div>
 
   </div><!-- /left-inner -->
@@ -1418,7 +1445,7 @@
         <div class="section-fields">
           <!-- CEP + Preencher endereço (same row) -->
           <div class="row-cep-action">
-            <md-outlined-text-field id="f-cep" label="CEP" type="text" style="flex: 0 0 160px; width: 160px; max-width: 160px;"></md-outlined-text-field>
+            <md-outlined-text-field id="f-cep" label="CEP" type="text"></md-outlined-text-field>
             <a href="#" class="cep-link" id="cep-link" onclick="fetchCEP(); return false;">Preencher endereço</a>
           </div>
 
@@ -1492,17 +1519,29 @@
       </div>
       <div class="section-body" id="body-payment">
         <div class="section-fields">
-          <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric"></md-outlined-text-field>
+
+          <!-- Número do cartão com bandeiras -->
+          <div class="card-number-wrap" style="margin-top:8px;">
+            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric" style="margin-top:0;"></md-outlined-text-field>
+            <div class="card-brands" id="card-brands">
+              <span class="brand brand-visa">VISA</span>
+              <span class="brand brand-mc">MC</span>
+            </div>
+          </div>
 
           <md-outlined-text-field id="f-card-name" label="Nome do titular do cartão" type="text"></md-outlined-text-field>
 
-          <div class="row-2">
-            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA"></md-outlined-text-field>
-            <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" maxlength="4"></md-outlined-text-field>
+          <!-- Validade + CVV + ícone info -->
+          <div class="row-2-cvv" style="display:flex; gap:10px; align-items:flex-end;">
+            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA" style="flex:1;"></md-outlined-text-field>
+            <div style="position:relative; flex:1; display:flex; align-items:center;">
+              <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" maxlength="4" style="width:100%; margin-top:8px;"></md-outlined-text-field>
+              <md-icon title="O CVV são os 3 ou 4 dígitos no verso do cartão" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); --md-icon-size:16px; color:#9c9c9c; margin-top:4px; cursor:help;">info</md-icon>
+            </div>
           </div>
 
           <md-outlined-select id="f-parcelas" label="Parcelamento">
-            <md-select-option value="1" selected><div slot="headline">À vista</div></md-select-option>
+            <md-select-option value="1" selected><div slot="headline">À vista — R$ 5.120,00</div></md-select-option>
             <md-select-option value="2"><div slot="headline">Em 2x de R$ 2.560,00 sem juros</div></md-select-option>
             <md-select-option value="3"><div slot="headline">Em 3x de R$ 1.706,66 sem juros</div></md-select-option>
             <md-select-option value="4"><div slot="headline">Em 4x de R$ 1.280,00 sem juros</div></md-select-option>
@@ -1516,26 +1555,6 @@
           </md-filled-button>
         </div>
       </div>
-    </div>
-
-    <!-- Selos de segurança — abaixo do último botão Continuar/Pagar -->
-    <div class="security">
-      <div class="security-label">Este link é protegido por:</div>
-      <md-chip-set class="security-badges">
-        <md-assist-chip label="LGPD Compliance">
-          <md-icon slot="icon">assignment</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="PCI Compliant">
-          <md-icon slot="icon">lock</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="SSL Secure">
-          <md-icon slot="icon">verified_user</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="256-bit Encryption">
-          <md-icon slot="icon">security</md-icon>
-        </md-assist-chip>
-      </md-chip-set>
-      <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
     </div>
 
   </div><!-- /right-inner -->
