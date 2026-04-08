@@ -130,7 +130,7 @@
       border: 1px solid #D3D3D3;
       border-radius: 8px;
       background: #fff;
-      overflow: hidden;
+      overflow: visible;
       box-sizing: border-box;
       padding: 0;
       gap: 0;
@@ -590,6 +590,9 @@
     .ddi-wrap {
       position: relative;
       flex-shrink: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
     }
     .ddi-trigger {
       display: flex;
