@@ -52,7 +52,7 @@
       --md-outlined-text-field-label-text-font:        'Inter', sans-serif;
       --md-outlined-text-field-input-text-size:        13px;
       --md-outlined-text-field-label-text-size:        13px;
-      --md-outlined-text-field-container-shape:        8px;
+      --md-outlined-text-field-container-shape:        4px;
       /* altura total 48px: ajustado para compensar padding/label */
       --md-outlined-text-field-container-height:       48px;
       --md-outlined-text-field-top-space:              8px;
@@ -84,7 +84,7 @@
       --md-outlined-select-text-field-label-text-font:        'Inter', sans-serif;
       --md-outlined-select-text-field-input-text-size:        13px;
       --md-outlined-select-text-field-label-text-size:        13px;
-      --md-outlined-select-text-field-container-shape:        8px;
+      --md-outlined-select-text-field-container-shape:        4px;
       --md-outlined-select-text-field-container-height:       48px;
       /* força altura em 48px */
       min-height: 48px;
@@ -128,7 +128,7 @@
       height: 48px;
       min-height: 48px;
       border: 1px solid #D3D3D3;
-      border-radius: 8px;
+      border-radius: 4px;
       background: #fff;
       overflow: visible;
       box-sizing: border-box;
@@ -245,9 +245,16 @@
       --md-assist-chip-container-color:    #ffffff;
     }
 
-    /* Divider */
-    md-divider {
-      --md-divider-color: #e8e8e8;
+    /* Divider MD3 */
+    md-divider { --md-divider-color: #e8e8e8; }
+
+    /* Divider entre seções (CSS puro — mais confiável que md-divider) */
+    .sec-divider {
+      width: 100%;
+      max-width: 380px;
+      height: 1px;
+      background: #E6E6E6;
+      flex-shrink: 0;
     }
 
     /* ═══════════════════════════════════════════
@@ -431,8 +438,8 @@
       font-weight: 600;
       color: #9c9c9c;
     }
-    .section-header.active .section-label { color: #f5af04; }
-    .section-header.done  .section-label { color: #409644; }
+    .section-header.active .section-label { color: #27364A; }
+    .section-header.done  .section-label { color: #4BAF4F; }
 
     .step-dot {
       width: 24px;
@@ -474,7 +481,7 @@
       max-height: 48px;
       padding: 0 12px;
       border: 1px solid #D3D3D3;
-      border-radius: 8px;
+      border-radius: 4px;
       background: #fff;
       cursor: pointer;
       width: 100%;
@@ -676,23 +683,20 @@
       transition: max-height 0.32s ease, overflow 0s 0s;
     }
 
-    /* Margem superior para dar espaço ao label flutuante do MD3 */
+    /* Margem-top nos campos MD3 — apenas para acomodar o label flutuante.
+       O espaçamento entre linhas é gerido pelo gap:16px do .section-fields */
     md-outlined-text-field,
     md-outlined-select {
-      margin-top: 8px;
+      margin-top: 0;
     }
-    /* Remove margem no primeiro filho de cada row para não duplicar */
-    .row-phone > md-outlined-select:first-child,
-    .row-doc   > md-outlined-select:first-child,
-    .row-action > md-outlined-text-field:first-child,
-    .row-cep   > md-outlined-text-field:first-child,
-    .row-addr  > md-outlined-text-field:first-child,
-    .row-2     > md-outlined-text-field:first-child,
-    .row-2     > md-outlined-select:first-child {
-      margin-top: 8px; /* mantém consistência em todos */
-    }
+    /* Campos dentro de row-cep-action precisam do offset do label */
+    .row-cep-action md-outlined-text-field { margin-top: 8px; }
+    /* Primeira seção do section-fields sem margem extra */
+    .section-fields > md-outlined-text-field:first-child,
+    .section-fields > md-outlined-select:first-child,
+    .section-fields > .row-cep-action:first-child { margin-top: 0; }
 
-    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 0; }
+    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 16px; }
 
     /* Field row helpers */
     .row-2        { display: flex; gap: 10px; max-width: 380px; }
@@ -1125,11 +1129,11 @@
       margin-top: 8px;
       max-width: 380px;
     }
-    /* CEP ocupa ~180px; link aparece ao lado como ação secundária */
+    /* CEP ocupa 180px; link aparece ao lado como ação secundária */
     .row-cep-action md-outlined-text-field {
-      flex: 0 0 160px;
-      width: 160px;
-      max-width: 160px;
+      flex: 0 0 180px;
+      width: 180px;
+      max-width: 180px;
     }
     .cep-link {
       font-size: 13px;
@@ -1440,7 +1444,7 @@
       </div>
     </div>
 
-    <md-divider style="max-width:380px; display:block;"></md-divider>
+    <div class="sec-divider"></div>
 
     <!-- ── Seção 2 — Endereço ── -->
     <div class="section" id="sec-address">
@@ -1518,7 +1522,7 @@
       </div>
     </div>
 
-    <md-divider style="max-width:380px; display:block;"></md-divider>
+    <div class="sec-divider"></div>
 
     <!-- ── Seção 3 — Dados de Pagamento ── -->
     <div class="section" id="sec-payment">
