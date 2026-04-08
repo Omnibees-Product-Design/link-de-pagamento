@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link de Pagamento — Blue Tree Premium Congonhas</title>
+
+  <!-- Inter (Bee2Pay brand) + Material Symbols Outlined (novo, não o legado) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <!-- Flag Icons — bandeiras dos países via CSS (lipis/flag-icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.3/css/flag-icons.min.css">
+
+  <!-- @material/web 2.4.1 via esm.sh -->
+  <script type="module" src="https://esm.sh/@material/web@2.4.1/all.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       TOKENS GLOBAIS MD3 — cores Bee2Pay
+    ═══════════════════════════════════════════ */
+    :root {
+      /* Primary = púrpura (focus dos campos) */
+      --md-sys-color-primary:            #4e4076;
+      --md-sys-color-on-primary:         #ffffff;
+      --md-sys-color-primary-container:  #f0eaff;
+      --md-sys-color-on-primary-container: #1e0f40;
+
+      /* Surface */
+      --md-sys-color-surface:            #ffffff;
+      --md-sys-color-on-surface:         #242424;
+      --md-sys-color-on-surface-variant: #757575;
+      --md-sys-color-surface-container-low: #F5F5F5;
+
+      /* Outline */
+      --md-sys-color-outline:            #D3D3D3;
+      --md-sys-color-outline-variant:    #EBEBEB;
+
+      /* Secondary */
+      --md-sys-color-secondary:          #f5af04;
+      --md-sys-color-on-secondary:       #242424;
+    }
+
+    /* Ícone: forçar Material Symbols Outlined */
+    md-icon { font-family: 'Material Symbols Outlined', sans-serif; }
+
+    /* Campos de texto — fonte Bee2Pay + tamanhos */
+    md-outlined-text-field, md-filled-text-field {
+      width: 100%;
+      max-width: 380px;
+      --md-outlined-text-field-input-text-font:        'Inter', sans-serif;
+      --md-outlined-text-field-label-text-font:        'Inter', sans-serif;
+      --md-outlined-text-field-input-text-size:        13px;
+      --md-outlined-text-field-label-text-size:        13px;
+      --md-outlined-text-field-container-shape:        8px;
+      /* altura total 48px: ajustado para compensar padding/label */
+      --md-outlined-text-field-container-height:       48px;
+      --md-outlined-text-field-top-space:              8px;
+      --md-outlined-text-field-bottom-space:           8px;
+      /* força a altura mínima em 48px */
+      min-height: 48px;
+      height: 48px;
+      /* estado padrão */
+      --md-outlined-text-field-outline-color:          #D3D3D3;
+      --md-outlined-text-field-label-text-color:       #A6A6A6;
+      --md-outlined-text-field-input-text-color:       #242424;
+      /* hover */
+      --md-outlined-text-field-hover-outline-color:    #A6A6A6;
+      --md-outlined-text-field-hover-label-text-color: #A6A6A6;
+      /* foco: cinza 1px */
+      --md-outlined-text-field-focus-outline-color:    #9c9c9c;
+      --md-outlined-text-field-focus-outline-width:    1px;
+      --md-outlined-text-field-focus-label-text-color: #9c9c9c;
+      --md-outlined-text-field-caret-color:            #242424;
+    }
+    /* Campo pequeno: nascimento (180px) */
+    md-outlined-text-field.field-sm { max-width: 180px; width: 180px; }
+
+    /* Selects */
+    md-outlined-select {
+      width: 100%;
+      max-width: 380px;
+      --md-outlined-select-text-field-input-text-font:        'Inter', sans-serif;
+      --md-outlined-select-text-field-label-text-font:        'Inter', sans-serif;
+      --md-outlined-select-text-field-input-text-size:        13px;
+      --md-outlined-select-text-field-label-text-size:        13px;
+      --md-outlined-select-text-field-container-shape:        8px;
+      --md-outlined-select-text-field-container-height:       48px;
+      /* força altura em 48px */
+      min-height: 48px;
+      height: 48px;
+      /* estado padrão */
+      --md-outlined-select-text-field-outline-color:          #D3D3D3;
+      --md-outlined-select-text-field-label-text-color:       #A6A6A6;
+      --md-outlined-select-text-field-input-text-color:       #242424;
+      /* hover */
+      --md-outlined-select-text-field-hover-outline-color:    #A6A6A6;
+      --md-outlined-select-text-field-hover-label-text-color: #A6A6A6;
+      /* foco: cinza + 1px */
+      --md-outlined-select-text-field-focus-outline-color:    #9c9c9c;
+      --md-outlined-select-text-field-focus-outline-width:    1px;
+      --md-outlined-select-text-field-focus-label-text-color: #9c9c9c;
+    }
+
+    /* ── Campo composto (DDI + tel / tipo + doc) ── */
+    .cfield {
+      position: relative;
+      max-width: 380px;
+      margin-top: 8px;
+    }
+    .cfield-label {
+      position: absolute;
+      top: 0;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      color: #A6A6A6;
+      background: #fff;
+      padding: 0 4px;
+      z-index: 1;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .cfield-inner {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      min-height: 48px;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 0;
+      gap: 0;
+    }
+    .cfield-inner:focus-within { border-color: #9c9c9c; }
+    .cfield-select {
+      flex-shrink: 0;
+      border: none;
+      outline: none;
+      height: 100%;
+      padding: 0 26px 0 12px;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239c9c9c' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      background-size: 18px;
+    }
+    .cfield-select:focus { background-color: #fafafa; }
+    .cfield-sep {
+      width: 1px;
+      height: 24px;
+      background: #e0e0e0;
+      flex-shrink: 0;
+    }
+    .cfield-input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      padding: 0 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      height: 100%;
+      background: transparent;
+    }
+    .cfield-input::placeholder { color: #A6A6A6; }
+    md-select-option {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+    }
+
+    /* Botão primário — amarelo Bee2Pay, 48px, texto e ícone #242424 */
+    .btn-yellow {
+      --md-filled-button-container-color:                  #fec437;
+      --md-filled-button-hover-container-color:            #f5b800;
+      --md-filled-button-pressed-container-color:          #e8ad00;
+      --md-filled-button-container-height:                 48px;
+      /* Texto */
+      --md-filled-button-label-text-color:                 #242424;
+      --md-filled-button-hover-label-text-color:           #242424;
+      --md-filled-button-pressed-label-text-color:         #242424;
+      --md-filled-button-focus-label-text-color:           #242424;
+      /* Ícone — todos os estados fixos em #242424 */
+      --md-filled-button-icon-color:                       #242424;
+      --md-filled-button-hover-icon-color:                 #242424;
+      --md-filled-button-pressed-icon-color:               #242424;
+      --md-filled-button-focus-icon-color:                 #242424;
+      --md-filled-button-with-icon-icon-color:             #242424;
+      /* State layer translúcido (sem sujar a cor do ícone/texto) */
+      --md-filled-button-hover-state-layer-color:          #000000;
+      --md-filled-button-hover-state-layer-opacity:        0.06;
+      --md-filled-button-pressed-state-layer-color:        #000000;
+      --md-filled-button-pressed-state-layer-opacity:      0.10;
+      /* Sem sombra */
+      --md-filled-button-container-shadow-color:           transparent;
+      --md-filled-button-container-elevation:              0;
+      --md-filled-button-hover-container-elevation:        0;
+      --md-filled-button-focus-container-elevation:        0;
+      --md-filled-button-pressed-container-elevation:      0;
+      /* Tipografia */
+      --md-filled-button-label-text-font:                  'Inter', sans-serif;
+      --md-filled-button-label-text-weight:                700;
+      --md-filled-button-label-text-size:                  13px;
+      --md-filled-button-container-shape:                  8px;
+    }
+    /* Botão outlined — secundário, 48px */
+    md-outlined-button {
+      --md-outlined-button-outline-color:              #D3D3D3;
+      --md-outlined-button-container-height:           48px;
+      --md-outlined-button-label-text-color:           #242424;
+      --md-outlined-button-hover-label-text-color:     #242424;
+      --md-outlined-button-focus-label-text-color:     #242424;
+      --md-outlined-button-pressed-label-text-color:   #242424;
+      --md-outlined-button-icon-color:                 #242424;
+      --md-outlined-button-hover-icon-color:           #242424;
+      --md-outlined-button-pressed-icon-color:         #242424;
+      --md-outlined-button-focus-icon-color:           #242424;
+      --md-outlined-button-with-icon-icon-color:       #242424;
+      --md-outlined-button-hover-state-layer-color:    #000000;
+      --md-outlined-button-hover-state-layer-opacity:  0.06;
+      --md-outlined-button-label-text-font:            'Inter', sans-serif;
+      --md-outlined-button-label-text-size:            13px;
+      --md-outlined-button-label-text-weight:          600;
+      --md-outlined-button-container-shape:            8px;
+    }
+
+    /* Chips de segurança */
+    md-assist-chip {
+      --md-assist-chip-outline-color:      #c8e7ca;
+      --md-assist-chip-container-shape:    8px;
+      --md-assist-chip-label-text-font:    'Inter', sans-serif;
+      --md-assist-chip-label-text-size:    11px;
+      --md-assist-chip-label-text-color:   #242424;
+      --md-assist-chip-icon-color:         #409644;
+      --md-assist-chip-container-color:    #ffffff;
+    }
+
+    /* Divider */
+    md-divider {
+      --md-divider-color: #e8e8e8;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #242424;
+      background: #F5F5F5;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT — Stripe pattern: painéis com inner
+       max-width, conteúdo não estica na tela larga
+    ═══════════════════════════════════════════ */
+    .page { display: flex; height: 100vh; }
+
+    /* ══ PAINEL ESQUERDO ══ */
+    .left-panel {
+      width: 50%;
+      min-width: 50%;
+      background: #FCFCFC;
+      border-right: 1px solid #EDEDED;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;   /* empurra o inner para o lado da divisória */
+      overflow-y: auto;
+    }
+    /* inner wrapper: max-width fixo, empurrado para a direita */
+    .left-inner {
+      width: 100%;
+      max-width: 480px;
+      padding: 28px 44px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo img { height: 40px; width: auto; display: block; }
+
+    /* Saudação */
+    .guest-greeting { }
+    .guest-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .guest-subtitle { font-size: 14px; line-height: 1.5; color: #475869; }
+
+    /* Hotel card — layout Figma (Frame 28318) */
+    .hotel-card {
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Seção 1: info básica */
+    .hc-info {
+      padding: 0 0 20px;
+      border-bottom: 1px solid #E6E6E6;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .hc-name        { font-size: 14px; font-weight: 700; color: #242424; line-height: 1.4; }
+    .hc-room        { font-size: 13px; font-weight: 400; color: #242424; }
+    .hc-cancel      { font-size: 12px; font-weight: 400; color: #409644; }
+
+    /* Seção 2: tabela de dados da reserva */
+    .hc-table {
+      border-bottom: 1px solid #E6E6E6;
+      padding: 20px 0;
+      display: flex;
+      gap: 24px;
+    }
+    .hc-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 130px;
+    }
+    .hc-values {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .hc-label-cell  { font-size: 12px; font-weight: 400; color: #757575; line-height: 16px; }
+    .hc-value-cell  { font-size: 12px; font-weight: 600; color: #242424; line-height: 16px; }
+    .hc-value-cell.bold { font-weight: 700; }
+
+    /* Seção 3: total */
+    .hc-total {
+      padding: 20px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hc-total-label { font-size: 14px; font-weight: 700; color: #242424; }
+    .hc-total-value { font-size: 24px; font-weight: 700; color: #242424; text-align: right; }
+
+    /* Segurança (painel direito) */
+    .security { margin-top: 20px; padding-top: 16px; border-top: 1px solid #EBEBEB; max-width: 380px; }
+    .security-label { font-size: 10px; color: #242424; margin-bottom: 8px; }
+    .security-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .security-note {
+      font-size: 11px;
+      color: #A6A6A6;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ══ PAINEL DIREITO ══ */
+    .right-panel {
+      width: 50%;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;  /* empurra o inner para o lado da divisória */
+      overflow-y: auto;
+    }
+    /* inner wrapper: max-width fixo, empurrado para a esquerda */
+    .right-inner {
+      width: 100%;
+      max-width: 480px;
+      padding: 28px 44px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Cabeçalho do painel direito (título + subtítulo) */
+    .panel-heading {
+      margin-bottom: 24px;
+    }
+    .panel-heading-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #242424;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .panel-heading-subtitle {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #6B6B6B;
+    }
+
+    /* ── Accordion sections ── */
+    .section { }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #9c9c9c;
+    }
+    .section-header.active .section-label { color: #f5af04; }
+    .section-header.done  .section-label { color: #409644; }
+
+    .step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e8e8e8;
+      color: #9c9c9c;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, color 0.2s;
+    }
+    .section-header.active .step-dot { background: #fec437; color: #fff; }
+    .section-header.done   .step-dot { background: #409644; color: #fff; }
+
+    .chevron-icon {
+      --md-icon-size: 20px;
+      font-size: 20px;
+      color: #D3D3D3;
+      transition: transform 0.22s ease;
+    }
+    .section-header.active .chevron-icon { color: #f5af04; transform: rotate(180deg); }
+
+    /* ── Custom select (País) — Figma Combo box ── */
+    .cs-wrap {
+      position: relative;
+      max-width: 380px;
+      margin-top: 8px;
+    }
+    .cs-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      min-height: 48px;
+      max-height: 48px;
+      padding: 0 12px;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 13px;
+      margin: 0;
+    }
+    .cs-trigger:focus { outline: none; border-color: #9c9c9c; }
+    .cs-trigger.open  { border-color: #9c9c9c; }
+    .cs-trigger-label {
+      position: absolute;
+      top: -1px;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      color: #A6A6A6;
+      background: #fff;
+      padding: 0 4px;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .cs-value {
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      color: #242424;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cs-placeholder { color: #A6A6A6; }
+    .cs-arrow {
+      font-family: 'Material Symbols Outlined';
+      font-size: 20px;
+      color: #A6A6A6;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .cs-trigger.open .cs-arrow { transform: rotate(180deg); }
+
+    .cs-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      z-index: 200;
+      overflow: hidden;
+    }
+    .cs-dropdown.open { display: block; }
+
+    .cs-search {
+      padding: 8px 10px;
+      border-bottom: 1px solid #EBEBEB;
+    }
+    .cs-search input {
+      width: 100%;
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid #C5C5C5;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .cs-search input:focus { border-color: #9c9c9c; }
+    .cs-search input::placeholder { color: #A6A6A6; }
+
+    .cs-list {
+      max-height: 222px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #C5C5C5 #F5F5F5;
+    }
+    .cs-list::-webkit-scrollbar { width: 6px; }
+    .cs-list::-webkit-scrollbar-track { background: #F5F5F5; }
+    .cs-list::-webkit-scrollbar-thumb { background: #C5C5C5; border-radius: 3px; }
+
+    .cs-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 37px;
+      padding: 0 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .cs-option:hover   { background: #F5F5F5; }
+    .cs-option.selected { background: #FFF8E1; }
+    /* Flag icons — tamanho uniforme nos dropdowns */
+    .fi {
+      width: 18px !important;
+      height: 13px !important;
+      display: inline-block;
+      flex-shrink: 0;
+      border-radius: 2px;
+      vertical-align: middle;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+    }
+    .cs-option-flag { line-height: 1; flex-shrink: 0; }
+
+    /* ── DDI custom dropdown (telefone) ── */
+    .ddi-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .ddi-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      height: 100%;
+      min-height: 100%;
+      padding: 0 26px 0 10px;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      white-space: nowrap;
+      box-sizing: border-box;
+      flex: 1;
+      margin: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239c9c9c' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      background-size: 18px;
+    }
+    .ddi-code { font-size: 13px; color: #242424; }
+    .ddi-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: -10px;
+      min-width: 140px;
+      background: #fff;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      z-index: 300;
+      overflow: hidden;
+    }
+    .ddi-dropdown.open { display: block; }
+    .ddi-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      padding: 0 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .ddi-option:hover    { background: #F5F5F5; }
+    .ddi-option.selected { background: #FFF8E1; }
+
+    /* Barra de progresso DS: 3px, #FEC437 */
+    .progress-bar {
+      width: 100%;
+      max-width: 380px;
+      height: 3px;
+      background: #EBEBEB;
+      border-radius: 2px;
+      margin-bottom: 4px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: #FEC437;
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .section-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.32s ease, overflow 0s 0.32s; /* restaura overflow:hidden só após fechar */
+    }
+    .section-body.open {
+      max-height: 900px;
+      overflow: visible; /* permite label flutuar acima da borda sem ser cortada */
+      transition: max-height 0.32s ease, overflow 0s 0s;
+    }
+
+    /* Margem superior para dar espaço ao label flutuante do MD3 */
+    md-outlined-text-field,
+    md-outlined-select {
+      margin-top: 8px;
+    }
+    /* Remove margem no primeiro filho de cada row para não duplicar */
+    .row-phone > md-outlined-select:first-child,
+    .row-doc   > md-outlined-select:first-child,
+    .row-action > md-outlined-text-field:first-child,
+    .row-cep   > md-outlined-text-field:first-child,
+    .row-addr  > md-outlined-text-field:first-child,
+    .row-2     > md-outlined-text-field:first-child,
+    .row-2     > md-outlined-select:first-child {
+      margin-top: 8px; /* mantém consistência em todos */
+    }
+
+    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 4px; }
+
+    /* Field row helpers */
+    .row-2     { display: flex; gap: 10px; }
+    .row-2 > * { flex: 1; }
+
+    /* Linha telefone: DDI select (130px) + campo (flex) */
+    .row-phone { display: flex; gap: 10px; align-items: flex-start; }
+    .row-phone md-outlined-select   { flex: 0 0 130px; }
+    .row-phone md-outlined-text-field { flex: 1; }
+
+    /* Linha doc: tipo select + número */
+    .row-doc { display: flex; gap: 10px; align-items: flex-start; }
+    .row-doc md-outlined-select          { flex: 0 0 140px; }
+    .row-doc md-outlined-text-field      { flex: 1; }
+
+    /* Linha número + complemento — número 130px (como DDI), complemento flex */
+    .row-addr { display: flex; gap: 10px; align-items: flex-start; }
+    .row-addr md-outlined-text-field:first-child { flex: 0 0 130px; width: 130px; max-width: 130px; }
+    .row-addr md-outlined-text-field:last-child  { flex: 1; }
+
+    /* Linha nascimento (180px) + botão continuar (180px) */
+    .row-action { display: flex; gap: 20px; align-items: flex-end; max-width: 380px; }
+    .row-action md-outlined-text-field { width: 180px; max-width: 180px; flex: 0 0 180px; }
+    /* margin-top: 8px iguala o offset do floating label do campo de data */
+    .row-action .btn-yellow            { flex: 0 0 180px; width: 180px; margin-top: 8px; }
+
+    /* Submit row */
+    .submit-row { display: flex; gap: 10px; padding-top: 4px; max-width: 380px; }
+    .submit-row md-outlined-button { flex: 0 0 110px; }
+    .submit-row .btn-yellow        { flex: 1; }
+
+    /* Wrapper card número */
+    .card-number-wrap { position: relative; }
+    .card-number-wrap md-outlined-text-field { width: 100%; }
+    .card-brands {
+      position: absolute;
+      right: 44px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 4px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .brand {
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 3px;
+      font-size: 9px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+    .brand-visa { background: #1a1f71; color: #fff; }
+    .brand-mc   { background: linear-gradient(90deg, #eb001b 40%, #f79e1b 100%); color: #fff; }
+
+    /* Dividers no painel direito — limitados à largura do formulário */
+    .right-panel > md-divider {
+      max-width: 380px;
+      display: block;
+    }
+
+    /* ── CEP com autocomplete ── */
+    .cep-autocomplete-wrap {
+      position: relative;
+      max-width: 380px;
+      margin-top: 8px;
+    }
+    .cep-label {
+      position: absolute;
+      top: -1px;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      color: #A6A6A6;
+      background: #fff;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .cep-input-container {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      background: #fff;
+      padding: 0 12px;
+      gap: 8px;
+      box-sizing: border-box;
+    }
+    .cep-input-container:focus-within {
+      border-color: #9c9c9c;
+    }
+    .cep-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      background: transparent;
+      height: 100%;
+      padding: 0;
+    }
+    .cep-input::placeholder { color: #A6A6A6; }
+    .cep-input::-webkit-outer-spin-button,
+    .cep-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .cep-icon {
+      --md-icon-size: 18px;
+      color: #9c9c9c;
+      flex-shrink: 0;
+    }
+    .cep-suggestions {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    }
+    .cep-suggestions.open { display: block; }
+    .cep-suggestion-item {
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #242424;
+      cursor: pointer;
+      border-bottom: 1px solid #EBEBEB;
+      transition: background 0.12s;
+    }
+    .cep-suggestion-item:last-child { border-bottom: none; }
+    .cep-suggestion-item:hover { background: #F5F5F5; }
+
+    /* Scrollbar sutil */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+
+    /* Números tabulares — evita layout shift em valores monetários */
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .hc-total-value { font-variant-numeric: tabular-nums; }
+
+    /* Font smoothing (macOS) — texto mais nítido */
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    /* text-wrap balance em títulos curtos */
+    .guest-name, .panel-heading-title, .hc-name { text-wrap: balance; }
+
+    /* ═══════════════════════════════════════════
+       FLUXO DE CONFIRMAÇÃO — mode leitura + modal
+    ═══════════════════════════════════════════ */
+
+    /* Seção concluída: summary no lugar do form */
+    .section.completed .section-header {
+      pointer-events: auto;
+      position: relative;
+    }
+
+    /* Summary: dados em modo leitura — layout compacto */
+    .section-summary {
+      display: none;
+      padding: 0;
+      gap: 2px;
+      flex-direction: column;
+    }
+    .section.completed .section-summary { display: flex; }
+    .section.completed .section-body {
+      max-height: none;
+      overflow: visible;
+      transition: none;
+      padding-top: 8px;
+    }
+    .section.completed .section-fields { display: none; }
+
+    /* Linha de dados: label + valor (compacta) — conforme Figma node 28112-36213 */
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+      font-size: 10px;
+      color: #27364A;
+      line-height: 15px;
+      gap: 30px;
+    }
+    .summary-row-label {
+      color: #27364A;
+      font-weight: 400;
+      flex: 0 0 auto;
+    }
+    .summary-row-value {
+      font-weight: 600;
+      color: #27364A;
+      text-align: right;
+      flex: 1;
+      word-break: break-word;
+    }
+
+    /* Botão "Editar" na seção completed — dentro do header */
+    .section.completed .section-header {
+      padding-right: 120px; /* espaço para o botão editar */
+    }
+    .section.completed .section-header::after {
+      content: 'Editar';
+      position: absolute;
+      right: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0C83D9;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    /* Modal de confirmação final */
+    .confirmation-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.40);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .confirmation-overlay.open {
+      display: flex;
+    }
+
+    /* Modal box — centrado, com max-width 480px (igual formulário) */
+    .confirmation-modal {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      max-width: 480px;
+      width: calc(100% - 24px);
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 28px 24px;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cabeçalho do modal */
+    .confirmation-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #242424;
+      margin-bottom: 6px;
+      text-wrap: balance;
+    }
+    .confirmation-subtitle {
+      font-size: 13px;
+      color: #6B6B6B;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Seções dentro do modal */
+    .confirmation-section {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #EBEBEB;
+    }
+    .confirmation-section:last-of-type { border-bottom: none; }
+
+    .confirmation-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #9c9c9c;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Linhas de dados no modal */
+    .conf-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 13px;
+      color: #242424;
+    }
+    .conf-label {
+      color: #757575;
+      font-weight: 400;
+    }
+    .conf-value {
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* Total a Pagar — destaque */
+    .confirmation-total {
+      margin: 20px 0;
+      padding: 20px;
+      background: #FFF8E1;
+      border-radius: 8px;
+      border-left: 4px solid #FEC437;
+    }
+    .total-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #9c9c9c;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .total-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #242424;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Selos de segurança no modal */
+    .conf-security {
+      margin: 20px 0;
+      padding-top: 16px;
+      border-top: 1px solid #EBEBEB;
+    }
+    .conf-security-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9c9c9c;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .conf-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Botões do modal */
+    .confirmation-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .confirmation-actions md-outlined-button {
+      flex: 0 0 110px;
+    }
+    .confirmation-actions .btn-yellow {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ══════════════════════ PAINEL ESQUERDO ══════════════════════ -->
+  <div class="left-panel">
+  <div class="left-inner">
+
+    <!-- Logo -->
+    <a class="logo" href="#">
+      <img src="assets/bee2pay-logo.png" height="40" alt="Bee2Pay">
+    </a>
+
+    <!-- Saudação ao hóspede -->
+    <div class="guest-greeting">
+      <div class="guest-name">Alberto Roberto</div>
+      <div class="guest-subtitle">Seguem dados de sua reserva para pagamento.</div>
+    </div>
+
+    <!-- Hotel card — layout Figma (Frame 28318) -->
+    <div class="hotel-card">
+
+      <!-- Seção 1: info básica -->
+      <div class="hc-info">
+        <div class="hc-name">Blue Tree Premium Congonhas Airport</div>
+        <div class="hc-room">Quarto Superior Duplo</div>
+        <div class="hc-cancel">Cancelamento grátis antes de 6 de junho de 2024</div>
+      </div>
+
+      <!-- Seção 2: tabela de dados -->
+      <div class="hc-table">
+        <div class="hc-labels">
+          <span class="hc-label-cell">Nº da Reserva</span>
+          <span class="hc-label-cell">Hóspede</span>
+          <span class="hc-label-cell">Check-in | Check-out</span>
+          <span class="hc-label-cell">Valor</span>
+          <span class="hc-label-cell">Taxas e impostos</span>
+          <span class="hc-label-cell">Parcelamento</span>
+        </div>
+        <div class="hc-values">
+          <span class="hc-value-cell">RES024562-12648</span>
+          <span class="hc-value-cell">Alberto Roberto</span>
+          <span class="hc-value-cell">08/06/2024 — 10/06/2024 <span style="color:#9c9c9c;font-weight:400">(2 noites)</span></span>
+          <span class="hc-value-cell bold tabular-nums">R$ 5.000,00</span>
+          <span class="hc-value-cell bold tabular-nums">R$ 120,00</span>
+          <span class="hc-value-cell bold">Em 1× de R$ 5.120,00 sem juros</span>
+        </div>
+      </div>
+
+      <!-- Seção 3: total -->
+      <div class="hc-total">
+        <span class="hc-total-label">Total a Pagar</span>
+        <span class="hc-total-value tabular-nums">R$ 5.120,00</span>
+      </div>
+
+    </div>
+
+  </div><!-- /left-inner -->
+  </div>
+
+  <!-- ══════════════════════ PAINEL DIREITO ══════════════════════ -->
+  <div class="right-panel">
+  <div class="right-inner">
+
+    <!-- Cabeçalho -->
+    <div class="panel-heading">
+      <div class="panel-heading-title">Verificação de segurança da reserva</div>
+      <div class="panel-heading-subtitle">Para proteger sua reserva e evitar fraudes, precisamos validar algumas informações.</div>
+    </div>
+
+    <!-- Barra de progresso DS -->
+    <div class="progress-bar" id="progress-bar">
+      <div class="progress-bar-fill" id="progress-fill" style="width: 33%"></div>
+    </div>
+
+    <!-- ── Seção 1 — Dados Pessoais ── -->
+    <div class="section" id="sec-personal">
+      <div class="section-header active" onclick="toggleSection('personal')">
+        <div class="section-label">
+          <div class="step-dot" id="dot-personal">1</div>
+          Dados Pessoais
+        </div>
+        <md-icon class="chevron-icon">expand_more</md-icon>
+      </div>
+      <div class="section-body open" id="body-personal">
+        <!-- Mode leitura: summary de dados pessoais (quando concluído) -->
+        <div class="section-summary" id="summary-personal">
+          <div class="summary-row">
+            <span class="summary-row-label">Nome</span>
+            <span class="summary-row-value" id="sum-nome">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">E-mail</span>
+            <span class="summary-row-value" id="sum-email">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Telefone</span>
+            <span class="summary-row-value" id="sum-tel">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Documento</span>
+            <span class="summary-row-value" id="sum-doc">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">País</span>
+            <span class="summary-row-value" id="sum-pais">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Data de nascimento</span>
+            <span class="summary-row-value" id="sum-nasc">—</span>
+          </div>
+        </div>
+
+        <!-- Formulário interativo (quando em edição) -->
+        <div class="section-fields">
+
+          <md-outlined-text-field id="f-nome" label="Nome completo" type="text"></md-outlined-text-field>
+
+          <md-outlined-text-field id="f-email" label="E-mail" type="email"></md-outlined-text-field>
+
+          <!-- Telefone: campo composto DDI customizado + número -->
+          <div class="cfield">
+            <span class="cfield-label">Telefone / Celular</span>
+            <div class="cfield-inner">
+              <!-- DDI custom dropdown com flag-icons -->
+              <div class="ddi-wrap" id="ddi-wrap">
+                <button type="button" class="ddi-trigger" id="ddi-trigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="fi fi-br" id="ddi-flag"></span>
+                  <span class="ddi-code" id="ddi-code">+55</span>
+                </button>
+                <div class="ddi-dropdown" id="ddi-dropdown" role="listbox">
+                  <div class="ddi-option selected" data-code="+55" data-country="br" role="option"><span class="fi fi-br"></span> +55</div>
+                  <div class="ddi-option" data-code="+57" data-country="co" role="option"><span class="fi fi-co"></span> +57</div>
+                  <div class="ddi-option" data-code="+52" data-country="mx" role="option"><span class="fi fi-mx"></span> +52</div>
+                  <div class="ddi-option" data-code="+1"  data-country="us" role="option"><span class="fi fi-us"></span> +1</div>
+                  <div class="ddi-option" data-code="+351" data-country="pt" role="option"><span class="fi fi-pt"></span> +351</div>
+                  <div class="ddi-option" data-code="+54" data-country="ar" role="option"><span class="fi fi-ar"></span> +54</div>
+                  <div class="ddi-option" data-code="+56" data-country="cl" role="option"><span class="fi fi-cl"></span> +56</div>
+                  <div class="ddi-option" data-code="+34" data-country="es" role="option"><span class="fi fi-es"></span> +34</div>
+                  <div class="ddi-option" data-code="+33" data-country="fr" role="option"><span class="fi fi-fr"></span> +33</div>
+                  <div class="ddi-option" data-code="+49" data-country="de" role="option"><span class="fi fi-de"></span> +49</div>
+                  <div class="ddi-option" data-code="+39" data-country="it" role="option"><span class="fi fi-it"></span> +39</div>
+                  <div class="ddi-option" data-code="+44" data-country="gb" role="option"><span class="fi fi-gb"></span> +44</div>
+                </div>
+              </div>
+              <div class="cfield-sep"></div>
+              <input type="tel" class="cfield-input" id="f-tel" placeholder="Número">
+            </div>
+          </div>
+
+          <!-- Documento: campo composto tipo + número -->
+          <div class="cfield">
+            <span class="cfield-label">Doc. de Identificação</span>
+            <div class="cfield-inner">
+              <select class="cfield-select" id="f-doc-tipo" style="width:88px;">
+                <option value="cpf">CPF</option>
+                <option value="rg">RG</option>
+                <option value="passaporte">Passaporte</option>
+                <option value="cnh">CNH</option>
+              </select>
+              <div class="cfield-sep"></div>
+              <input type="text" class="cfield-input" id="f-doc-num" placeholder="Número do documento">
+            </div>
+          </div>
+
+          <!-- País — custom combo box (Figma node 28112:35484) -->
+          <div class="cs-wrap" id="cs-pais">
+            <span class="cs-trigger-label">País de residência</span>
+            <button type="button" class="cs-trigger" id="cs-pais-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span class="cs-value" id="cs-pais-value">
+                <span class="cs-option-flag fi fi-br" id="cs-pais-flag"></span> Brasil
+              </span>
+              <span class="cs-arrow">expand_more</span>
+            </button>
+            <div class="cs-dropdown" id="cs-pais-dropdown" role="listbox">
+              <div class="cs-search">
+                <input type="text" id="cs-pais-search" placeholder="Buscar país..." autocomplete="off">
+              </div>
+              <div class="cs-list" id="cs-pais-list">
+                <div class="cs-option selected" data-value="Brasil"        data-iso="br"  role="option"><span class="cs-option-flag fi fi-br"></span> Brasil</div>
+                <div class="cs-option" data-value="Colômbia"    data-iso="co"  role="option"><span class="cs-option-flag fi fi-co"></span> Colômbia</div>
+                <div class="cs-option" data-value="México"      data-iso="mx"  role="option"><span class="cs-option-flag fi fi-mx"></span> México</div>
+                <div class="cs-option" data-value="Estados Unidos" data-iso="us" role="option"><span class="cs-option-flag fi fi-us"></span> Estados Unidos</div>
+                <div class="cs-option" data-value="Portugal"    data-iso="pt"  role="option"><span class="cs-option-flag fi fi-pt"></span> Portugal</div>
+                <div class="cs-option" data-value="Argentina"   data-iso="ar"  role="option"><span class="cs-option-flag fi fi-ar"></span> Argentina</div>
+                <div class="cs-option" data-value="Chile"       data-iso="cl"  role="option"><span class="cs-option-flag fi fi-cl"></span> Chile</div>
+                <div class="cs-option" data-value="Espanha"     data-iso="es"  role="option"><span class="cs-option-flag fi fi-es"></span> Espanha</div>
+                <div class="cs-option" data-value="França"      data-iso="fr"  role="option"><span class="cs-option-flag fi fi-fr"></span> França</div>
+                <div class="cs-option" data-value="Alemanha"    data-iso="de"  role="option"><span class="cs-option-flag fi fi-de"></span> Alemanha</div>
+                <div class="cs-option" data-value="Itália"      data-iso="it"  role="option"><span class="cs-option-flag fi fi-it"></span> Itália</div>
+                <div class="cs-option" data-value="Reino Unido" data-iso="gb"  role="option"><span class="cs-option-flag fi fi-gb"></span> Reino Unido</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data de nascimento (180px) + Continuar (180px) -->
+          <div class="row-action">
+            <md-outlined-text-field id="f-nasc" class="field-sm" label="Data de nascimento" type="date">
+            </md-outlined-text-field>
+            <md-filled-button class="btn-yellow" trailing-icon onclick="goToSection('address')">
+              Continuar
+              <md-icon slot="icon">arrow_forward</md-icon>
+            </md-filled-button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <md-divider></md-divider>
+
+    <!-- ── Seção 2 — Endereço ── -->
+    <div class="section" id="sec-address">
+      <div class="section-header" id="hdr-address" onclick="toggleSection('address')">
+        <div class="section-label">
+          <div class="step-dot" id="dot-address">2</div>
+          Endereço
+        </div>
+        <md-icon class="chevron-icon">expand_more</md-icon>
+      </div>
+      <div class="section-body" id="body-address">
+        <!-- Mode leitura: summary de endereço (quando concluído) -->
+        <div class="section-summary" id="summary-address">
+          <div class="summary-row">
+            <span class="summary-row-label">CEP</span>
+            <span class="summary-row-value" id="sum-cep">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Logradouro</span>
+            <span class="summary-row-value" id="sum-logradouro">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Número | Complemento</span>
+            <span class="summary-row-value" id="sum-numero-compl">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Bairro</span>
+            <span class="summary-row-value" id="sum-bairro">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Cidade | Estado</span>
+            <span class="summary-row-value" id="sum-cidade-estado">—</span>
+          </div>
+        </div>
+
+        <!-- Formulário interativo (quando em edição) -->
+        <div class="section-fields">
+
+          <!-- CEP com autocomplete -->
+          <div class="cep-autocomplete-wrap" id="cep-wrap">
+            <label class="cep-label">CEP</label>
+            <div class="cep-input-container">
+              <input type="text" id="f-cep" placeholder="Digite o CEP" maxlength="9" class="cep-input">
+              <md-icon class="cep-icon">location_on</md-icon>
+            </div>
+            <div class="cep-suggestions" id="cep-suggestions"></div>
+          </div>
+
+          <!-- Logradouro (full width) -->
+          <md-outlined-text-field id="f-logradouro" label="Logradouro" type="text"></md-outlined-text-field>
+
+          <!-- Número + Complemento -->
+          <div class="row-addr">
+            <md-outlined-text-field id="f-numero" label="Número" type="text"></md-outlined-text-field>
+            <md-outlined-text-field id="f-complemento" label="Complemento" type="text"></md-outlined-text-field>
+          </div>
+
+          <!-- Bairro (full width) -->
+          <md-outlined-text-field id="f-bairro" label="Bairro" type="text"></md-outlined-text-field>
+
+          <!-- Cidade + Estado -->
+          <div class="row-2">
+            <md-outlined-text-field id="f-cidade" label="Cidade" type="text"></md-outlined-text-field>
+            <md-outlined-select id="f-estado" label="Estado">
+              <md-select-option value=""><div slot="headline">Selecione</div></md-select-option>
+              <md-select-option value="SP"><div slot="headline">São Paulo</div></md-select-option>
+              <md-select-option value="RJ"><div slot="headline">Rio de Janeiro</div></md-select-option>
+              <md-select-option value="MG"><div slot="headline">Minas Gerais</div></md-select-option>
+              <md-select-option value="BA"><div slot="headline">Bahia</div></md-select-option>
+              <md-select-option value="PR"><div slot="headline">Paraná</div></md-select-option>
+              <md-select-option value="RS"><div slot="headline">Rio Grande do Sul</div></md-select-option>
+              <md-select-option value="SC"><div slot="headline">Santa Catarina</div></md-select-option>
+              <md-select-option value="PE"><div slot="headline">Pernambuco</div></md-select-option>
+              <md-select-option value="CE"><div slot="headline">Ceará</div></md-select-option>
+              <md-select-option value="GO"><div slot="headline">Goiás</div></md-select-option>
+              <md-select-option value="DF"><div slot="headline">Distrito Federal</div></md-select-option>
+              <md-select-option value="ES"><div slot="headline">Espírito Santo</div></md-select-option>
+              <md-select-option value="PA"><div slot="headline">Pará</div></md-select-option>
+              <md-select-option value="MT"><div slot="headline">Mato Grosso</div></md-select-option>
+              <md-select-option value="MS"><div slot="headline">Mato Grosso do Sul</div></md-select-option>
+              <md-select-option value="AM"><div slot="headline">Amazonas</div></md-select-option>
+              <md-select-option value="MA"><div slot="headline">Maranhão</div></md-select-option>
+            </md-outlined-select>
+          </div>
+
+          <div class="submit-row">
+            <md-outlined-button onclick="goToSection('personal')">
+              <md-icon slot="icon">arrow_back</md-icon>
+              Voltar
+            </md-outlined-button>
+            <md-filled-button class="btn-yellow" trailing-icon onclick="goToSection('payment')">
+              Continuar
+              <md-icon slot="icon">arrow_forward</md-icon>
+            </md-filled-button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <md-divider></md-divider>
+
+    <!-- ── Seção 3 — Dados de Pagamento ── -->
+    <div class="section" id="sec-payment">
+      <div class="section-header" id="hdr-payment" onclick="toggleSection('payment')">
+        <div class="section-label">
+          <div class="step-dot" id="dot-payment">3</div>
+          Dados de pagamento
+        </div>
+        <md-icon class="chevron-icon">expand_more</md-icon>
+      </div>
+      <div class="section-body" id="body-payment">
+        <!-- Mode leitura: summary de pagamento (quando concluído) -->
+        <div class="section-summary" id="summary-payment">
+          <div class="summary-row">
+            <span class="summary-row-label">Cartão</span>
+            <span class="summary-row-value" id="sum-card">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Nome impresso</span>
+            <span class="summary-row-value" id="sum-card-name">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Validade | CVV</span>
+            <span class="summary-row-value" id="sum-expiry-cvv">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">Parcelamento</span>
+            <span class="summary-row-value" id="sum-parcelas">—</span>
+          </div>
+        </div>
+
+        <!-- Formulário interativo (quando em edição) -->
+        <div class="section-fields">
+
+          <!-- Número do cartão + bandeiras -->
+          <div class="card-number-wrap">
+            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" maxlength="19">
+              <md-icon slot="trailing-icon">credit_card</md-icon>
+            </md-outlined-text-field>
+            <div class="card-brands">
+              <span class="brand brand-visa">VISA</span>
+              <span class="brand brand-mc">MC</span>
+            </div>
+          </div>
+
+          <md-outlined-text-field id="f-card-name" label="Nome impresso no cartão" type="text"></md-outlined-text-field>
+
+          <div class="row-2">
+            <md-outlined-text-field id="f-expiry" label="Validade (MM/AA)" type="text" maxlength="5">
+              <md-icon slot="trailing-icon">calendar_month</md-icon>
+            </md-outlined-text-field>
+            <md-outlined-text-field id="f-cvv" label="CVV" type="text" maxlength="4">
+              <md-icon slot="trailing-icon">help_outline</md-icon>
+            </md-outlined-text-field>
+          </div>
+
+          <md-outlined-select id="f-parcelas" label="Parcelas">
+            <md-select-option value="1" selected><div slot="headline">1× de R$ 5.120,00 — sem juros</div></md-select-option>
+            <md-select-option value="2"><div slot="headline">2× de R$ 2.560,00 — sem juros</div></md-select-option>
+            <md-select-option value="3"><div slot="headline">3× de R$ 1.706,67 — sem juros</div></md-select-option>
+            <md-select-option value="4"><div slot="headline">4× de R$ 1.280,00 — sem juros</div></md-select-option>
+            <md-select-option value="5"><div slot="headline">5× de R$ 1.024,00 — sem juros</div></md-select-option>
+            <md-select-option value="6"><div slot="headline">6× de R$ 853,33 — sem juros</div></md-select-option>
+          </md-outlined-select>
+
+          <div class="submit-row">
+            <md-outlined-button onclick="goToSection('address')">
+              <md-icon slot="icon">arrow_back</md-icon>
+              Voltar
+            </md-outlined-button>
+            <md-filled-button id="btn-pagar" class="btn-yellow" onclick="submitPayment()">
+              <md-icon slot="icon">lock</md-icon>
+              Pagar R$&nbsp;5.120,00
+            </md-filled-button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Selos de segurança — abaixo do último botão Continuar/Pagar -->
+    <div class="security">
+      <div class="security-label">Este link é protegido por:</div>
+      <md-chip-set class="security-badges">
+        <md-assist-chip label="PCI DSS">
+          <md-icon slot="icon">lock</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="SSL Secure">
+          <md-icon slot="icon">verified_user</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="LGPD">
+          <md-icon slot="icon">assignment</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="3D Secure">
+          <md-icon slot="icon">security</md-icon>
+        </md-assist-chip>
+      </md-chip-set>
+      <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
+    </div>
+
+  </div><!-- /right-inner -->
+  </div><!-- /right-panel -->
+
+</div><!-- /page -->
+
+<!-- Modal de confirmação final (antes de processar pagamento) -->
+<div class="confirmation-overlay" id="confirmation-overlay">
+  <div class="confirmation-modal">
+    <div class="confirmation-title">Confirmar pagamento</div>
+    <div class="confirmation-subtitle">Revise os dados abaixo antes de processar o pagamento de sua reserva.</div>
+
+    <!-- Dados Pessoais -->
+    <div class="confirmation-section">
+      <div class="confirmation-section-title">Dados Pessoais</div>
+      <div class="conf-row">
+        <span class="conf-label">Nome</span>
+        <span class="conf-value" id="conf-nome">—</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-label">E-mail</span>
+        <span class="conf-value" id="conf-email">—</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-label">Telefone</span>
+        <span class="conf-value" id="conf-tel">—</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-label">Documento</span>
+        <span class="conf-value" id="conf-doc">—</span>
+      </div>
+    </div>
+
+    <!-- Endereço -->
+    <div class="confirmation-section">
+      <div class="confirmation-section-title">Endereço de entrega</div>
+      <div class="conf-row">
+        <span class="conf-label">CEP</span>
+        <span class="conf-value" id="conf-cep">—</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-label">Endereço</span>
+        <span class="conf-value" id="conf-endereco">—</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-label">Cidade | Estado</span>
+        <span class="conf-value" id="conf-cidade-estado">—</span>
+      </div>
+    </div>
+
+    <!-- Pagamento -->
+    <div class="confirmation-section">
+      <div class="confirmation-section-title">Dados de pagamento</div>
+      <div class="conf-row">
+        <span class="conf-label">Cartão</span>
+        <span class="conf-value" id="conf-card">—</span>
+      </div>
+      <div class="conf-row">
+        <span class="conf-label">Parcelas</span>
+        <span class="conf-value" id="conf-parcelas">—</span>
+      </div>
+    </div>
+
+    <!-- Total a Pagar — destaque -->
+    <div class="confirmation-total">
+      <div class="total-label">Total a Pagar</div>
+      <div class="total-value">R$ 5.120,00</div>
+    </div>
+
+    <!-- Selos de segurança -->
+    <div class="conf-security">
+      <div class="conf-security-label">Protegido por:</div>
+      <div class="conf-badges">
+        <md-assist-chip label="PCI DSS"><md-icon slot="icon">lock</md-icon></md-assist-chip>
+        <md-assist-chip label="SSL"><md-icon slot="icon">verified_user</md-icon></md-assist-chip>
+        <md-assist-chip label="LGPD"><md-icon slot="icon">assignment</md-icon></md-assist-chip>
+        <md-assist-chip label="3D Secure"><md-icon slot="icon">security</md-icon></md-assist-chip>
+      </div>
+    </div>
+
+    <!-- Botões de ação -->
+    <div class="confirmation-actions">
+      <md-outlined-button onclick="closeConfirmationModal()">
+        <md-icon slot="icon">arrow_back</md-icon>
+        Voltar
+      </md-outlined-button>
+      <md-filled-button id="btn-confirm-pagar" class="btn-yellow" onclick="confirmPayment()">
+        <md-icon slot="icon">lock</md-icon>
+        Confirmar e pagar R$&nbsp;5.120,00
+      </md-filled-button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── Accordion ── */
+  const SECTIONS = ['personal', 'address', 'payment'];
+
+  function toggleSection(name) {
+    const body = document.getElementById('body-' + name);
+    const hdr  = document.querySelector('#sec-' + name + ' .section-header');
+    const isOpen = body.classList.contains('open');
+    if (isOpen) {
+      body.classList.remove('open');
+      hdr.classList.remove('active');
+    } else {
+      body.classList.add('open');
+      hdr.classList.add('active');
+    }
+  }
+
+  function goToSection(target) {
+    const idx = SECTIONS.indexOf(target);
+    SECTIONS.forEach((s, i) => {
+      const body = document.getElementById('body-' + s);
+      const hdr  = document.querySelector('#sec-' + s + ' .section-header');
+      const dot  = document.getElementById('dot-' + s);
+      const sec  = document.getElementById('sec-' + s);
+      if (!hdr || !body) return;
+
+      if (i < idx) {
+        // Seções anteriores: concluídas
+        body.classList.remove('open');
+        hdr.classList.remove('active');
+        hdr.classList.add('done');
+        dot.innerHTML = '<md-icon style="--md-icon-size:14px;font-size:14px;">check</md-icon>';
+        sec.classList.add('completed');
+        populateSectionSummary(s);
+      } else if (i === idx) {
+        // Seção alvo: aberta e ativa
+        body.classList.add('open');
+        hdr.classList.add('active');
+        hdr.classList.remove('done');
+        dot.textContent = i + 1;
+        sec.classList.remove('completed');
+      } else {
+        // Seções futuras: pendentes
+        body.classList.remove('open');
+        hdr.classList.remove('active');
+        hdr.classList.remove('done');
+        dot.textContent = i + 1;
+        sec.classList.remove('completed');
+      }
+    });
+
+    // Atualiza barra de progresso DS (33% → 66% → 100%)
+    const progressMap = { personal: '33%', address: '66%', payment: '100%' };
+    const fill = document.getElementById('progress-fill');
+    if (fill && progressMap[target]) fill.style.width = progressMap[target];
+
+    // Scroll suave até a seção
+    const el = document.getElementById('sec-' + target);
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  /* ── Input masks ── */
+  function applyMask(el, handler) {
+    // md-outlined-text-field envolve um <input> interno; ouvimos o evento no custom element
+    el.addEventListener('input', () => handler(el));
+  }
+
+  /* ── CEP Autocomplete ── */
+  (function initCEPAutocomplete() {
+    const cepInput = document.getElementById('f-cep');
+    const suggestionsDiv = document.getElementById('cep-suggestions');
+    const logradouroField = document.getElementById('f-logradouro');
+    const bairroField = document.getElementById('f-bairro');
+    const cidadeField = document.getElementById('f-cidade');
+    const estadoField = document.getElementById('f-estado');
+
+    if (!cepInput) return;
+
+    // Busca endereço ao digitar CEP
+    cepInput.addEventListener('input', async (e) => {
+      let cep = e.target.value.replace(/\D/g, '');
+
+      // Máscara de CEP: 12345-678
+      if (cep.length > 5) {
+        cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+      }
+      cepInput.value = cep;
+
+      // Se tem 8 dígitos, busca o endereço
+      if (cep.replace(/\D/g, '').length === 8) {
+        try {
+          const response = await fetch(`https://viacep.com.br/ws/${cep.replace(/\D/g, '')}/json/`);
+          const data = await response.json();
+
+          if (!data.erro) {
+            // Preenche os campos automaticamente
+            logradouroField.value = data.logradouro || '';
+            bairroField.value = data.bairro || '';
+            cidadeField.value = data.localidade || '';
+            estadoField.value = data.uf || '';
+            suggestionsDiv.classList.remove('open');
+          }
+        } catch (err) {
+          console.log('Erro ao buscar CEP:', err);
+        }
+      }
+    });
+
+    // Fecha sugestões ao clicar fora
+    document.addEventListener('click', e => {
+      if (!document.getElementById('cep-wrap').contains(e.target)) {
+        suggestionsDiv.classList.remove('open');
+      }
+    });
+  })();
+
+  window.addEventListener('DOMContentLoaded', () => {
+    /* Pré-preencher dados do hóspede */
+    const nome  = document.getElementById('f-nome');
+    const email = document.getElementById('f-email');
+    if (nome)  nome.value  = 'Alberto Roberto';
+    if (email) email.value = 'alberto.roberto@hotel.com.br';
+
+    const cardNum = document.getElementById('f-card-num');
+    const expiry  = document.getElementById('f-expiry');
+
+    if (cardNum) applyMask(cardNum, el => {
+      const v = el.value.replace(/\D/g, '').slice(0, 16);
+      el.value = v.replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    if (expiry) applyMask(expiry, el => {
+      let v = el.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
+      el.value = v;
+    });
+
+    if (cep) applyMask(cep, el => {
+      let v = el.value.replace(/\D/g, '').slice(0, 8);
+      if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+      el.value = v;
+    });
+  });
+
+  /* ── Custom Select (País) ── */
+  (function initCustomSelect() {
+    const wrap     = document.getElementById('cs-pais');
+    const trigger  = document.getElementById('cs-pais-trigger');
+    const dropdown = document.getElementById('cs-pais-dropdown');
+    const search   = document.getElementById('cs-pais-search');
+    const valueEl  = document.getElementById('cs-pais-value');
+    const options  = wrap.querySelectorAll('.cs-option');
+
+    function open() {
+      trigger.classList.add('open');
+      trigger.setAttribute('aria-expanded', 'true');
+      dropdown.classList.add('open');
+      search.value = '';
+      options.forEach(o => o.style.display = '');
+      setTimeout(() => search.focus(), 50);
+    }
+
+    function close() {
+      trigger.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+      dropdown.classList.remove('open');
+    }
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.contains('open') ? close() : open();
+    });
+
+    search.addEventListener('input', () => {
+      const q = search.value.toLowerCase().trim();
+      options.forEach(o => {
+        o.style.display = o.dataset.value.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        // Atualiza trigger com flag-icon real (data-iso) + nome do país
+        const iso = opt.dataset.iso;
+        valueEl.innerHTML = '<span class="cs-option-flag fi fi-' + iso + '"></span> ' + opt.dataset.value;
+        close();
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!wrap.contains(e.target)) close();
+    });
+
+    search.addEventListener('keydown', e => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+
+  /* ── DDI custom dropdown (telefone) ── */
+  (function initDDI() {
+    const wrap    = document.getElementById('ddi-wrap');
+    const trigger = document.getElementById('ddi-trigger');
+    const dropdown= document.getElementById('ddi-dropdown');
+    const flagEl  = document.getElementById('ddi-flag');
+    const codeEl  = document.getElementById('ddi-code');
+    const options = dropdown.querySelectorAll('.ddi-option');
+
+    function openDDI() {
+      trigger.setAttribute('aria-expanded', 'true');
+      dropdown.classList.add('open');
+    }
+    function closeDDI() {
+      trigger.setAttribute('aria-expanded', 'false');
+      dropdown.classList.remove('open');
+    }
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.contains('open') ? closeDDI() : openDDI();
+    });
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        const iso  = opt.dataset.country;
+        const code = opt.dataset.code;
+        // Atualiza ícone e código no trigger
+        flagEl.className = 'fi fi-' + iso;
+        codeEl.textContent = code;
+        closeDDI();
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!wrap.contains(e.target)) closeDDI();
+    });
+  })();
+
+  /* ── Confirmation Flow ── */
+
+  /* Popula a summary de cada seção com dados do formulário */
+  function populateSectionSummary(sectionName) {
+    if (sectionName === 'personal') {
+      const nome = document.getElementById('f-nome').value || '—';
+      const email = document.getElementById('f-email').value || '—';
+      const tel = (document.getElementById('ddi-code').textContent || '') + ' ' + (document.getElementById('f-tel').value || '');
+      const docTipo = document.getElementById('f-doc-tipo').value?.toUpperCase() || '';
+      const docNum = document.getElementById('f-doc-num').value || '';
+      const doc = docTipo && docNum ? `${docTipo} ${docNum}` : '—';
+      const pais = document.getElementById('cs-pais-value').textContent?.trim() || '—';
+      const nasc = document.getElementById('f-nasc').value ? new Date(document.getElementById('f-nasc').value).toLocaleDateString('pt-BR') : '—';
+
+      document.getElementById('sum-nome').textContent = nome;
+      document.getElementById('sum-email').textContent = email;
+      document.getElementById('sum-tel').textContent = tel.trim();
+      document.getElementById('sum-doc').textContent = doc;
+      document.getElementById('sum-pais').textContent = pais;
+      document.getElementById('sum-nasc').textContent = nasc;
+    } else if (sectionName === 'address') {
+      const cep = document.getElementById('f-cep').value || '—';
+      const logr = document.getElementById('f-logradouro').value || '—';
+      const num = document.getElementById('f-numero').value || '';
+      const compl = document.getElementById('f-complemento').value || '';
+      const numCompl = num && compl ? `${num}, ${compl}` : (num || '—');
+      const bairro = document.getElementById('f-bairro').value || '—';
+      const cidade = document.getElementById('f-cidade').value || '—';
+      const estado = document.getElementById('f-estado').value || '';
+      const cidadeEstado = cidade && estado ? `${cidade}, ${estado}` : (cidade || '—');
+
+      document.getElementById('sum-cep').textContent = cep;
+      document.getElementById('sum-logradouro').textContent = logr;
+      document.getElementById('sum-numero-compl').textContent = numCompl;
+      document.getElementById('sum-bairro').textContent = bairro;
+      document.getElementById('sum-cidade-estado').textContent = cidadeEstado;
+    } else if (sectionName === 'payment') {
+      const cardNum = document.getElementById('f-card-num').value || '—';
+      const cardName = document.getElementById('f-card-name').value || '—';
+      const expiry = document.getElementById('f-expiry').value || '';
+      const cvv = document.getElementById('f-cvv').value ? '•••' : '';
+      const expiryCvv = expiry && cvv ? `${expiry} | ${cvv}` : (expiry || '—');
+      const parcelaSelect = document.getElementById('f-parcelas');
+      const parcelaText = parcelaSelect.options[parcelaSelect.selectedIndex]?.text || '—';
+
+      // Máscara do cartão: últimos 4 dígitos
+      const cardDisplay = cardNum.replace(/\s/g, '').slice(-4);
+      const cardBrand = cardNum.includes('4') ? 'Visa' : 'Mastercard';
+      const cardFormatted = cardDisplay ? `${cardBrand} •••• ${cardDisplay}` : '—';
+
+      document.getElementById('sum-card').textContent = cardFormatted;
+      document.getElementById('sum-card-name').textContent = cardName;
+      document.getElementById('sum-expiry-cvv').textContent = expiryCvv;
+      document.getElementById('sum-parcelas').textContent = parcelaText;
+    }
+  }
+
+  /* Abre o modal de confirmação com dados preenchidos */
+  function openConfirmationModal() {
+    const overlay = document.getElementById('confirmation-overlay');
+
+    // Popula campos do modal
+    document.getElementById('conf-nome').textContent = document.getElementById('f-nome').value || '—';
+    document.getElementById('conf-email').textContent = document.getElementById('f-email').value || '—';
+    document.getElementById('conf-tel').textContent = (document.getElementById('ddi-code').textContent || '') + ' ' + (document.getElementById('f-tel').value || '');
+
+    const docTipo = document.getElementById('f-doc-tipo').value?.toUpperCase() || '';
+    const docNum = document.getElementById('f-doc-num').value || '';
+    document.getElementById('conf-doc').textContent = docTipo && docNum ? `${docTipo} ${docNum}` : '—';
+
+    document.getElementById('conf-cep').textContent = document.getElementById('f-cep').value || '—';
+    const num = document.getElementById('f-numero').value || '';
+    const compl = document.getElementById('f-complemento').value || '';
+    const logr = document.getElementById('f-logradouro').value || '';
+    const endereco = logr && num ? `${logr}, ${num}${compl ? ', ' + compl : ''}` : '—';
+    document.getElementById('conf-endereco').textContent = endereco;
+
+    const cidade = document.getElementById('f-cidade').value || '';
+    const estado = document.getElementById('f-estado').value || '';
+    document.getElementById('conf-cidade-estado').textContent = cidade && estado ? `${cidade}, ${estado}` : '—';
+
+    const cardNum = document.getElementById('f-card-num').value || '—';
+    const cardDisplay = cardNum.replace(/\s/g, '').slice(-4);
+    const cardBrand = cardNum.includes('4') ? 'Visa' : 'Mastercard';
+    document.getElementById('conf-card').textContent = cardDisplay ? `${cardBrand} •••• ${cardDisplay}` : '—';
+
+    const parcelaSelect = document.getElementById('f-parcelas');
+    const parcelaText = parcelaSelect.options[parcelaSelect.selectedIndex]?.text || '—';
+    document.getElementById('conf-parcelas').textContent = parcelaText;
+
+    // Abre overlay
+    overlay.classList.add('open');
+  }
+
+  /* Fecha o modal de confirmação */
+  function closeConfirmationModal() {
+    const overlay = document.getElementById('confirmation-overlay');
+    overlay.classList.remove('open');
+  }
+
+  /* Modifica submitPayment para abrir modal em vez de processar direto */
+  function submitPayment() {
+    openConfirmationModal();
+  }
+
+  /* Processa pagamento após confirmação final */
+  function confirmPayment() {
+    closeConfirmationModal();
+    const btn = document.getElementById('btn-confirm-pagar');
+    btn.disabled = true;
+    btn.innerHTML = '<md-icon slot="icon">hourglass_top</md-icon>Processando...';
+
+    setTimeout(() => {
+      btn.style.setProperty('--md-filled-button-container-color',  '#409644');
+      btn.style.setProperty('--md-filled-button-label-text-color', '#fff');
+      btn.style.setProperty('--md-filled-button-with-icon-icon-color', '#fff');
+      btn.innerHTML = '<md-icon slot="icon">check_circle</md-icon>Pagamento confirmado!';
+      btn.disabled = false;
+
+      // Também atualiza o botão "Pagar" no formulário
+      const mainBtn = document.getElementById('btn-pagar');
+      mainBtn.style.setProperty('--md-filled-button-container-color',  '#409644');
+      mainBtn.style.setProperty('--md-filled-button-label-text-color', '#fff');
+      mainBtn.style.setProperty('--md-filled-button-with-icon-icon-color', '#fff');
+      mainBtn.innerHTML = '<md-icon slot="icon">check_circle</md-icon>Pagamento confirmado!';
+    }, 2000);
+  }
+
+  /* Reabre uma seção para edição */
+  function editSection(name) {
+    const sec = document.getElementById('sec-' + name);
+    sec.classList.remove('completed');
+    goToSection(name);
+  }
+</script>
+
+</body>
+</html>
