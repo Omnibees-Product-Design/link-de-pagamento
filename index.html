@@ -692,11 +692,14 @@
       margin-top: 8px; /* mantém consistência em todos */
     }
 
-    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 4px; }
+    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 0; }
 
     /* Field row helpers */
-    .row-2     { display: flex; gap: 10px; }
-    .row-2 > * { flex: 1; }
+    .row-2        { display: flex; gap: 10px; max-width: 380px; }
+    .row-2 > *    { flex: 1 1 0; min-width: 0; }
+    /* Cancela o max-width global (380px) nos itens dentro de row-2 */
+    .row-2 > md-outlined-text-field,
+    .row-2 > md-outlined-select { max-width: none; width: auto; }
 
     /* Linha telefone: DDI select (130px) + campo (flex) */
     .row-phone { display: flex; gap: 10px; align-items: flex-start; }
@@ -1118,14 +1121,15 @@
     .row-cep-action {
       display: flex;
       gap: 12px;
-      align-items: center;
+      align-items: flex-end; /* alinha base do link com base do campo */
       margin-top: 8px;
+      max-width: 380px;
     }
     /* CEP ocupa ~180px; link aparece ao lado como ação secundária */
     .row-cep-action md-outlined-text-field {
-      flex: 0 0 180px;
-      width: 180px;
-      max-width: 180px;
+      flex: 0 0 160px;
+      width: 160px;
+      max-width: 160px;
     }
     .cep-link {
       font-size: 13px;
@@ -1135,7 +1139,7 @@
       white-space: nowrap;
       cursor: pointer;
       flex-shrink: 0;
-      margin-top: 8px; /* alinha com o centro do campo (offset label flutuante) */
+      padding-bottom: 12px; /* alinha visualmente com o meio do campo de 48px */
     }
     .cep-link:hover { text-decoration: underline; }
 
@@ -1436,6 +1440,8 @@
       </div>
     </div>
 
+    <md-divider style="max-width:380px; display:block;"></md-divider>
+
     <!-- ── Seção 2 — Endereço ── -->
     <div class="section" id="sec-address">
       <div class="section-header" id="hdr-address" onclick="toggleSection('address')">
@@ -1511,6 +1517,8 @@
         </div>
       </div>
     </div>
+
+    <md-divider style="max-width:380px; display:block;"></md-divider>
 
     <!-- ── Seção 3 — Dados de Pagamento ── -->
     <div class="section" id="sec-payment">
