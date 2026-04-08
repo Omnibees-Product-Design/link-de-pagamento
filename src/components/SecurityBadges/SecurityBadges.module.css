@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.title {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--color-gray-800);
+  line-height: 20px;
+}
+
+.badges {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-success-border);
+  border-radius: 8px;
+  background: var(--color-white);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-success-light);
+  white-space: nowrap;
+  line-height: 16px;
+}
