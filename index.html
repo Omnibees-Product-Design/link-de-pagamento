@@ -696,14 +696,39 @@
     .section-fields > md-outlined-select:first-child,
     .section-fields > .row-cep-action:first-child { margin-top: 0; }
 
-    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 25px; }
 
     /* Field row helpers */
-    .row-2        { display: flex; gap: 10px; max-width: 380px; }
+    .row-2        { display: flex; gap: 20px; max-width: 380px; }
     .row-2 > *    { flex: 1 1 0; min-width: 0; }
     /* Cancela o max-width global (380px) nos itens dentro de row-2 */
     .row-2 > md-outlined-text-field,
     .row-2 > md-outlined-select { max-width: none; width: auto; }
+
+    /* Wrapper do CVV — necessário para posicionar o info icon */
+    .cvv-wrap {
+      flex: 1 1 0;
+      min-width: 0;
+      position: relative;
+    }
+    .cvv-wrap md-outlined-text-field {
+      width: 100%;
+      max-width: none;
+    }
+    .cvv-info {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      --md-icon-size: 16px;
+      font-size: 16px;
+      color: #9c9c9c;
+      cursor: help;
+      pointer-events: auto;
+      font-family: 'Material Symbols Outlined';
+      line-height: 1;
+      user-select: none;
+    }
 
     /* Linha telefone: DDI select (130px) + campo (flex) */
     .row-phone { display: flex; gap: 10px; align-items: flex-start; }
@@ -732,29 +757,57 @@
     .submit-row .btn-yellow        { flex: 1; }
 
     /* Wrapper card número */
-    .card-number-wrap { position: relative; }
-    .card-number-wrap md-outlined-text-field { width: 100%; }
-    .card-brands {
+    .card-number-wrap { position: relative; max-width: 380px; }
+    .card-number-wrap md-outlined-text-field { width: 100%; max-width: none; }
+
+    /* Badge de bandeira — aparece somente após detecção (Figma: 24x16, r=2, borda #D9D9D9) */
+    .card-brand-badge {
       position: absolute;
       right: 44px;
       top: 50%;
       transform: translateY(-50%);
-      display: flex;
-      gap: 4px;
+      width: 34px;
+      height: 22px;
+      border-radius: 3px;
+      border: 1px solid #D9D9D9;
+      background: #fff;
+      display: none;           /* oculto por padrão; JS exibe após detectar */
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
       z-index: 1;
+      overflow: hidden;
     }
-    .brand {
-      height: 20px;
-      padding: 0 5px;
-      border-radius: 3px;
-      font-size: 9px;
-      font-weight: 700;
+    .card-brand-badge.visible { display: flex; }
+
+    /* Visa — texto branco em fundo navy */
+    .card-brand-badge.brand-visa {
+      background: #1A1F71;
+      font-size: 8px;
+      font-weight: 900;
+      font-style: italic;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+    /* Mastercard — dois círculos sobrepostos */
+    .card-brand-badge.brand-mc  { background: #fff; }
+    .mc-circles {
+      position: relative;
+      width: 24px;
+      height: 14px;
       display: flex;
       align-items: center;
     }
-    .brand-visa { background: #1a1f71; color: #fff; }
-    .brand-mc   { background: linear-gradient(90deg, #eb001b 40%, #f79e1b 100%); color: #fff; }
+    .mc-left  { position: absolute; left: 0;   width: 14px; height: 14px; border-radius: 50%; background: #EB001B; }
+    .mc-right { position: absolute; left: 8px; width: 14px; height: 14px; border-radius: 50%; background: #F9A000; opacity: 0.9; }
+    /* Amex */
+    .card-brand-badge.brand-amex {
+      background: #007BC1;
+      font-size: 7px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
 
     /* Dividers no painel direito — limitados à largura do formulário */
     .right-panel > md-divider {
@@ -1535,23 +1588,20 @@
       <div class="section-body" id="body-payment">
         <div class="section-fields">
 
-          <!-- Número do cartão com bandeiras -->
-          <div class="card-number-wrap" style="margin-top:8px;">
-            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric" style="margin-top:0;"></md-outlined-text-field>
-            <div class="card-brands" id="card-brands">
-              <span class="brand brand-visa">VISA</span>
-              <span class="brand brand-mc">MC</span>
-            </div>
+          <!-- Número do cartão — bandeira aparece ao detectar o 1º dígito -->
+          <div class="card-number-wrap">
+            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric"></md-outlined-text-field>
+            <div class="card-brand-badge" id="card-brand-badge"></div>
           </div>
 
           <md-outlined-text-field id="f-card-name" label="Nome do titular do cartão" type="text"></md-outlined-text-field>
 
-          <!-- Validade + CVV + ícone info -->
-          <div class="row-2-cvv" style="display:flex; gap:10px; align-items:flex-end;">
-            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA" style="flex:1;"></md-outlined-text-field>
-            <div style="position:relative; flex:1; display:flex; align-items:center;">
-              <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" maxlength="4" style="width:100%; margin-top:8px;"></md-outlined-text-field>
-              <md-icon title="O CVV são os 3 ou 4 dígitos no verso do cartão" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); --md-icon-size:16px; color:#9c9c9c; margin-top:4px; cursor:help;">info</md-icon>
+          <!-- Validade + CVV (180px cada, gap 20px) + info icon sobreposto ao CVV -->
+          <div class="row-2">
+            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA"></md-outlined-text-field>
+            <div class="cvv-wrap">
+              <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" maxlength="4"></md-outlined-text-field>
+              <span class="cvv-info" title="O CVV são os 3 ou 4 dígitos no verso do cartão">info</span>
             </div>
           </div>
 
@@ -1565,7 +1615,7 @@
           </md-outlined-select>
 
           <!-- Pagar com segurança — botão verde full-width -->
-          <md-filled-button class="btn-green" id="btn-pagar" onclick="submitPayment()" style="width:100%; max-width:380px; margin-top:8px;">
+          <md-filled-button class="btn-green" id="btn-pagar" onclick="submitPayment()" style="width:100%; max-width:380px;">
             Pagar com segurança
           </md-filled-button>
         </div>
@@ -1722,8 +1772,9 @@
     const expiry  = document.getElementById('f-expiry');
 
     if (cardNum) applyMask(cardNum, el => {
-      const v = el.value.replace(/\D/g, '').slice(0, 16);
-      el.value = v.replace(/(.{4})/g, '$1 ').trim();
+      const raw = el.value.replace(/\D/g, '').slice(0, 16);
+      el.value = raw.replace(/(.{4})/g, '$1 ').trim();
+      detectCardBrand(raw);
     });
 
     if (expiry) applyMask(expiry, el => {
@@ -1777,6 +1828,43 @@
       const evt = f.type === 'md-select' ? 'change' : 'input';
       el.addEventListener(evt, updateProgress);
     });
+  }
+
+  /* ── Detecção de bandeira do cartão ── */
+  function detectCardBrand(digits) {
+    const badge = document.getElementById('card-brand-badge');
+    if (!badge) return;
+
+    // Remove classes anteriores
+    badge.className = 'card-brand-badge';
+    badge.innerHTML = '';
+
+    if (!digits || digits.length === 0) return; // sem dígitos → oculto
+
+    const first  = digits[0];
+    const first2 = digits.slice(0, 2);
+
+    let brand = null;
+    if (first === '4') {
+      brand = 'visa';
+    } else if (first === '5' || first2 === '22' || first2 === '23' ||
+               first2 === '24' || first2 === '25' || first2 === '26' || first2 === '27') {
+      brand = 'mc';
+    } else if (first === '3' && (digits[1] === '4' || digits[1] === '7')) {
+      brand = 'amex';
+    }
+
+    if (!brand) return; // bandeira não reconhecida → não exibe badge
+
+    badge.classList.add('visible', 'brand-' + brand);
+
+    if (brand === 'visa') {
+      badge.textContent = 'VISA';
+    } else if (brand === 'mc') {
+      badge.innerHTML = '<div class="mc-circles"><div class="mc-left"></div><div class="mc-right"></div></div>';
+    } else if (brand === 'amex') {
+      badge.textContent = 'AMEX';
+    }
   }
 
   /* ── Mapa país ISO → DDI ── */
