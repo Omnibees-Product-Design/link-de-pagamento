@@ -1492,42 +1492,43 @@
       text-align: center;
     }
     .success-title {
-      font-size: 16px;
+      font-size: 14px;       /* Figma: 14px Bold */
       font-weight: 700;
       color: #273240;
-      margin-bottom: 35px;
+      margin-bottom: 35px;   /* Figma: y=144 → divider y=179 = 35px gap */
       text-align: center;
     }
     .success-details {
       text-align: left;
       border-top: 1px solid #E6E6E6;
-      padding-top: 20px;
-      margin-bottom: 20px;
+      padding-top: 35px;     /* Figma: divider y=179 → title y=214 = 35px */
+      margin-bottom: 30px;   /* Figma: last row y=314 → divider y=344 = 30px */
     }
     .success-section-title {
-      font-size: 13px;
+      font-size: 14px;       /* Figma: 14px Bold */
       font-weight: 700;
       color: #273240;
-      margin-bottom: 14px;
+      margin-bottom: 20px;   /* Figma: title y=234 → rows y=254 = 20px */
     }
     .success-row {
       display: flex;
       justify-content: space-between;
-      padding: 5px 0;
-      font-size: 13px;
+      align-items: center;
+      height: 20px;          /* Figma: 3 rows × 20px = 60px total */
+      font-size: 12px;       /* Figma: 12px */
     }
-    .success-label { color: #273240; font-weight: 400; }
-    .success-value { color: #273240; font-weight: 600; }
+    .success-label { color: #273240; font-weight: 400; }   /* Figma: Regular */
+    .success-value { color: #273240; font-weight: 600; }   /* Figma: SemiBold */
     .success-total {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-top: 1px solid #E6E6E6;
-      padding-top: 20px;
-      margin-top: 4px;
+      padding-top: 20px;     /* Figma: divider y=344 → total y=364 = 20px */
+      margin-top: 0;
     }
-    .success-total-label { font-size: 14px; font-weight: 700; color: #273240; }
-    .success-total-value { font-size: 22px; font-weight: 700; color: #273240; }
+    .success-total-label { font-size: 14px; font-weight: 700; color: #273240; }   /* Figma: 14px Bold */
+    .success-total-value { font-size: 24px; font-weight: 700; color: #273240; font-variant-numeric: tabular-nums; }   /* Figma: 24px Bold */
 
     /* ── Modal: comprovante enviado ── */
     .email-sent-overlay {
@@ -1833,15 +1834,15 @@
         <div class="section-fields">
 
           <!-- 1. Nome completo -->
-          <md-outlined-text-field id="f-nome" label="Nome completo" type="text"></md-outlined-text-field>
+          <md-outlined-text-field id="f-nome" label="Nome completo" type="text" autocomplete="off"></md-outlined-text-field>
 
           <!-- 2. E-mail (full width) -->
-          <md-outlined-text-field id="f-email" label="E-mail" type="email"></md-outlined-text-field>
+          <md-outlined-text-field id="f-email" label="E-mail" type="email" autocomplete="off"></md-outlined-text-field>
 
           <!-- 3. Data de nascimento (180px) + País (180px) — mesma linha -->
           <div class="row-2">
 
-            <md-outlined-text-field id="f-nasc" label="Data de nascimento" type="text" inputmode="numeric" placeholder="DD/MM/AAAA"></md-outlined-text-field>
+            <md-outlined-text-field id="f-nasc" label="Data de nascimento" type="text" inputmode="numeric" placeholder="DD/MM/AAAA" autocomplete="off"></md-outlined-text-field>
 
             <!-- País — combobox -->
             <div class="cs-wrap" id="cs-pais" style="margin-top:0; max-width:none; flex:1 1 0;">
@@ -1896,7 +1897,7 @@
                 </div>
               </div>
               <div class="cfield-sep"></div>
-              <input type="tel" class="cfield-input" id="f-tel" placeholder="Número">
+              <input type="tel" class="cfield-input" id="f-tel" placeholder="Número" autocomplete="off">
             </div>
           </div>
 
@@ -1916,7 +1917,7 @@
                 </div>
               </div>
               <div class="cfield-sep"></div>
-              <input type="text" class="cfield-input" id="f-doc-num" placeholder="Número do documento">
+              <input type="text" class="cfield-input" id="f-doc-num" placeholder="Número do documento" autocomplete="off">
             </div>
           </div>
 
@@ -1944,15 +1945,15 @@
         <div class="section-fields">
           <!-- CEP + Preencher endereço (same row) -->
           <div class="row-cep-action">
-            <md-outlined-text-field id="f-cep" label="CEP" type="text"></md-outlined-text-field>
+            <md-outlined-text-field id="f-cep" label="CEP" type="text" autocomplete="off"></md-outlined-text-field>
             <a href="#" class="cep-link" id="cep-link" onclick="fetchCEP(); return false;">Preencher endereço</a>
           </div>
 
-          <md-outlined-text-field id="f-logradouro" label="Endereço" type="text"></md-outlined-text-field>
+          <md-outlined-text-field id="f-logradouro" label="Endereço" type="text" autocomplete="off"></md-outlined-text-field>
 
           <!-- Número + Estado (row) -->
           <div class="row-2">
-            <md-outlined-text-field id="f-numero" label="Número" type="text"></md-outlined-text-field>
+            <md-outlined-text-field id="f-numero" label="Número" type="text" autocomplete="off"></md-outlined-text-field>
             <div class="cfield">
               <span class="cfield-label">Estado</span>
               <div class="cfield-inner" style="width:100%;">
@@ -2005,7 +2006,7 @@
                 </select>
               </div>
             </div>
-            <md-outlined-text-field id="f-bairro" label="Bairro" type="text"></md-outlined-text-field>
+            <md-outlined-text-field id="f-bairro" label="Bairro" type="text" autocomplete="off"></md-outlined-text-field>
           </div>
 
           <!-- Voltar + Continuar -->
@@ -2114,11 +2115,24 @@
     <!-- Painel esquerdo: resultado do pagamento -->
     <div class="left-panel">
       <div class="left-inner" style="padding:40px 52px; max-width:none; width:100%; align-items:stretch;">
-        <!-- Logo (igual ao painel principal) -->
+        <!-- Logo + language selector (Figma 28112:37258) -->
         <div class="left-header" style="margin-bottom:36px;">
           <a class="logo" href="#">
             <img src="assets/bee2pay-logo.png" height="40" alt="Bee2Pay">
           </a>
+          <div class="lang-selector" id="suc-lang-selector">
+            <button class="lang-trigger" id="suc-lang-trigger" type="button">
+              <span class="fi fi-br" id="suc-lang-flag"></span>
+              <span class="lang-text" id="suc-lang-text">Português (BR)</span>
+              <span class="lang-arrow">expand_more</span>
+            </button>
+            <div class="lang-dropdown" id="suc-lang-dropdown">
+              <div class="lang-option selected" data-lang="pt-BR" data-iso="br" onclick="setSucLang(this)"><span class="fi fi-br"></span> Português (BR)</div>
+              <div class="lang-option" data-lang="pt-PT" data-iso="pt" onclick="setSucLang(this)"><span class="fi fi-pt"></span> Português (PT)</div>
+              <div class="lang-option" data-lang="en" data-iso="us" onclick="setSucLang(this)"><span class="fi fi-us"></span> English</div>
+              <div class="lang-option" data-lang="es" data-iso="es" onclick="setSucLang(this)"><span class="fi fi-es"></span> Español</div>
+            </div>
+          </div>
         </div>
         <div class="success-card">
           <div class="success-icon">
@@ -2158,7 +2172,7 @@
           <div class="panel-heading-title">Comprovante do pagamento</div>
           <div class="panel-heading-subtitle">Caso deseje, você pode enviar o comprovante por e-mail.</div>
         </div>
-        <md-outlined-text-field id="f-receipt-email" label="E-mail" type="email" style="margin-bottom:8px;"></md-outlined-text-field>
+        <md-outlined-text-field id="f-receipt-email" label="E-mail" type="email" autocomplete="off" style="margin-bottom:8px;"></md-outlined-text-field>
         <div style="font-size:11px; color:#A6A6A6; margin-bottom:16px;">Para mais de um e-mail, separe-os por vírgula.</div>
         <md-filled-button class="btn-yellow" onclick="sendReceipt()" style="width:100%; max-width:380px;">
           Enviar
@@ -2838,6 +2852,25 @@
 
     document.querySelector('.page').style.display = 'none';
     document.getElementById('success-page').style.display = 'block';
+  }
+
+  /* Language selector — tela de sucesso */
+  (function() {
+    const trigger = document.getElementById('suc-lang-trigger');
+    const dropdown = document.getElementById('suc-lang-dropdown');
+    if (!trigger || !dropdown) return;
+    trigger.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+  })();
+
+  function setSucLang(opt) {
+    const iso = opt.dataset.iso;
+    const text = opt.textContent.trim();
+    document.getElementById('suc-lang-flag').className = 'fi fi-' + iso;
+    document.getElementById('suc-lang-text').textContent = text;
+    document.querySelectorAll('#suc-lang-dropdown .lang-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    document.getElementById('suc-lang-dropdown').classList.remove('open');
   }
 
   /* Reabre uma seção para edição */
