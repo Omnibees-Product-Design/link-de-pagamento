@@ -106,7 +106,7 @@
     .cfield {
       position: relative;
       max-width: 380px;
-      margin-top: 20px;
+      margin-top: 0;
     }
     .cfield-label {
       position: absolute;
@@ -445,7 +445,14 @@
     }
 
     /* ── Accordion sections ── */
-    .section + .section {
+    /* gap:30 entre Section 1 e o grupo colapsado (Figma 28181:14019 gap:30) */
+    #sec-address {
+      margin-top: 30px;
+      border-top: 1px solid #e6e6e6;
+    }
+    /* gap:30 entre Section 2 e Section 3 — mesma regra aplicada ao Endereço */
+    #sec-payment {
+      margin-top: 30px;
       border-top: 1px solid #e6e6e6;
     }
     .section { }
@@ -590,8 +597,8 @@
       cursor: pointer;
       transition: background 0.12s;
     }
-    .cs-option:hover   { background: #F5F5F5; }
-    .cs-option.selected { background: #FFF8E1; }
+    .cs-option:hover,
+    .cs-option.selected { background: #F5F5F5; }
     /* Flag icons — tamanho uniforme nos dropdowns */
     .fi {
       width: 18px !important;
@@ -663,8 +670,64 @@
       cursor: pointer;
       transition: background 0.1s;
     }
-    .ddi-option:hover    { background: #F5F5F5; }
-    .ddi-option.selected { background: #FFF8E1; }
+    .ddi-option:hover,
+    .ddi-option.selected { background: #F5F5F5; }
+
+    /* ── Doc tipo custom dropdown ── */
+    .doctype-wrap {
+      position: relative;
+      flex-shrink: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .doctype-trigger {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
+      padding: 0 26px 0 12px;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      white-space: nowrap;
+      box-sizing: border-box;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239c9c9c' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      background-size: 18px;
+    }
+    .doctype-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: -10px;
+      min-width: 140px;
+      background: #fff;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      z-index: 300;
+      overflow: hidden;
+    }
+    .doctype-dropdown.open { display: block; }
+    .doctype-option {
+      display: flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #242424;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .doctype-option:hover,
+    .doctype-option.selected { background: #F5F5F5; }
 
     /* Barra de progresso DS: 4px, #FEC437 */
     .progress-bar {
@@ -707,7 +770,7 @@
     .section-fields > md-outlined-select:first-child,
     .section-fields > .row-cep-action:first-child { margin-top: 0; }
 
-    .section-fields { padding-bottom: 20px; display: flex; flex-direction: column; gap: 25px; }
+    .section-fields { padding-bottom: 0; display: flex; flex-direction: column; gap: 20px; }
 
     /* Field row helpers */
     .row-2        { display: flex; gap: 20px; max-width: 380px; }
@@ -887,15 +950,15 @@
     /* Badge de bandeira — aparece somente após detecção (Figma: 24x16, r=2, borda #D9D9D9) */
     .card-brand-badge {
       position: absolute;
-      right: 44px;
+      right: 16px;
       top: 50%;
       transform: translateY(-50%);
-      width: 34px;
-      height: 22px;
-      border-radius: 3px;
+      width: 24px;
+      height: 16px;
+      border-radius: 2px;
       border: 1px solid #D9D9D9;
       background: #fff;
-      display: none;           /* oculto por padrão; JS exibe após detectar */
+      display: none;
       align-items: center;
       justify-content: center;
       pointer-events: none;
@@ -903,6 +966,25 @@
       overflow: hidden;
     }
     .card-brand-badge.visible { display: flex; }
+    /* Bandeira genérica (estado default — antes de detectar) */
+    .card-brand-badge.brand-generic {
+      background: #fff;
+      border: 1px solid #D9D9D9;
+    }
+    .card-generic-icon {
+      width: 20px; height: 14px;
+      background: #D3D3D3;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-generic-icon::after {
+      content: '';
+      position: absolute;
+      top: 4px; left: 0; right: 0;
+      height: 3px;
+      background: #B0B0B0;
+    }
 
     /* Visa — texto branco em fundo navy */
     .card-brand-badge.brand-visa {
@@ -917,13 +999,23 @@
     .card-brand-badge.brand-mc  { background: #fff; }
     .mc-circles {
       position: relative;
-      width: 24px;
-      height: 14px;
+      width: 17px;
+      height: 11px;
       display: flex;
       align-items: center;
     }
-    .mc-left  { position: absolute; left: 0;   width: 14px; height: 14px; border-radius: 50%; background: #EB001B; }
-    .mc-right { position: absolute; left: 8px; width: 14px; height: 14px; border-radius: 50%; background: #F9A000; opacity: 0.9; }
+    .mc-left  { position: absolute; left: 0;   width: 11px; height: 11px; border-radius: 50%; background: #EB001B; }
+    .mc-right { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #F9A000; opacity: 0.9; }
+    /* Estilo base para badges com texto (fonte minúscula para caber em 24×16) */
+    .card-brand-badge.brand-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 6px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.2px;
+      text-align: center;
+      line-height: 1;
+    }
     /* Amex */
     .card-brand-badge.brand-amex {
       background: #007BC1;
@@ -932,6 +1024,29 @@
       color: #fff;
       letter-spacing: 0.3px;
     }
+    /* Discover */
+    .card-brand-badge.brand-discover { background: linear-gradient(135deg, #f60 0%, #e65c00 100%); }
+    /* Diners Club */
+    .card-brand-badge.brand-diners { background: #004A97; }
+    /* JCB */
+    .card-brand-badge.brand-jcb {
+      background: linear-gradient(135deg, #003087 33%, #CC0000 33%, #CC0000 66%, #009900 66%);
+    }
+    /* UnionPay */
+    .card-brand-badge.brand-unionpay { background: linear-gradient(135deg, #D0021B 0%, #8B0000 100%); }
+    /* Elo (bandeira brasileira) */
+    .card-brand-badge.brand-elo { background: #000; color: #FFD100 !important; }
+    /* Hipercard */
+    .card-brand-badge.brand-hipercard { background: #B0060C; }
+    /* Maestro */
+    .card-brand-badge.brand-maestro { background: #fff; }
+    .maestro-circles {
+      position: relative; width: 17px; height: 11px; display: flex; align-items: center;
+    }
+    .maestro-left  { position: absolute; left: 0;   width: 11px; height: 11px; border-radius: 50%; background: #CC0000; }
+    .maestro-right { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #0057A8; opacity: 0.9; }
+    /* Aura */
+    .card-brand-badge.brand-aura { background: #008000; }
 
     /* Dividers no painel direito — limitados à largura do formulário */
     .right-panel > md-divider {
@@ -1362,50 +1477,94 @@
       background: #fff;
     }
     .success-page .page { height: 100vh; }
+    /* Card centrado na left-panel, largura máxima conforme Figma 28112:37263 (578px) */
     .success-card {
-      background: #F8F8F8;
-      border-radius: 12px;
-      padding: 40px 32px;
-      max-width: 400px;
+      background: #F5F5F5;
+      border-radius: 4px;
+      padding: 50px 50px 50px;
       width: 100%;
+      max-width: 578px;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
-    .success-icon { margin-bottom: 20px; }
+    .success-icon {
+      margin-bottom: 10px;
+      text-align: center;
+    }
     .success-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
-      color: #409644;
-      margin-bottom: 24px;
+      color: #273240;
+      margin-bottom: 35px;
+      text-align: center;
     }
     .success-details {
       text-align: left;
       border-top: 1px solid #E6E6E6;
-      padding-top: 16px;
-      margin-bottom: 16px;
+      padding-top: 20px;
+      margin-bottom: 20px;
     }
     .success-section-title {
       font-size: 13px;
       font-weight: 700;
-      color: #242424;
-      margin-bottom: 12px;
+      color: #273240;
+      margin-bottom: 14px;
     }
     .success-row {
       display: flex;
       justify-content: space-between;
-      padding: 4px 0;
-      font-size: 12px;
+      padding: 5px 0;
+      font-size: 13px;
     }
-    .success-label { color: #757575; }
-    .success-value { color: #242424; font-weight: 600; }
+    .success-label { color: #273240; font-weight: 400; }
+    .success-value { color: #273240; font-weight: 600; }
     .success-total {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-top: 1px solid #E6E6E6;
-      padding-top: 16px;
-      margin-top: 8px;
+      padding-top: 20px;
+      margin-top: 4px;
     }
-    .success-total-label { font-size: 14px; font-weight: 700; color: #242424; }
-    .success-total-value { font-size: 24px; font-weight: 700; color: #242424; }
+    .success-total-label { font-size: 14px; font-weight: 700; color: #273240; }
+    .success-total-value { font-size: 22px; font-weight: 700; color: #273240; }
+
+    /* ── Modal: comprovante enviado ── */
+    .email-sent-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(39,50,64,0.75);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+    }
+    .email-sent-overlay.visible { display: flex; }
+    .email-sent-modal {
+      background: #fff;
+      border-radius: 4px;
+      width: 538px;
+      max-width: 90vw;
+      padding: 40px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+    .email-sent-icon { flex-shrink: 0; }
+    .email-sent-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #273240;
+    }
+    .email-sent-msg {
+      font-size: 14px;
+      font-weight: 400;
+      color: #273240;
+      line-height: 1.5;
+      max-width: 380px;
+    }
 
     /* ═══════════════════════════════════════════
        RESPONSIVO
@@ -1673,38 +1832,44 @@
       <div class="section-body open" id="body-personal">
         <div class="section-fields">
 
+          <!-- 1. Nome completo -->
           <md-outlined-text-field id="f-nome" label="Nome completo" type="text"></md-outlined-text-field>
 
+          <!-- 2. E-mail (full width) -->
           <md-outlined-text-field id="f-email" label="E-mail" type="email"></md-outlined-text-field>
 
-          <!-- País — combobox: digita no input, filtra em tempo real -->
-          <div class="cs-wrap" id="cs-pais">
-            <span class="cs-trigger-label">País</span>
-            <div class="cs-input-wrap" id="cs-pais-trigger">
-              <span class="cs-option-flag fi fi-br" id="cs-pais-flag"></span>
-              <input type="text" class="cs-input" id="cs-pais-input" autocomplete="off" value="Brasil">
-              <span class="cs-arrow" id="cs-pais-arrow">expand_more</span>
-            </div>
-            <div class="cs-dropdown" id="cs-pais-dropdown" role="listbox">
-              <div class="cs-list" id="cs-pais-list">
-                <div class="cs-option selected" data-value="Brasil"        data-iso="br"  role="option"><span class="cs-option-flag fi fi-br"></span> Brasil</div>
-                <div class="cs-option" data-value="Colômbia"    data-iso="co"  role="option"><span class="cs-option-flag fi fi-co"></span> Colômbia</div>
-                <div class="cs-option" data-value="México"      data-iso="mx"  role="option"><span class="cs-option-flag fi fi-mx"></span> México</div>
-                <div class="cs-option" data-value="Estados Unidos" data-iso="us" role="option"><span class="cs-option-flag fi fi-us"></span> Estados Unidos</div>
-                <div class="cs-option" data-value="Portugal"    data-iso="pt"  role="option"><span class="cs-option-flag fi fi-pt"></span> Portugal</div>
-                <div class="cs-option" data-value="Argentina"   data-iso="ar"  role="option"><span class="cs-option-flag fi fi-ar"></span> Argentina</div>
-                <div class="cs-option" data-value="Chile"       data-iso="cl"  role="option"><span class="cs-option-flag fi fi-cl"></span> Chile</div>
-                <div class="cs-option" data-value="Espanha"     data-iso="es"  role="option"><span class="cs-option-flag fi fi-es"></span> Espanha</div>
-                <div class="cs-option" data-value="França"      data-iso="fr"  role="option"><span class="cs-option-flag fi fi-fr"></span> França</div>
-                <div class="cs-option" data-value="Alemanha"    data-iso="de"  role="option"><span class="cs-option-flag fi fi-de"></span> Alemanha</div>
-                <div class="cs-option" data-value="Itália"      data-iso="it"  role="option"><span class="cs-option-flag fi fi-it"></span> Itália</div>
-                <div class="cs-option" data-value="Reino Unido" data-iso="gb"  role="option"><span class="cs-option-flag fi fi-gb"></span> Reino Unido</div>
+          <!-- 3. Data de nascimento (180px) + País (180px) — mesma linha -->
+          <div class="row-2">
+
+            <md-outlined-text-field id="f-nasc" label="Data de nascimento" type="text" inputmode="numeric" placeholder="DD/MM/AAAA"></md-outlined-text-field>
+
+            <!-- País — combobox -->
+            <div class="cs-wrap" id="cs-pais" style="margin-top:0; max-width:none; flex:1 1 0;">
+              <span class="cs-trigger-label">País</span>
+              <div class="cs-input-wrap" id="cs-pais-trigger">
+                <span class="cs-option-flag fi fi-br" id="cs-pais-flag"></span>
+                <input type="text" class="cs-input" id="cs-pais-input" autocomplete="off" value="Brasil">
+                <span class="cs-arrow" id="cs-pais-arrow">expand_more</span>
+              </div>
+              <div class="cs-dropdown" id="cs-pais-dropdown" role="listbox">
+                <div class="cs-list" id="cs-pais-list">
+                  <div class="cs-option selected" data-value="Brasil"        data-iso="br"  role="option"><span class="cs-option-flag fi fi-br"></span> Brasil</div>
+                  <div class="cs-option" data-value="Colômbia"    data-iso="co"  role="option"><span class="cs-option-flag fi fi-co"></span> Colômbia</div>
+                  <div class="cs-option" data-value="México"      data-iso="mx"  role="option"><span class="cs-option-flag fi fi-mx"></span> México</div>
+                  <div class="cs-option" data-value="Estados Unidos" data-iso="us" role="option"><span class="cs-option-flag fi fi-us"></span> Estados Unidos</div>
+                  <div class="cs-option" data-value="Portugal"    data-iso="pt"  role="option"><span class="cs-option-flag fi fi-pt"></span> Portugal</div>
+                  <div class="cs-option" data-value="Argentina"   data-iso="ar"  role="option"><span class="cs-option-flag fi fi-ar"></span> Argentina</div>
+                  <div class="cs-option" data-value="Chile"       data-iso="cl"  role="option"><span class="cs-option-flag fi fi-cl"></span> Chile</div>
+                  <div class="cs-option" data-value="Espanha"     data-iso="es"  role="option"><span class="cs-option-flag fi fi-es"></span> Espanha</div>
+                  <div class="cs-option" data-value="França"      data-iso="fr"  role="option"><span class="cs-option-flag fi fi-fr"></span> França</div>
+                  <div class="cs-option" data-value="Alemanha"    data-iso="de"  role="option"><span class="cs-option-flag fi fi-de"></span> Alemanha</div>
+                  <div class="cs-option" data-value="Itália"      data-iso="it"  role="option"><span class="cs-option-flag fi fi-it"></span> Itália</div>
+                  <div class="cs-option" data-value="Reino Unido" data-iso="gb"  role="option"><span class="cs-option-flag fi fi-gb"></span> Reino Unido</div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Data de nascimento -->
-          <md-outlined-text-field id="f-nasc" label="Data de nascimento" type="date"></md-outlined-text-field>
+          </div><!-- /row-2 e-mail + país -->
 
           <!-- Telefone: campo composto DDI customizado + número -->
           <div class="cfield">
@@ -1739,26 +1904,33 @@
           <div class="cfield">
             <span class="cfield-label">Doc. de Identificação</span>
             <div class="cfield-inner">
-              <select class="cfield-select" id="f-doc-tipo" style="width:88px;">
-                <option value="cpf">CPF</option>
-                <option value="passaporte">Passaporte</option>
-              </select>
+              <div class="doctype-wrap" id="doctype-wrap">
+                <button type="button" class="doctype-trigger" id="doctype-trigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="doctype-label">CPF</span>
+                </button>
+                <div class="doctype-dropdown" id="doctype-dropdown" role="listbox">
+                  <div class="doctype-option selected" data-value="cpf" role="option">CPF</div>
+                  <div class="doctype-option" data-value="passaporte" role="option">Passaporte</div>
+                  <div class="doctype-option" data-value="rg" role="option">RG</div>
+                  <div class="doctype-option" data-value="rne" role="option">RNE</div>
+                </div>
+              </div>
               <div class="cfield-sep"></div>
               <input type="text" class="cfield-input" id="f-doc-num" placeholder="Número do documento">
             </div>
           </div>
 
-          <!-- Continuar -->
-          <md-filled-button class="btn-yellow" trailing-icon onclick="goToSection('address')" style="max-width:380px;width:100%;">
-            Continuar
-            <md-icon slot="icon">arrow_forward</md-icon>
-          </md-filled-button>
+          <!-- Continuar — 180px alinhado à direita (Figma) -->
+          <div style="display:flex; justify-content:flex-end; max-width:380px;">
+            <md-filled-button class="btn-yellow" trailing-icon onclick="goToSection('address')" style="width:180px;">
+              Continuar
+              <md-icon slot="icon">arrow_forward</md-icon>
+            </md-filled-button>
+          </div>
 
         </div>
       </div>
     </div>
-
-    <div class="sec-divider"></div>
 
     <!-- ── Seção 2 — Endereço ── -->
     <div class="section" id="sec-address">
@@ -1783,37 +1955,42 @@
             <md-outlined-text-field id="f-numero" label="Número" type="text"></md-outlined-text-field>
             <div class="cfield">
               <span class="cfield-label">Estado</span>
-              <div class="cfield-inner">
-                <select class="cfield-select" id="f-estado" style="width:100%;">
-                  <option value=""></option>
-                  <option value="AC">AC</option>
-                  <option value="AL">AL</option>
-                  <option value="AM">AM</option>
-                  <option value="AP">AP</option>
-                  <option value="BA">BA</option>
-                  <option value="CE">CE</option>
-                  <option value="DF">DF</option>
-                  <option value="ES">ES</option>
-                  <option value="GO">GO</option>
-                  <option value="MA">MA</option>
-                  <option value="MG">MG</option>
-                  <option value="MS">MS</option>
-                  <option value="MT">MT</option>
-                  <option value="PA">PA</option>
-                  <option value="PB">PB</option>
-                  <option value="PE">PE</option>
-                  <option value="PI">PI</option>
-                  <option value="PR">PR</option>
-                  <option value="RJ">RJ</option>
-                  <option value="RN">RN</option>
-                  <option value="RO">RO</option>
-                  <option value="RR">RR</option>
-                  <option value="RS">RS</option>
-                  <option value="SC">SC</option>
-                  <option value="SE">SE</option>
-                  <option value="SP">SP</option>
-                  <option value="TO">TO</option>
-                </select>
+              <div class="cfield-inner" style="width:100%;">
+                <div class="doctype-wrap" id="estado-wrap" style="width:100%;">
+                  <button type="button" class="doctype-trigger" id="estado-trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%;">
+                    <span id="estado-label" style="color:#9c9c9c;">Selecione</span>
+                  </button>
+                  <div class="doctype-dropdown" id="estado-dropdown" role="listbox" style="min-width:160px; max-height:220px; overflow-y:auto;">
+                    <div class="doctype-option" data-value="" role="option" style="color:#9c9c9c;">Selecione</div>
+                    <div class="doctype-option" data-value="AC" role="option">AC</div>
+                    <div class="doctype-option" data-value="AL" role="option">AL</div>
+                    <div class="doctype-option" data-value="AM" role="option">AM</div>
+                    <div class="doctype-option" data-value="AP" role="option">AP</div>
+                    <div class="doctype-option" data-value="BA" role="option">BA</div>
+                    <div class="doctype-option" data-value="CE" role="option">CE</div>
+                    <div class="doctype-option" data-value="DF" role="option">DF</div>
+                    <div class="doctype-option" data-value="ES" role="option">ES</div>
+                    <div class="doctype-option" data-value="GO" role="option">GO</div>
+                    <div class="doctype-option" data-value="MA" role="option">MA</div>
+                    <div class="doctype-option" data-value="MG" role="option">MG</div>
+                    <div class="doctype-option" data-value="MS" role="option">MS</div>
+                    <div class="doctype-option" data-value="MT" role="option">MT</div>
+                    <div class="doctype-option" data-value="PA" role="option">PA</div>
+                    <div class="doctype-option" data-value="PB" role="option">PB</div>
+                    <div class="doctype-option" data-value="PE" role="option">PE</div>
+                    <div class="doctype-option" data-value="PI" role="option">PI</div>
+                    <div class="doctype-option" data-value="PR" role="option">PR</div>
+                    <div class="doctype-option" data-value="RJ" role="option">RJ</div>
+                    <div class="doctype-option" data-value="RN" role="option">RN</div>
+                    <div class="doctype-option" data-value="RO" role="option">RO</div>
+                    <div class="doctype-option" data-value="RR" role="option">RR</div>
+                    <div class="doctype-option" data-value="RS" role="option">RS</div>
+                    <div class="doctype-option" data-value="SC" role="option">SC</div>
+                    <div class="doctype-option" data-value="SE" role="option">SE</div>
+                    <div class="doctype-option" data-value="SP" role="option">SP</div>
+                    <div class="doctype-option" data-value="TO" role="option">TO</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1846,8 +2023,6 @@
       </div>
     </div>
 
-    <div class="sec-divider"></div>
-
     <!-- ── Seção 3 — Dados de Pagamento ── -->
     <div class="section" id="sec-payment">
       <div class="section-header" id="hdr-payment" onclick="toggleSection('payment')">
@@ -1859,19 +2034,21 @@
       <div class="section-body" id="body-payment">
         <div class="section-fields">
 
-          <!-- Número do cartão — bandeira aparece ao detectar o 1º dígito -->
+          <!-- Número do cartão — bandeira genérica por padrão, substitui ao detectar -->
           <div class="card-number-wrap">
-            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric"></md-outlined-text-field>
-            <div class="card-brand-badge" id="card-brand-badge"></div>
+            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric" autocomplete="off"></md-outlined-text-field>
+            <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
+              <div class="card-generic-icon"></div>
+            </div>
           </div>
 
-          <md-outlined-text-field id="f-card-name" label="Nome do titular do cartão" type="text"></md-outlined-text-field>
+          <md-outlined-text-field id="f-card-name" label="Nome do titular do cartão" type="text" autocomplete="off"></md-outlined-text-field>
 
           <!-- Validade + CVV (180px cada, gap 20px) + info icon sobreposto ao CVV -->
           <div class="row-2">
-            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA"></md-outlined-text-field>
+            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA" autocomplete="off"></md-outlined-text-field>
             <div class="cvv-wrap">
-              <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" maxlength="4"></md-outlined-text-field>
+              <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" autocomplete="off"></md-outlined-text-field>
               <span class="cvv-info" id="cvv-info-icon">info</span>
               <!-- Tooltip CVV customizado -->
               <div class="cvv-tooltip" id="cvv-tooltip">
@@ -1901,15 +2078,20 @@
 
           <div class="cfield" style="max-width:380px;">
             <span class="cfield-label">Parcelamento</span>
-            <div class="cfield-inner">
-              <select class="cfield-select" id="f-parcelas" style="width:100%;">
-                <option value="1">À vista — R$ 5.120,00</option>
-                <option value="2">Em 2x de R$ 2.560,00 sem juros</option>
-                <option value="3">Em 3x de R$ 1.706,66 sem juros</option>
-                <option value="4">Em 4x de R$ 1.280,00 sem juros</option>
-                <option value="5">Em 5x de R$ 1.024,00 sem juros</option>
-                <option value="6">Em 6x de R$ 853,33 sem juros</option>
-              </select>
+            <div class="cfield-inner" style="width:100%;">
+              <div class="doctype-wrap" id="parcelas-wrap" style="width:100%;">
+                <button type="button" class="doctype-trigger" id="parcelas-trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%;">
+                  <span id="parcelas-label">À vista — R$ 5.120,00</span>
+                </button>
+                <div class="doctype-dropdown" id="parcelas-dropdown" role="listbox" style="min-width:280px; left:0;">
+                  <div class="doctype-option selected" data-value="1" role="option">À vista — R$ 5.120,00</div>
+                  <div class="doctype-option" data-value="2" role="option">Em 2x de R$ 2.560,00 sem juros</div>
+                  <div class="doctype-option" data-value="3" role="option">Em 3x de R$ 1.706,66 sem juros</div>
+                  <div class="doctype-option" data-value="4" role="option">Em 4x de R$ 1.280,00 sem juros</div>
+                  <div class="doctype-option" data-value="5" role="option">Em 5x de R$ 1.024,00 sem juros</div>
+                  <div class="doctype-option" data-value="6" role="option">Em 6x de R$ 853,33 sem juros</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1931,12 +2113,19 @@
   <div class="page">
     <!-- Painel esquerdo: resultado do pagamento -->
     <div class="left-panel">
-      <div class="left-inner" style="align-items:center; text-align:center; justify-content:center; min-height:100vh;">
+      <div class="left-inner" style="padding:40px 52px; max-width:none; width:100%; align-items:stretch;">
+        <!-- Logo (igual ao painel principal) -->
+        <div class="left-header" style="margin-bottom:36px;">
+          <a class="logo" href="#">
+            <img src="assets/bee2pay-logo.png" height="40" alt="Bee2Pay">
+          </a>
+        </div>
         <div class="success-card">
           <div class="success-icon">
+            <!-- Ícone: círculo sólido verde #4BAF4F + checkmark branco (Figma 28112:37273) -->
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="32" fill="#E8F5E9"/>
-              <path d="M20 33L28 41L44 25" stroke="#409644" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="32" cy="32" r="32" fill="#4BAF4F"/>
+              <path d="M19 33L28 42L45 24" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div class="success-title">Pagamento realizado com sucesso!</div>
@@ -1971,11 +2160,27 @@
         </div>
         <md-outlined-text-field id="f-receipt-email" label="E-mail" type="email" style="margin-bottom:8px;"></md-outlined-text-field>
         <div style="font-size:11px; color:#A6A6A6; margin-bottom:16px;">Para mais de um e-mail, separe-os por vírgula.</div>
-        <md-filled-button class="btn-yellow" style="width:100%; max-width:380px;">
+        <md-filled-button class="btn-yellow" onclick="sendReceipt()" style="width:100%; max-width:380px;">
           Enviar
         </md-filled-button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: COMPROVANTE ENVIADO ═══ -->
+<div class="email-sent-overlay" id="email-sent-overlay" onclick="closeEmailSent(event)">
+  <div class="email-sent-modal">
+    <div class="email-sent-icon">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="32" fill="#4BAF4F"/>
+        <!-- Envelope -->
+        <rect x="16" y="22" width="32" height="22" rx="2" fill="none" stroke="#fff" stroke-width="2.2"/>
+        <path d="M16 24l16 12 16-12" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="email-sent-title">Comprovante enviado</div>
+    <div class="email-sent-msg">Em instantes o comprovante já estará disponível em sua caixa de entrada.</div>
   </div>
 </div>
 
@@ -1984,6 +2189,13 @@
   const SECTIONS = ['personal', 'address', 'payment'];
 
   function toggleSection(name) {
+    // Se a seção está concluída, clicar no header (ou em "Editar") reabre para edição
+    const sec = document.getElementById('sec-' + name);
+    if (sec && sec.classList.contains('completed')) {
+      goToSection(name);
+      return;
+    }
+
     const body = document.getElementById('body-' + name);
     const hdr  = document.querySelector('#sec-' + name + ' .section-header');
     const isOpen = body.classList.contains('open');
@@ -2060,13 +2272,8 @@
         if (logField)    logField.value    = data.logradouro || '';
         if (bairroField) bairroField.value = data.bairro     || '';
 
-        // Estado (md-outlined-select) — seleciona pela UF
-        const estadoEl = document.getElementById('f-estado');
-        if (estadoEl && data.uf) {
-          estadoEl.value = data.uf;
-          // Força atualização visual do MD3 select
-          estadoEl.dispatchEvent(new Event('change', { bubbles: true }));
-        }
+        // Estado — custom dropdown
+        if (data.uf && window.setEstado) window.setEstado(data.uf);
 
         // Cidade (select nativo) — remove todas as opções e adiciona a localidade
         const cidadeEl = document.getElementById('f-cidade');
@@ -2103,6 +2310,32 @@
       if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
       el.value = v;
     });
+
+    const cvv = document.getElementById('f-cvv');
+    if (cvv) applyMask(cvv, el => {
+      el.value = el.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    /* Máscara progressiva DD/MM/AAAA para data de nascimento */
+    const nasc = document.getElementById('f-nasc');
+    if (nasc) {
+      nasc.addEventListener('input', function() {
+        // Captura apenas os dígitos digitados
+        let digits = nasc.value.replace(/\D/g, '').slice(0, 8);
+        let formatted = '';
+        if (digits.length > 0) formatted = digits.slice(0, 2);
+        if (digits.length > 2) formatted += '/' + digits.slice(2, 4);
+        if (digits.length > 4) formatted += '/' + digits.slice(4, 8);
+        nasc.value = formatted;
+      });
+      // Impede que teclas não numéricas (exceto Backspace/Delete/Tab/ArrowKeys) sejam aceitas
+      nasc.addEventListener('keydown', function(e) {
+        const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','Home','End'];
+        if (!allowed.includes(e.key) && !/^\d$/.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+    }
 
     /* Registra listeners de progresso e calcula estado inicial */
     attachProgressListeners();
@@ -2170,32 +2403,120 @@
     badge.className = 'card-brand-badge';
     badge.innerHTML = '';
 
-    if (!digits || digits.length === 0) return; // sem dígitos → oculto
+    if (!digits || digits.length === 0) {
+      // Sem dígitos → volta ao estado genérico
+      badge.classList.add('visible', 'brand-generic');
+      badge.innerHTML = '<div class="card-generic-icon"></div>';
+      return;
+    }
 
-    const first  = digits[0];
-    const first2 = digits.slice(0, 2);
+    const d      = digits;
+    const n      = parseInt(d.slice(0, 6).padEnd(6, '0'), 10);
+    const first  = d[0];
+    const first2 = parseInt(d.slice(0, 2) || '0', 10);
+    const first4 = parseInt(d.slice(0, 4).padEnd(4, '0'), 10);
+    const first6 = n;
 
     let brand = null;
-    if (first === '4') {
-      brand = 'visa';
-    } else if (first === '5' || first2 === '22' || first2 === '23' ||
-               first2 === '24' || first2 === '25' || first2 === '26' || first2 === '27') {
-      brand = 'mc';
-    } else if (first === '3' && (digits[1] === '4' || digits[1] === '7')) {
-      brand = 'amex';
+
+    // Elo (BINs brasileiros — verificar antes de Visa/MC pois começa com 4 ou 5/6)
+    const eloBins4 = [4011,4312,4389,4514,4576,4011];
+    const eloBins6 = [401178,401179,431274,438935,451416,457393,457631,457632,
+                      504175,627780,636297,636368,650031,650032,650033,650035,
+                      650036,650037,650038,650039,650040,650041,650042,650043,
+                      650044,650045,650046,650047,650048,650049,650050,650051,
+                      650405,650406,650407,650408,650409,650410,650411,650412,
+                      650413,650414,650415,650416,650417,650418,650419,650420,
+                      650421,650422,650423,650424,650425,650426,650427,650428,
+                      650429,650430,650431,650432,650433,650434,650435,650436,
+                      650437,650438,650439,650440,650441,650442,650443,650444,
+                      650445,650446,650447,650448,650449,650450,650451,650452,
+                      650453,650454,650455,650456,650457,650458,650459,650460,
+                      650461,650462,650463,650464,650465,650466,650467,650468,
+                      650469,650470,650471,650472,650473,650474,650475,650476,
+                      650477,650478,650479,650480,650481,650482,650483,650484,
+                      650485,650486,650487,650488,650489,650490,650491,650492,
+                      650493,650494,650495,650496,650497,650498,650499,650500,
+                      650501,650502,650503,650504,650505,650506,650507,650508,
+                      650509,650510,650511,650512,650513,650514,650515,650516,
+                      650517,650518,650519,650520,650521,650522,650523,650524,
+                      650525,650526,650527,650528,650529,650530,650531,650532,
+                      650533,650534,650535,650536,650537,650538,650539,650540,
+                      650541,650542,650543,650544,650545,650546,650547,650548,
+                      650549,650550,650551,650552,650553,650554,650555,650556,
+                      650557,650558,650559,650560,650561,650562,650563,650564,
+                      650565,650566,650567,650568,650569,650570,650571,650572,
+                      650573,650574,650575,650576,650577,650578,650579,650580,
+                      506699,506700,506701,506702,506703,506704,506705,506706,
+                      506707,506708,506709,506710,506711,506712,506713,506714,
+                      506715,506716,506717,506718,506719,506720,506721,506722,
+                      506723,506724,506725,506726,506727,506728,506729,506730,
+                      509000,509001,509002,509003,509004,509005,509006,509007,
+                      627780,636297,636368];
+    if (eloBins6.includes(first6) || eloBins4.includes(first4)) brand = 'elo';
+
+    // Hipercard
+    if (!brand && (first6 === 606282 || first4 === 3841)) brand = 'hipercard';
+
+    // Aura
+    if (!brand && first2 === 50) brand = 'aura';
+
+    // Amex
+    if (!brand && first === '3' && (d[1] === '4' || d[1] === '7')) brand = 'amex';
+
+    // Diners Club
+    if (!brand && first === '3') {
+      if ((first2 >= 30 && first2 <= 35) || first2 === 36 || first2 === 38) brand = 'diners';
     }
 
-    if (!brand) return; // bandeira não reconhecida → não exibe badge
+    // JCB
+    if (!brand && first4 >= 3528 && first4 <= 3589) brand = 'jcb';
 
-    badge.classList.add('visible', 'brand-' + brand);
+    // UnionPay (62xx, exceto Elo e Discover que usam 65xx)
+    if (!brand && first2 === 62) brand = 'unionpay';
 
-    if (brand === 'visa') {
-      badge.textContent = 'VISA';
-    } else if (brand === 'mc') {
-      badge.innerHTML = '<div class="mc-circles"><div class="mc-left"></div><div class="mc-right"></div></div>';
-    } else if (brand === 'amex') {
-      badge.textContent = 'AMEX';
+    // Discover
+    if (!brand) {
+      if (first4 === 6011 || (first6 >= 622126 && first6 <= 622925) ||
+          (first2 >= 64 && first2 <= 65)) brand = 'discover';
     }
+
+    // Maestro
+    if (!brand) {
+      const maestroBins = [6304,6759,6761,6762,6763];
+      if (maestroBins.includes(first4)) brand = 'maestro';
+    }
+
+    // Mastercard: 51-55 e 2221-2720
+    if (!brand) {
+      if ((first2 >= 51 && first2 <= 55) ||
+          (first4 >= 2221 && first4 <= 2720)) brand = 'mc';
+    }
+
+    // Visa (deve ser depois de Elo, que também começa com 4)
+    if (!brand && first === '4') brand = 'visa';
+
+    badge.classList.add('visible', 'brand-' + (brand || 'generic'));
+
+    const renders = {
+      visa:      () => { badge.classList.add('brand-text'); badge.textContent = 'VISA'; },
+      mc:        () => { badge.innerHTML = '<div class="mc-circles"><div class="mc-left"></div><div class="mc-right"></div></div>'; },
+      amex:      () => { badge.classList.add('brand-text'); badge.textContent = 'AMEX'; },
+      discover:  () => { badge.classList.add('brand-text'); badge.textContent = 'DISC'; },
+      diners:    () => { badge.classList.add('brand-text'); badge.textContent = 'DINERS'; },
+      jcb:       () => { badge.classList.add('brand-text'); badge.textContent = 'JCB'; },
+      unionpay:  () => { badge.classList.add('brand-text'); badge.textContent = 'UP'; },
+      elo:       () => { badge.classList.add('brand-text'); badge.textContent = 'ELO'; },
+      hipercard: () => { badge.classList.add('brand-text'); badge.textContent = 'HIPER'; },
+      maestro:   () => { badge.innerHTML = '<div class="maestro-circles"><div class="maestro-left"></div><div class="maestro-right"></div></div>'; },
+      aura:      () => { badge.classList.add('brand-text'); badge.textContent = 'AURA'; },
+    };
+
+    if (!brand) {
+      badge.innerHTML = '<div class="card-generic-icon"></div>';
+      return;
+    }
+    if (renders[brand]) renders[brand]();
   }
 
   /* ── Mapa país ISO → DDI ── */
@@ -2332,6 +2653,116 @@
 
   /* ── DDI custom dropdown (telefone) ── */
   (function initDDI() {
+    /* ── Parcelamento dropdown ── */
+    (function initParcelas() {
+      const wrap     = document.getElementById('parcelas-wrap');
+      const trigger  = document.getElementById('parcelas-trigger');
+      const dropdown = document.getElementById('parcelas-dropdown');
+      const labelEl  = document.getElementById('parcelas-label');
+      if (!wrap || !trigger || !dropdown) return;
+      const options  = dropdown.querySelectorAll('.doctype-option');
+
+      function open()  { trigger.setAttribute('aria-expanded','true');  dropdown.classList.add('open'); }
+      function close() { trigger.setAttribute('aria-expanded','false'); dropdown.classList.remove('open'); }
+
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        dropdown.classList.contains('open') ? close() : open();
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener('click', () => {
+          options.forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          labelEl.textContent = opt.textContent.trim();
+          close();
+        });
+      });
+
+      document.addEventListener('click', e => {
+        if (!wrap.contains(e.target)) close();
+      });
+    })();
+
+    /* ── Estado dropdown ── */
+    (function initEstado() {
+      const wrap     = document.getElementById('estado-wrap');
+      const trigger  = document.getElementById('estado-trigger');
+      const dropdown = document.getElementById('estado-dropdown');
+      const labelEl  = document.getElementById('estado-label');
+      if (!wrap || !trigger || !dropdown) return;
+      const options  = dropdown.querySelectorAll('.doctype-option');
+
+      function open()  { trigger.setAttribute('aria-expanded','true');  dropdown.classList.add('open'); }
+      function close() { trigger.setAttribute('aria-expanded','false'); dropdown.classList.remove('open'); }
+
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        dropdown.classList.contains('open') ? close() : open();
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener('click', () => {
+          options.forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          const val = opt.dataset.value;
+          labelEl.textContent = val || 'Selecione';
+          labelEl.style.color = val ? '#242424' : '#9c9c9c';
+          // Expõe valor para o viaCEP autocomplete
+          trigger.dataset.value = val;
+          close();
+        });
+      });
+
+      document.addEventListener('click', e => {
+        if (!wrap.contains(e.target)) close();
+      });
+
+      // Função global para set programático (viaCEP)
+      window.setEstado = function(uf) {
+        options.forEach(o => {
+          o.classList.remove('selected');
+          if (o.dataset.value === uf) {
+            o.classList.add('selected');
+            labelEl.textContent = uf || 'Selecione';
+            labelEl.style.color = uf ? '#242424' : '#9c9c9c';
+            trigger.dataset.value = uf;
+          }
+        });
+      };
+    })();
+
+    /* ── Doc tipo dropdown ── */
+    (function initDocType() {
+      const wrap     = document.getElementById('doctype-wrap');
+      const trigger  = document.getElementById('doctype-trigger');
+      const dropdown = document.getElementById('doctype-dropdown');
+      const labelEl  = document.getElementById('doctype-label');
+      if (!wrap || !trigger || !dropdown) return;
+      const options  = dropdown.querySelectorAll('.doctype-option');
+
+      function open()  { trigger.setAttribute('aria-expanded','true');  dropdown.classList.add('open'); }
+      function close() { trigger.setAttribute('aria-expanded','false'); dropdown.classList.remove('open'); }
+
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        dropdown.classList.contains('open') ? close() : open();
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener('click', () => {
+          options.forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          labelEl.textContent = opt.textContent.trim();
+          close();
+        });
+      });
+
+      document.addEventListener('click', e => {
+        if (!wrap.contains(e.target)) close();
+      });
+    })();
+
     const wrap    = document.getElementById('ddi-wrap');
     const trigger = document.getElementById('ddi-trigger');
     const dropdown= document.getElementById('ddi-dropdown');
@@ -2382,6 +2813,17 @@
     icon.addEventListener('focus',      () => tooltip.classList.add('visible'));
     icon.addEventListener('blur',       () => tooltip.classList.remove('visible'));
   })();
+
+  /* ── Comprovante por email ── */
+  function sendReceipt() {
+    document.getElementById('email-sent-overlay').classList.add('visible');
+  }
+  function closeEmailSent(e) {
+    // Fecha ao clicar no overlay (fora do modal)
+    if (e.target === document.getElementById('email-sent-overlay')) {
+      document.getElementById('email-sent-overlay').classList.remove('visible');
+    }
+  }
 
   /* ── Submit Payment — show success page ── */
   function submitPayment() {
