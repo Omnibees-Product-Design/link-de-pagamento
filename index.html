@@ -732,6 +732,118 @@
       user-select: none;
     }
 
+    /* ── CVV Tooltip ── */
+    .cvv-tooltip {
+      display: none;
+      position: absolute;
+      right: -8px;
+      bottom: calc(100% + 14px);
+      width: 300px;
+      background: #1B2B3A;
+      color: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      z-index: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+    .cvv-tooltip.visible { display: block; }
+
+    /* Seta apontando para baixo */
+    .cvv-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: 16px;
+      width: 0; height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #1B2B3A;
+    }
+
+    .cvv-tip-section { margin-bottom: 12px; }
+    .cvv-tip-section:last-child { margin-bottom: 0; }
+    .cvv-tip-section p { margin: 0 0 8px; }
+    .cvv-tip-section strong { font-weight: 700; }
+    .cvv-tip-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 12px 0; }
+
+    /* Ilustração do cartão */
+    .cvv-card-img {
+      border-radius: 6px;
+      height: 56px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .cvv-card-amex-img {
+      background: linear-gradient(135deg, #2E7D9E 0%, #1A5276 100%);
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    .cvv-card-other-img {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0;
+    }
+    .cvv-card-chip {
+      width: 20px; height: 14px;
+      background: #D4AC0D;
+      border-radius: 3px;
+      position: absolute;
+      left: 10px; top: 10px;
+    }
+    .cvv-card-logo-amex {
+      font-size: 9px; font-weight: 900;
+      color: #fff; letter-spacing: 0.5px;
+      position: absolute; top: 8px; left: 10px;
+    }
+    .cvv-card-nums {
+      position: absolute; bottom: 8px; left: 10px;
+      font-size: 7px; color: rgba(255,255,255,0.7);
+      letter-spacing: 1px;
+    }
+    .cvv-card-code-badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      position: absolute;
+    }
+    .cvv-card-amex-img .cvv-card-code-badge { right: 12px; top: 50%; transform: translateY(-50%); }
+    /* Tarja magnética + código no verso */
+    .cvv-card-stripe {
+      width: 100%; height: 16px;
+      background: #111;
+      position: absolute;
+      top: 12px; left: 0;
+    }
+    .cvv-card-sig {
+      width: calc(100% - 20px); height: 18px;
+      background: repeating-linear-gradient(90deg, #ddd 0, #ddd 4px, #bbb 4px, #bbb 8px);
+      position: absolute;
+      bottom: 10px; left: 10px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .cvv-card-sig .cvv-card-code-badge {
+      position: relative; right: auto; top: auto;
+      transform: none;
+      background: #fff; color: #333;
+      border-color: #ccc;
+      margin-right: -1px;
+      border-radius: 0 2px 2px 0;
+    }
+
     /* Linha telefone: DDI select (130px) + campo (flex) */
     .row-phone { display: flex; gap: 10px; align-items: flex-start; }
     .row-phone md-outlined-select   { flex: 0 0 130px; }
@@ -1613,7 +1725,30 @@
             <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA"></md-outlined-text-field>
             <div class="cvv-wrap">
               <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" maxlength="4"></md-outlined-text-field>
-              <span class="cvv-info" title="O CVV são os 3 ou 4 dígitos no verso do cartão">info</span>
+              <span class="cvv-info" id="cvv-info-icon">info</span>
+              <!-- Tooltip CVV customizado -->
+              <div class="cvv-tooltip" id="cvv-tooltip">
+                <!-- Amex -->
+                <div class="cvv-tip-section">
+                  <p>Para American Express, digite os <strong>4 dígitos</strong> na parte da frente do seu cartão:</p>
+                  <div class="cvv-card-img cvv-card-amex-img">
+                    <span class="cvv-card-logo-amex">AMEX</span>
+                    <span class="cvv-card-nums">1234 &nbsp;123456 &nbsp;12345</span>
+                    <span class="cvv-card-code-badge">1234</span>
+                  </div>
+                </div>
+                <div class="cvv-tip-divider"></div>
+                <!-- Outros cartões -->
+                <div class="cvv-tip-section">
+                  <p>Para outros cartões, digite os <strong>3 dígitos</strong> na parte detrás do seu cartão:</p>
+                  <div class="cvv-card-img cvv-card-other-img">
+                    <div class="cvv-card-stripe"></div>
+                    <div class="cvv-card-sig">
+                      <span class="cvv-card-code-badge">123</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2038,6 +2173,18 @@
     document.addEventListener('click', e => {
       if (!wrap.contains(e.target)) closeDDI();
     });
+  })();
+
+  /* ── CVV Tooltip — hover no ícone info ── */
+  (function initCVVTooltip() {
+    const icon    = document.getElementById('cvv-info-icon');
+    const tooltip = document.getElementById('cvv-tooltip');
+    if (!icon || !tooltip) return;
+
+    icon.addEventListener('mouseenter', () => tooltip.classList.add('visible'));
+    icon.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+    icon.addEventListener('focus',      () => tooltip.classList.add('visible'));
+    icon.addEventListener('blur',       () => tooltip.classList.remove('visible'));
   })();
 
   /* ── Submit Payment — show success page ── */
