@@ -1439,6 +1439,16 @@
     }
     .cep-link:hover { text-decoration: underline; }
 
+    /* ── Estado trigger: usa expand_more igual ao País ── */
+    #estado-trigger {
+      background-image: none;
+      justify-content: space-between;
+      padding-right: 8px;
+      width: 100%;
+    }
+    #estado-wrap .doctype-dropdown.open ~ button #estado-arrow,
+    #estado-trigger[aria-expanded="true"] #estado-arrow { transform: rotate(180deg); }
+
     /* ── Secure note below pay button ── */
     .secure-note {
       font-size: 11px;
@@ -1969,6 +1979,7 @@
                 <div class="doctype-wrap" id="estado-wrap" style="width:100%;">
                   <button type="button" class="doctype-trigger" id="estado-trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%;">
                     <span id="estado-label" style="color:#9c9c9c;">Selecione</span>
+                    <span class="cs-arrow" id="estado-arrow">expand_more</span>
                   </button>
                   <div class="doctype-dropdown" id="estado-dropdown" role="listbox" style="min-width:160px; max-height:220px; overflow-y:auto;">
                     <div class="doctype-option" data-value="" role="option" style="color:#9c9c9c;">Selecione</div>
