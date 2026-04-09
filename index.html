@@ -106,7 +106,7 @@
     .cfield {
       position: relative;
       max-width: 380px;
-      margin-top: 8px;
+      margin-top: 20px;
     }
     .cfield-label {
       position: absolute;
@@ -211,7 +211,7 @@
       --md-filled-button-label-text-font:                  'Inter', sans-serif;
       --md-filled-button-label-text-weight:                700;
       --md-filled-button-label-text-size:                  13px;
-      --md-filled-button-container-shape:                  8px;
+      --md-filled-button-container-shape:                  4px;
     }
     /* Botão outlined — secundário, 48px */
     md-outlined-button {
@@ -231,18 +231,28 @@
       --md-outlined-button-label-text-font:            'Inter', sans-serif;
       --md-outlined-button-label-text-size:            13px;
       --md-outlined-button-label-text-weight:          600;
-      --md-outlined-button-container-shape:            8px;
+      --md-outlined-button-container-shape:            4px;
     }
 
-    /* Chips de segurança */
+    /* Chips de segurança — estilo Figma (verde) */
     md-assist-chip {
       --md-assist-chip-outline-color:      #c8e7ca;
       --md-assist-chip-container-shape:    8px;
-      --md-assist-chip-label-text-font:    'Inter', sans-serif;
-      --md-assist-chip-label-text-size:    11px;
-      --md-assist-chip-label-text-color:   #242424;
-      --md-assist-chip-icon-color:         #409644;
+      --md-assist-chip-label-text-font:    'Open Sans', 'Inter', sans-serif;
+      --md-assist-chip-label-text-size:    12px;
+      --md-assist-chip-label-text-weight:  600;
+      --md-assist-chip-label-text-color:   #4baf4f;
+      --md-assist-chip-icon-color:         #4baf4f;
+      --md-assist-chip-icon-size:          16px;
       --md-assist-chip-container-color:    #ffffff;
+      --md-assist-chip-container-height:   28px;
+    }
+    .security-badges md-assist-chip md-icon {
+      color: #4baf4f !important;
+      margin-right: 6px;
+    }
+    md-assist-chip {
+      --md-assist-chip-icon-label-space: 12px;
     }
 
     /* Divider MD3 */
@@ -284,17 +294,26 @@
       border-right: 1px solid #EDEDED;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;   /* empurra o inner para o lado da divisória */
+      align-items: center;
       overflow-y: auto;
     }
     /* inner wrapper: max-width fixo, empurrado para a direita */
     .left-inner {
       width: 100%;
       max-width: 480px;
-      padding: 28px 44px 24px;
+      padding: 20px 44px 24px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 0;
+      flex: 1;
+      min-height: 100vh;
+    }
+    /* Conteúdo central cresce e centra verticalmente */
+    .left-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     /* Logo */
@@ -307,7 +326,7 @@
     .logo img { height: 40px; width: auto; display: block; }
 
     /* Saudação */
-    .guest-greeting { }
+    .guest-greeting { margin-top: 20px; }
     .guest-name {
       font-size: 20px;
       font-weight: 700;
@@ -322,15 +341,16 @@
       display: flex;
       flex-direction: column;
       gap: 0;
+      margin-top: 30px;
     }
 
     /* Seção 1: info básica */
     .hc-info {
-      padding: 0 0 20px;
+      padding: 0 0 30px;
       border-bottom: 1px solid #E6E6E6;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 5px;
     }
     .hc-name        { font-size: 14px; font-weight: 700; color: #242424; line-height: 1.4; }
     .hc-room        { font-size: 13px; font-weight: 400; color: #242424; }
@@ -339,43 +359,44 @@
     /* Seção 2: tabela de dados da reserva */
     .hc-table {
       border-bottom: 1px solid #E6E6E6;
-      padding: 20px 0;
+      padding: 30px 0;
       display: flex;
-      gap: 24px;
+      gap: 30px;
     }
     .hc-labels {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      min-width: 130px;
+      gap: 3px;
+      min-width: 121px;
     }
     .hc-values {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 3px;
       flex: 1;
     }
-    .hc-label-cell  { font-size: 12px; font-weight: 400; color: #757575; line-height: 16px; }
-    .hc-value-cell  { font-size: 12px; font-weight: 600; color: #242424; line-height: 16px; }
+    .hc-label-cell  { font-size: 12px; font-weight: 400; color: #273240; line-height: 20px; }
+    .hc-value-cell  { font-size: 12px; font-weight: 600; color: #273240; line-height: 20px; }
     .hc-value-cell.bold { font-weight: 700; }
 
     /* Seção 3: total */
     .hc-total {
-      padding: 20px 0 0;
+      padding: 30px 0 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .hc-total-label { font-size: 14px; font-weight: 700; color: #242424; }
-    .hc-total-value { font-size: 24px; font-weight: 700; color: #242424; text-align: right; }
+    .hc-total-label { font-size: 14px; font-weight: 700; color: #273240; }
+    .hc-total-value { font-size: 24px; font-weight: 700; color: #273240; text-align: right; }
 
     /* Segurança (painel esquerdo) */
-    .security { margin-top: 4px; padding-top: 16px; border-top: 1px solid #EBEBEB; }
-    .security-label { font-size: 10px; color: #242424; margin-bottom: 8px; }
+    .security { margin-top: auto; padding-top: 24px; border-top: 1px solid #EBEBEB; text-align: center; }
+    .security-label { font-size: 10px; color: #273240; margin-bottom: 16px; }
     .security-badges {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      flex-wrap: nowrap;
+      gap: 12px;
+      justify-content: center;
     }
     .security-note {
       font-size: 11px;
@@ -390,10 +411,11 @@
       background: #ffffff;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;  /* empurra o inner para o lado da divisória */
+      align-items: center;
+      justify-content: center;
       overflow-y: auto;
     }
-    /* inner wrapper: max-width fixo, empurrado para a esquerda */
+    /* inner wrapper: max-width fixo, centrado */
     .right-inner {
       width: 100%;
       max-width: 480px;
@@ -404,51 +426,54 @@
 
     /* Cabeçalho do painel direito (título + subtítulo) */
     .panel-heading {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .panel-heading-title {
       font-size: 18px;
       font-weight: 700;
-      color: #242424;
-      margin-bottom: 6px;
+      color: #273240;
+      margin-bottom: 10px;
       line-height: 1.3;
     }
     .panel-heading-subtitle {
-      font-size: 13px;
-      line-height: 1.6;
-      color: #6B6B6B;
+      font-size: 12px;
+      line-height: 20px;
+      color: #273240;
     }
 
     /* ── Accordion sections ── */
+    .section + .section {
+      border-top: 1px solid #e6e6e6;
+    }
     .section { }
 
     .section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 0;
+      padding: 19px 10px;
       cursor: pointer;
       user-select: none;
     }
     .section-label {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 5px;
       font-size: 14px;
       font-weight: 600;
-      color: #9c9c9c;
+      color: #c5c5c5;
     }
     .section-header.active .section-label { color: #27364A; }
     .section-header.done  .section-label { color: #4BAF4F; }
 
     .step-dot {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
-      background: #e8e8e8;
-      color: #9c9c9c;
-      font-size: 12px;
-      font-weight: 700;
+      background: #c5c5c5;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -470,7 +495,7 @@
     .cs-wrap {
       position: relative;
       max-width: 380px;
-      margin-top: 8px;
+      margin-top: 20px;
     }
     .cs-trigger {
       display: flex;
@@ -662,7 +687,7 @@
       height: 3px;
       background: #EBEBEB;
       border-radius: 2px;
-      margin-bottom: 4px;
+      margin-bottom: 30px;
       overflow: hidden;
     }
     .progress-bar-fill {
@@ -845,25 +870,24 @@
     }
 
     /* Linha telefone: DDI select (130px) + campo (flex) */
-    .row-phone { display: flex; gap: 10px; align-items: flex-start; }
+    .row-phone { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; }
     .row-phone md-outlined-select   { flex: 0 0 130px; }
     .row-phone md-outlined-text-field { flex: 1; }
 
     /* Linha doc: tipo select + número */
-    .row-doc { display: flex; gap: 10px; align-items: flex-start; }
+    .row-doc { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; }
     .row-doc md-outlined-select          { flex: 0 0 140px; }
     .row-doc md-outlined-text-field      { flex: 1; }
 
     /* Linha número + complemento — número 130px (como DDI), complemento flex */
-    .row-addr { display: flex; gap: 10px; align-items: flex-start; }
+    .row-addr { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; }
     .row-addr md-outlined-text-field:first-child { flex: 0 0 130px; width: 130px; max-width: 130px; }
     .row-addr md-outlined-text-field:last-child  { flex: 1; }
 
     /* Linha nascimento (180px) + botão continuar (180px) */
-    .row-action { display: flex; gap: 20px; align-items: flex-end; max-width: 380px; }
+    .row-action { display: flex; gap: 20px; align-items: flex-end; max-width: 380px; margin-top: 20px; }
     .row-action md-outlined-text-field { width: 180px; max-width: 180px; flex: 0 0 180px; }
-    /* margin-top: 8px iguala o offset do floating label do campo de data */
-    .row-action .btn-yellow            { flex: 0 0 180px; width: 180px; margin-top: 8px; }
+    .row-action .btn-yellow            { flex: 0 0 180px; width: 180px; }
 
     /* Submit row — ambos os botões iguais (180px) conforme Figma */
     .submit-row { display: flex; gap: 20px; padding-top: 4px; max-width: 380px; }
@@ -1396,6 +1420,150 @@
     }
     .success-total-label { font-size: 14px; font-weight: 700; color: #242424; }
     .success-total-value { font-size: 24px; font-weight: 700; color: #242424; }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVO
+    ═══════════════════════════════════════════ */
+
+    /* Tablet — stack vertical */
+    @media (max-width: 1024px) {
+      .page {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+      }
+      body {
+        height: auto;
+        overflow: auto;
+      }
+      .left-panel,
+      .right-panel {
+        width: 100%;
+        min-width: 100%;
+        overflow-y: visible;
+      }
+      .left-panel {
+        border-right: none;
+        border-bottom: 1px solid #EDEDED;
+        align-items: center;
+      }
+      .right-panel {
+        align-items: center;
+      }
+      .left-inner,
+      .right-inner {
+        max-width: 540px;
+        min-height: auto;
+      }
+      .left-inner {
+        min-height: auto;
+      }
+      /* Campos e botões ocupam largura total */
+      md-outlined-text-field,
+      md-filled-text-field,
+      md-outlined-select,
+      .cfield {
+        max-width: 100%;
+      }
+      .section-body .row {
+        flex-direction: column;
+      }
+      .section-body .row md-outlined-text-field,
+      .section-body .row md-outlined-select,
+      .section-body .row .cfield {
+        max-width: 100%;
+        width: 100%;
+      }
+      md-outlined-text-field.field-sm {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .left-inner,
+      .right-inner {
+        padding: 20px 20px 24px;
+        max-width: 100%;
+      }
+      .hc-table {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .hc-labels {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0;
+        min-width: auto;
+      }
+      .hc-values {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0;
+      }
+      /* Switch to stacked key-value pairs on mobile */
+      .hc-table {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .hc-labels,
+      .hc-values {
+        display: contents;
+      }
+      .hc-label-cell,
+      .hc-value-cell {
+        display: block;
+      }
+      /* Interleave labels and values */
+      .hc-table {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .hc-labels { display: none; }
+      .hc-values {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .hc-value-cell::before {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+        color: #757575;
+        margin-bottom: 2px;
+      }
+      .hc-value-cell:nth-child(1)::before { content: "Nº da Reserva"; }
+      .hc-value-cell:nth-child(2)::before { content: "Hóspede"; }
+      .hc-value-cell:nth-child(3)::before { content: "Check-in | Check-out"; }
+      .hc-value-cell:nth-child(4)::before { content: "Valor"; }
+      .hc-value-cell:nth-child(5)::before { content: "Taxas e impostos"; }
+      .hc-value-cell:nth-child(6)::before { content: "Parcelamento"; }
+
+      .hc-total {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .hc-total-value { font-size: 20px; text-align: left; }
+
+      .security-badges {
+        gap: 8px;
+      }
+
+      .panel-heading-title { font-size: 16px; }
+
+      /* Botões do formulário empilhados */
+      .section-body .row {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .section-body .row > * {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1487,6 +1655,27 @@
         </md-assist-chip>
         <md-assist-chip label="256-bit Encryption" tabindex="-1" has-icon="">
           <md-icon slot="icon" aria-hidden="true">security</md-icon>
+        </md-assist-chip>
+      </md-chip-set>
+      <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
+    </div>
+    </div><!-- /left-content -->
+
+    <!-- Selos de segurança -->
+    <div class="security">
+      <div class="security-label">Este link é protegido por:</div>
+      <md-chip-set class="security-badges">
+        <md-assist-chip label="PCI DSS">
+          <md-icon slot="icon">lock</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="SSL Secure">
+          <md-icon slot="icon">verified_user</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="LGPD">
+          <md-icon slot="icon">assignment</md-icon>
+        </md-assist-chip>
+        <md-assist-chip label="3D Secure">
+          <md-icon slot="icon">security</md-icon>
         </md-assist-chip>
       </md-chip-set>
       <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
