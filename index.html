@@ -966,24 +966,16 @@
       overflow: hidden;
     }
     .card-brand-badge.visible { display: flex; }
-    /* Bandeira genérica (estado default — antes de detectar) */
+    /* Bandeira genérica (Figma: Card Icon Container.svg) */
     .card-brand-badge.brand-generic {
-      background: #fff;
-      border: 1px solid #D9D9D9;
+      background: transparent;
+      border: none;
+      overflow: visible;
     }
     .card-generic-icon {
-      width: 20px; height: 14px;
-      background: #D3D3D3;
-      border-radius: 2px;
-      position: relative;
-      overflow: hidden;
-    }
-    .card-generic-icon::after {
-      content: '';
-      position: absolute;
-      top: 4px; left: 0; right: 0;
-      height: 3px;
-      background: #B0B0B0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Visa — texto branco em fundo navy */
@@ -2059,7 +2051,12 @@
           <div class="card-number-wrap">
             <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric" autocomplete="off"></md-outlined-text-field>
             <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
-              <div class="card-generic-icon"></div>
+              <div class="card-generic-icon">
+                <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/>
+                  <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
+                </svg>
+              </div>
             </div>
           </div>
 
@@ -2430,6 +2427,9 @@
   }
 
   /* ── Detecção de bandeira do cartão ── */
+  /* SVG do ícone genérico de cartão (Figma: Card Icon Container.svg) */
+  const GENERIC_CARD_SVG = '<div class="card-generic-icon"><svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/><rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/></svg></div>';
+
   function detectCardBrand(digits) {
     const badge = document.getElementById('card-brand-badge');
     if (!badge) return;
@@ -2441,7 +2441,7 @@
     if (!digits || digits.length === 0) {
       // Sem dígitos → volta ao estado genérico
       badge.classList.add('visible', 'brand-generic');
-      badge.innerHTML = '<div class="card-generic-icon"></div>';
+      badge.classList.add('brand-generic'); badge.innerHTML = GENERIC_CARD_SVG;
       return;
     }
 
@@ -2548,7 +2548,7 @@
     };
 
     if (!brand) {
-      badge.innerHTML = '<div class="card-generic-icon"></div>';
+      badge.classList.add('brand-generic'); badge.innerHTML = GENERIC_CARD_SVG;
       return;
     }
     if (renders[brand]) renders[brand]();
