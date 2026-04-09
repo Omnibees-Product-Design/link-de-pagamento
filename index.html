@@ -1781,11 +1781,11 @@
           estadoEl.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
-        // Cidade (select nativo) — insere/atualiza a opção com a localidade
+        // Cidade (select nativo) — remove todas as opções e adiciona a localidade
         const cidadeEl = document.getElementById('f-cidade');
         if (cidadeEl && data.localidade) {
-          cidadeEl.innerHTML = '<option value="' + data.localidade + '">' + data.localidade + '</option>';
-          cidadeEl.value = data.localidade;
+          while (cidadeEl.options.length) cidadeEl.remove(0);
+          cidadeEl.add(new Option(data.localidade, data.localidade, true, true));
           cidadeEl.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
@@ -1825,22 +1825,23 @@
   /* ── Progress bar dinâmica (por campo preenchido) ── */
   const TRACKED_FIELDS = [
     // Seção 1 — Dados Pessoais
-    { id: 'f-nome',       type: 'md' },
-    { id: 'f-email',      type: 'md' },
-    { id: 'f-tel',        type: 'input' },
-    { id: 'f-doc-num',    type: 'input' },
-    { id: 'f-nasc',       type: 'md' },
+    { id: 'f-nome',       type: 'md'     },
+    { id: 'f-email',      type: 'md'     },
+    { id: 'f-tel',        type: 'input'  },
+    { id: 'f-doc-num',    type: 'input'  },
+    { id: 'f-nasc',       type: 'md'     },
     // Seção 2 — Endereço
-    { id: 'f-cep',        type: 'md' },
-    { id: 'f-logradouro', type: 'md' },
-    { id: 'f-numero',     type: 'md' },
+    { id: 'f-cep',        type: 'md'     },
+    { id: 'f-logradouro', type: 'md'     },
+    { id: 'f-numero',     type: 'md'     },
     { id: 'f-estado',     type: 'select' },
-    { id: 'f-bairro',     type: 'md' },
+    { id: 'f-cidade',     type: 'select' },
+    { id: 'f-bairro',     type: 'md'     },
     // Seção 3 — Pagamento
-    { id: 'f-card-num',   type: 'md' },
-    { id: 'f-card-name',  type: 'md' },
-    { id: 'f-expiry',     type: 'md' },
-    { id: 'f-cvv',        type: 'md' },
+    { id: 'f-card-num',   type: 'md'     },
+    { id: 'f-card-name',  type: 'md'     },
+    { id: 'f-expiry',     type: 'md'     },
+    { id: 'f-cvv',        type: 'md'     },
   ];
 
   function updateProgress() {
@@ -1850,7 +1851,16 @@
       return el && (el.value || '').toString().trim().length > 0;
     }).length;
 
-    const pct = Math.round((filled / total) * 100);
+    // Percentual baseado nos campos
+    const fieldPct = Math.round((filled / total) * 100);
+
+    // Mínimo garantido pelo avanço de seção:
+    // seção 1 concluída → ≥ 33% | seção 2 concluída → ≥ 66%
+    let sectionMin = 0;
+    if (document.getElementById('sec-personal')?.classList.contains('completed')) sectionMin = 33;
+    if (document.getElementById('sec-address')?.classList.contains('completed'))  sectionMin = 66;
+
+    const pct  = Math.max(fieldPct, sectionMin);
     const fill = document.getElementById('progress-fill');
     if (fill) fill.style.width = pct + '%';
   }
