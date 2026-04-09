@@ -234,25 +234,19 @@
       --md-outlined-button-container-shape:            4px;
     }
 
-    /* Chips de segurança — estilo Figma (verde) */
-    md-assist-chip {
-      --md-assist-chip-outline-color:      #c8e7ca;
-      --md-assist-chip-container-shape:    8px;
-      --md-assist-chip-label-text-font:    'Open Sans', 'Inter', sans-serif;
-      --md-assist-chip-label-text-size:    12px;
-      --md-assist-chip-label-text-weight:  600;
-      --md-assist-chip-label-text-color:   #4baf4f;
-      --md-assist-chip-icon-color:         #4baf4f;
-      --md-assist-chip-icon-size:          16px;
-      --md-assist-chip-container-color:    #ffffff;
-      --md-assist-chip-container-height:   28px;
-    }
-    .security-badges md-assist-chip md-icon {
-      color: #4baf4f !important;
-      margin-right: 6px;
-    }
-    md-assist-chip {
-      --md-assist-chip-icon-label-space: 12px;
+    /* Compliance badges — pills simples (Figma) */
+    .compliance-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      background: #fff;
+      border: 1px solid #c8e7ca;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4baf4f;
+      white-space: nowrap;
     }
 
     /* Divider MD3 */
@@ -325,15 +319,6 @@
     }
     .logo img { height: 40px; width: auto; display: block; }
 
-    /* Saudação */
-    .guest-greeting { margin-top: 20px; }
-    .guest-name {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-    .guest-subtitle { font-size: 14px; line-height: 1.5; color: #475869; }
-
     /* Hotel card — layout Figma (Frame 28318) */
     .hotel-card {
       background: transparent;
@@ -388,6 +373,24 @@
     }
     .hc-total-label { font-size: 14px; font-weight: 700; color: #273240; }
     .hc-total-value { font-size: 24px; font-weight: 700; color: #273240; text-align: right; }
+
+    /* Saudação ao hóspede — painel esquerdo */
+    .guest-greeting {
+      margin-bottom: 24px;
+    }
+    .guest-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #273240;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .guest-subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      color: #273240;
+      line-height: 1.4;
+    }
 
     /* Segurança (painel esquerdo) */
     .security { margin-top: auto; padding-top: 24px; border-top: 1px solid #EBEBEB; text-align: center; }
@@ -497,25 +500,22 @@
       max-width: 380px;
       margin-top: 20px;
     }
-    .cs-trigger {
+    /* Combobox input-wrap (substitui o antigo button.cs-trigger) */
+    .cs-input-wrap {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       height: 48px;
-      min-height: 48px;
-      max-height: 48px;
       padding: 0 12px;
       border: 1px solid #D3D3D3;
       border-radius: 4px;
       background: #fff;
-      cursor: pointer;
       width: 100%;
       box-sizing: border-box;
-      font-size: 13px;
-      margin: 0;
+      gap: 8px;
+      cursor: text;
     }
-    .cs-trigger:focus { outline: none; border-color: #9c9c9c; }
-    .cs-trigger.open  { border-color: #9c9c9c; }
+    .cs-input-wrap:focus-within { border-color: #9c9c9c; }
+    .cs-input-wrap.open { border-color: #9c9c9c; }
     .cs-trigger-label {
       position: absolute;
       top: -1px;
@@ -529,15 +529,18 @@
       pointer-events: none;
       line-height: 1;
     }
-    .cs-value {
-      font-size: 13px;
+    .cs-input {
+      flex: 1;
+      border: none;
+      outline: none;
       font-family: 'Inter', sans-serif;
+      font-size: 13px;
       color: #242424;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      background: transparent;
+      min-width: 0;
+      cursor: text;
     }
-    .cs-placeholder { color: #A6A6A6; }
+    .cs-input::placeholder { color: #A6A6A6; }
     .cs-arrow {
       font-family: 'Material Symbols Outlined';
       font-size: 20px;
@@ -545,8 +548,10 @@
       transition: transform 0.2s;
       flex-shrink: 0;
       line-height: 1;
+      cursor: pointer;
+      user-select: none;
     }
-    .cs-trigger.open .cs-arrow { transform: rotate(180deg); }
+    .cs-input-wrap.open .cs-arrow { transform: rotate(180deg); }
 
     .cs-dropdown {
       display: none;
@@ -562,25 +567,6 @@
       overflow: hidden;
     }
     .cs-dropdown.open { display: block; }
-
-    .cs-search {
-      padding: 8px 10px;
-      border-bottom: 1px solid #EBEBEB;
-    }
-    .cs-search input {
-      width: 100%;
-      height: 32px;
-      padding: 0 10px;
-      border: 1px solid #C5C5C5;
-      border-radius: 6px;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: #242424;
-      outline: none;
-      box-sizing: border-box;
-    }
-    .cs-search input:focus { border-color: #9c9c9c; }
-    .cs-search input::placeholder { color: #A6A6A6; }
 
     .cs-list {
       max-height: 222px;
@@ -680,12 +666,12 @@
     .ddi-option:hover    { background: #F5F5F5; }
     .ddi-option.selected { background: #FFF8E1; }
 
-    /* Barra de progresso DS: 3px, #FEC437 */
+    /* Barra de progresso DS: 4px, #FEC437 */
     .progress-bar {
       width: 100%;
       max-width: 380px;
-      height: 3px;
-      background: #EBEBEB;
+      height: 4px;
+      background: #E6E6E6;
       border-radius: 2px;
       margin-bottom: 30px;
       overflow: hidden;
@@ -1602,6 +1588,12 @@
       </div>
     </div>
 
+    <!-- Saudação ao hóspede -->
+    <div class="guest-greeting">
+      <div class="guest-name">Alberto Roberto</div>
+      <div class="guest-subtitle">Seguem dados de sua reserva para pagamento.</div>
+    </div>
+
     <!-- Hotel card — layout Figma (Frame 28318) -->
     <div class="hotel-card">
 
@@ -1643,46 +1635,17 @@
     <!-- Selos de segurança — painel esquerdo (Figma node 28161-134963) -->
     <div class="security">
       <div class="security-label">Este link é protegido por:</div>
-      <md-chip-set class="security-badges">
-        <md-assist-chip label="LGPD Compliance" tabindex="0" has-icon="">
-          <md-icon slot="icon" aria-hidden="true">assignment</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="PCI Compliant" tabindex="-1" has-icon="">
-          <md-icon slot="icon" aria-hidden="true">lock</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="SSL Secure" tabindex="-1" has-icon="">
-          <md-icon slot="icon" aria-hidden="true">verified_user</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="256-bit Encryption" tabindex="-1" has-icon="">
-          <md-icon slot="icon" aria-hidden="true">security</md-icon>
-        </md-assist-chip>
-      </md-chip-set>
-      <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
-    </div>
-    </div><!-- /left-content -->
-
-    <!-- Selos de segurança -->
-    <div class="security">
-      <div class="security-label">Este link é protegido por:</div>
-      <md-chip-set class="security-badges">
-        <md-assist-chip label="PCI DSS">
-          <md-icon slot="icon">lock</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="SSL Secure">
-          <md-icon slot="icon">verified_user</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="LGPD">
-          <md-icon slot="icon">assignment</md-icon>
-        </md-assist-chip>
-        <md-assist-chip label="3D Secure">
-          <md-icon slot="icon">security</md-icon>
-        </md-assist-chip>
-      </md-chip-set>
+      <div class="security-badges">
+        <span class="compliance-badge">LGPD</span>
+        <span class="compliance-badge">PCI Compliant</span>
+        <span class="compliance-badge">SSL Secure</span>
+        <span class="compliance-badge">256-bit Encryption</span>
+      </div>
       <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
     </div>
 
   </div><!-- /left-inner -->
-  </div>
+  </div><!-- /left-panel -->
 
   <!-- ══════════════════════ PAINEL DIREITO ══════════════════════ -->
   <div class="right-panel">
@@ -1714,19 +1677,15 @@
 
           <md-outlined-text-field id="f-email" label="E-mail" type="email"></md-outlined-text-field>
 
-          <!-- País — custom combo box (ordem Figma: País vem antes de Telefone) -->
+          <!-- País — combobox: digita no input, filtra em tempo real -->
           <div class="cs-wrap" id="cs-pais">
             <span class="cs-trigger-label">País</span>
-            <button type="button" class="cs-trigger" id="cs-pais-trigger" aria-haspopup="listbox" aria-expanded="false">
-              <span class="cs-value" id="cs-pais-value">
-                <span class="cs-option-flag fi fi-br" id="cs-pais-flag"></span> Brasil
-              </span>
-              <span class="cs-arrow">expand_more</span>
-            </button>
+            <div class="cs-input-wrap" id="cs-pais-trigger">
+              <span class="cs-option-flag fi fi-br" id="cs-pais-flag"></span>
+              <input type="text" class="cs-input" id="cs-pais-input" autocomplete="off" value="Brasil">
+              <span class="cs-arrow" id="cs-pais-arrow">expand_more</span>
+            </div>
             <div class="cs-dropdown" id="cs-pais-dropdown" role="listbox">
-              <div class="cs-search">
-                <input type="text" id="cs-pais-search" placeholder="Buscar país..." autocomplete="off">
-              </div>
               <div class="cs-list" id="cs-pais-list">
                 <div class="cs-option selected" data-value="Brasil"        data-iso="br"  role="option"><span class="cs-option-flag fi fi-br"></span> Brasil</div>
                 <div class="cs-option" data-value="Colômbia"    data-iso="co"  role="option"><span class="cs-option-flag fi fi-co"></span> Colômbia</div>
@@ -1743,6 +1702,9 @@
               </div>
             </div>
           </div>
+
+          <!-- Data de nascimento -->
+          <md-outlined-text-field id="f-nasc" label="Data de nascimento" type="date"></md-outlined-text-field>
 
           <!-- Telefone: campo composto DDI customizado + número -->
           <div class="cfield">
@@ -1786,15 +1748,11 @@
             </div>
           </div>
 
-          <!-- Data de nascimento + Continuar -->
-          <div class="row-action">
-            <md-outlined-text-field id="f-nasc" class="field-sm" label="Data de nascimento" type="date">
-            </md-outlined-text-field>
-            <md-filled-button class="btn-yellow" trailing-icon onclick="goToSection('address')">
-              Continuar
-              <md-icon slot="icon">arrow_forward</md-icon>
-            </md-filled-button>
-          </div>
+          <!-- Continuar -->
+          <md-filled-button class="btn-yellow" trailing-icon onclick="goToSection('address')" style="max-width:380px;width:100%;">
+            Continuar
+            <md-icon slot="icon">arrow_forward</md-icon>
+          </md-filled-button>
 
         </div>
       </div>
@@ -2270,61 +2228,105 @@
     });
   }
 
-  /* ── Custom Select (País) ── */
+  /* ── Custom Select (País) — combobox inline ── */
   (function initCustomSelect() {
     const wrap     = document.getElementById('cs-pais');
-    const trigger  = document.getElementById('cs-pais-trigger');
+    const inputWrap= document.getElementById('cs-pais-trigger');
+    const input    = document.getElementById('cs-pais-input');
+    const flagEl   = document.getElementById('cs-pais-flag');
+    const arrow    = document.getElementById('cs-pais-arrow');
     const dropdown = document.getElementById('cs-pais-dropdown');
-    const search   = document.getElementById('cs-pais-search');
-    const valueEl  = document.getElementById('cs-pais-value');
     const options  = wrap.querySelectorAll('.cs-option');
 
+    let selectedIso   = 'br';
+    let selectedLabel = 'Brasil';
+
     function open() {
-      trigger.classList.add('open');
-      trigger.setAttribute('aria-expanded', 'true');
+      inputWrap.classList.add('open');
       dropdown.classList.add('open');
-      search.value = '';
+      // Limpa para digitar, mostra todas as opções
+      input.value = '';
       options.forEach(o => o.style.display = '');
-      setTimeout(() => search.focus(), 50);
     }
 
     function close() {
-      trigger.classList.remove('open');
-      trigger.setAttribute('aria-expanded', 'false');
+      inputWrap.classList.remove('open');
       dropdown.classList.remove('open');
+      // Restaura o valor selecionado
+      input.value = selectedLabel;
     }
 
-    trigger.addEventListener('click', e => {
-      e.stopPropagation();
-      dropdown.classList.contains('open') ? close() : open();
+    function selectOption(opt) {
+      options.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedIso   = opt.dataset.iso;
+      selectedLabel = opt.dataset.value;
+      // Atualiza flag no input
+      flagEl.className = 'cs-option-flag fi fi-' + selectedIso;
+      // Sincroniza DDI do telefone
+      syncDDI(selectedIso);
+      close();
+    }
+
+    // Abre ao focar no input
+    input.addEventListener('focus', () => {
+      if (!dropdown.classList.contains('open')) open();
     });
 
-    search.addEventListener('input', () => {
-      const q = search.value.toLowerCase().trim();
+    // Filtra em tempo real ao digitar
+    input.addEventListener('input', () => {
+      const q = input.value.toLowerCase().trim();
       options.forEach(o => {
         o.style.display = o.dataset.value.toLowerCase().includes(q) ? '' : 'none';
       });
+      if (!dropdown.classList.contains('open')) {
+        inputWrap.classList.add('open');
+        dropdown.classList.add('open');
+      }
     });
 
+    // Clique na seta abre/fecha
+    arrow.addEventListener('mousedown', e => {
+      e.preventDefault(); // não tira o foco do input
+      dropdown.classList.contains('open') ? close() : (input.focus(), open());
+    });
+
+    // Clique no input-wrap (fora do input) foca o input
+    inputWrap.addEventListener('mousedown', e => {
+      if (e.target === inputWrap || e.target === flagEl) {
+        e.preventDefault();
+        input.focus();
+        if (!dropdown.classList.contains('open')) open();
+      }
+    });
+
+    // Seleciona opção ao clicar
     options.forEach(opt => {
-      opt.addEventListener('click', () => {
-        options.forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        // Atualiza trigger com flag-icon real (data-iso) + nome do país
-        const iso = opt.dataset.iso;
-        valueEl.innerHTML = '<span class="cs-option-flag fi fi-' + iso + '"></span> ' + opt.dataset.value;
-        // Sincroniza DDI do telefone com o país selecionado
-        syncDDI(iso);
-        close();
+      opt.addEventListener('mousedown', e => {
+        e.preventDefault(); // não dispara blur antes do click
+        selectOption(opt);
       });
     });
 
+    // Fecha ao perder o foco (blur no input, se não for para dentro do dropdown)
+    input.addEventListener('blur', () => {
+      setTimeout(() => {
+        if (!wrap.contains(document.activeElement)) close();
+      }, 100);
+    });
+
+    // Fecha ao clicar fora
     document.addEventListener('click', e => {
       if (!wrap.contains(e.target)) close();
     });
 
-    search.addEventListener('keydown', e => {
-      if (e.key === 'Escape') close();
+    // Tecla Escape fecha
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { close(); input.blur(); }
+      if (e.key === 'Enter') {
+        const visible = [...options].find(o => o.style.display !== 'none');
+        if (visible) selectOption(visible);
+      }
     });
   })();
 
