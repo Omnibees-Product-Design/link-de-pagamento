@@ -701,9 +701,11 @@
     /* Field row helpers */
     .row-2        { display: flex; gap: 20px; max-width: 380px; }
     .row-2 > *    { flex: 1 1 0; min-width: 0; }
-    /* Cancela o max-width global (380px) nos itens dentro de row-2 */
+    /* Cancela o max-width global nos itens dentro de row-2 */
     .row-2 > md-outlined-text-field,
     .row-2 > md-outlined-select { max-width: none; width: auto; }
+    /* .cfield dentro de row-2: herda flex e cancela max-width/margin */
+    .row-2 > .cfield { max-width: none; margin-top: 0; }
 
     /* Wrapper do CVV — necessário para posicionar o info icon */
     .cvv-wrap {
@@ -1520,43 +1522,53 @@
           <!-- Número + Estado (row) -->
           <div class="row-2">
             <md-outlined-text-field id="f-numero" label="Número" type="text"></md-outlined-text-field>
-            <md-outlined-select id="f-estado" label="Estado">
-              <md-select-option value="" selected></md-select-option>
-              <md-select-option value="AC"><div slot="headline">AC</div></md-select-option>
-              <md-select-option value="AL"><div slot="headline">AL</div></md-select-option>
-              <md-select-option value="AM"><div slot="headline">AM</div></md-select-option>
-              <md-select-option value="AP"><div slot="headline">AP</div></md-select-option>
-              <md-select-option value="BA"><div slot="headline">BA</div></md-select-option>
-              <md-select-option value="CE"><div slot="headline">CE</div></md-select-option>
-              <md-select-option value="DF"><div slot="headline">DF</div></md-select-option>
-              <md-select-option value="ES"><div slot="headline">ES</div></md-select-option>
-              <md-select-option value="GO"><div slot="headline">GO</div></md-select-option>
-              <md-select-option value="MA"><div slot="headline">MA</div></md-select-option>
-              <md-select-option value="MG"><div slot="headline">MG</div></md-select-option>
-              <md-select-option value="MS"><div slot="headline">MS</div></md-select-option>
-              <md-select-option value="MT"><div slot="headline">MT</div></md-select-option>
-              <md-select-option value="PA"><div slot="headline">PA</div></md-select-option>
-              <md-select-option value="PB"><div slot="headline">PB</div></md-select-option>
-              <md-select-option value="PE"><div slot="headline">PE</div></md-select-option>
-              <md-select-option value="PI"><div slot="headline">PI</div></md-select-option>
-              <md-select-option value="PR"><div slot="headline">PR</div></md-select-option>
-              <md-select-option value="RJ"><div slot="headline">RJ</div></md-select-option>
-              <md-select-option value="RN"><div slot="headline">RN</div></md-select-option>
-              <md-select-option value="RO"><div slot="headline">RO</div></md-select-option>
-              <md-select-option value="RR"><div slot="headline">RR</div></md-select-option>
-              <md-select-option value="RS"><div slot="headline">RS</div></md-select-option>
-              <md-select-option value="SC"><div slot="headline">SC</div></md-select-option>
-              <md-select-option value="SE"><div slot="headline">SE</div></md-select-option>
-              <md-select-option value="SP"><div slot="headline">SP</div></md-select-option>
-              <md-select-option value="TO"><div slot="headline">TO</div></md-select-option>
-            </md-outlined-select>
+            <div class="cfield">
+              <span class="cfield-label">Estado</span>
+              <div class="cfield-inner">
+                <select class="cfield-select" id="f-estado" style="width:100%;">
+                  <option value=""></option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AM">AM</option>
+                  <option value="AP">AP</option>
+                  <option value="BA">BA</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MG">MG</option>
+                  <option value="MS">MS</option>
+                  <option value="MT">MT</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="PR">PR</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RO">RO</option>
+                  <option value="RR">RR</option>
+                  <option value="RS">RS</option>
+                  <option value="SC">SC</option>
+                  <option value="SE">SE</option>
+                  <option value="SP">SP</option>
+                  <option value="TO">TO</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           <!-- Cidade + Bairro (row) -->
           <div class="row-2">
-            <md-outlined-select id="f-cidade" label="Cidade">
-              <md-select-option value="" selected></md-select-option>
-            </md-outlined-select>
+            <div class="cfield">
+              <span class="cfield-label">Cidade</span>
+              <div class="cfield-inner">
+                <select class="cfield-select" id="f-cidade" style="width:100%;">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
             <md-outlined-text-field id="f-bairro" label="Bairro" type="text"></md-outlined-text-field>
           </div>
 
@@ -1769,16 +1781,10 @@
           estadoEl.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
-        // Cidade (md-outlined-select) — insere/atualiza a opção com a localidade
+        // Cidade (select nativo) — insere/atualiza a opção com a localidade
         const cidadeEl = document.getElementById('f-cidade');
         if (cidadeEl && data.localidade) {
-          // Remove opções anteriores e adiciona a cidade retornada
-          cidadeEl.innerHTML = '';
-          const opt = document.createElement('md-select-option');
-          opt.value = data.localidade;
-          opt.selected = true;
-          opt.innerHTML = '<div slot="headline">' + data.localidade + '</div>';
-          cidadeEl.appendChild(opt);
+          cidadeEl.innerHTML = '<option value="' + data.localidade + '">' + data.localidade + '</option>';
           cidadeEl.value = data.localidade;
           cidadeEl.dispatchEvent(new Event('change', { bubbles: true }));
         }
@@ -1828,7 +1834,7 @@
     { id: 'f-cep',        type: 'md' },
     { id: 'f-logradouro', type: 'md' },
     { id: 'f-numero',     type: 'md' },
-    { id: 'f-estado',     type: 'md-select' },
+    { id: 'f-estado',     type: 'select' },
     { id: 'f-bairro',     type: 'md' },
     // Seção 3 — Pagamento
     { id: 'f-card-num',   type: 'md' },
@@ -1853,7 +1859,7 @@
     TRACKED_FIELDS.forEach(f => {
       const el = document.getElementById(f.id);
       if (!el) return;
-      const evt = f.type === 'md-select' ? 'change' : 'input';
+      const evt = (f.type === 'md-select' || f.type === 'select') ? 'change' : 'input';
       el.addEventListener(evt, updateProgress);
     });
   }
