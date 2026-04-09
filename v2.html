@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento — Blue Tree Premium Congonhas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.3/css/flag-icons.min.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F6F9FC;
+      color: #30313D;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Layout ── */
+    .checkout-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* LEFT PANEL */
+    .panel-left {
+      width: 420px;
+      min-width: 420px;
+      background: #fff;
+      border-right: 1px solid #E6EBF1;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 36px 32px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* RIGHT PANEL */
+    .panel-right {
+      flex: 1;
+      background: #fff;
+      padding: 40px 56px 60px;
+      overflow-y: auto;
+    }
+
+    /* Form content constrained to usability-friendly width */
+    .panel-right .form-heading,
+    .panel-right .form-subheading,
+    .panel-right form {
+      max-width: 480px;
+    }
+
+    /* ── Left Panel Content ── */
+    .left-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .left-logo img {
+      height: 36px;
+      display: block;
+    }
+
+    /* Language Selector */
+    .lang-selector {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 1px solid #E0E6EF;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6B7280;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .lang-btn:hover { border-color: #635BFF; background: #F6F5FF; color: #635BFF; }
+    .lang-btn .fi { border-radius: 2px; }
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: #fff;
+      border: 1px solid #E0E6EF;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      min-width: 130px;
+      z-index: 100;
+      overflow: hidden;
+    }
+    .lang-dropdown.open { display: block; }
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #30313D;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .lang-option:hover { background: #F6F9FC; }
+    .lang-option.active { color: #635BFF; }
+    .lang-option .fi { border-radius: 2px; }
+
+    /* Hotel Card */
+    .hotel-card {
+      border: 1px solid #E6EBF1;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .hotel-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #F0FDF4;
+      color: #16A34A;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+    .hotel-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #30313D;
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+    .hotel-room {
+      font-size: 12px;
+      color: #6B7280;
+      margin-bottom: 16px;
+    }
+    .hotel-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .hotel-table tr td {
+      padding: 5px 0;
+      font-size: 12px;
+      vertical-align: top;
+    }
+    .hotel-table tr td:first-child {
+      color: #6B7280;
+      width: 50%;
+    }
+    .hotel-table tr td:last-child {
+      color: #30313D;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* Summary */
+    .summary-divider {
+      border: none;
+      border-top: 1px solid #E6EBF1;
+      margin: 18px 0;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .summary-row:last-child { margin-bottom: 0; }
+    .summary-row .label {
+      font-size: 13px;
+      color: #6B7280;
+    }
+    .summary-row .amount {
+      font-size: 13px;
+      color: #30313D;
+      font-variant-numeric: tabular-nums;
+    }
+    .summary-row.total .label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #30313D;
+    }
+    .summary-row.total .amount {
+      font-size: 14px;
+      font-weight: 700;
+      color: #30313D;
+    }
+
+    /* Security badges */
+    .security-section {
+      margin-top: auto;
+      padding-top: 24px;
+    }
+    .security-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .badge {
+      background: #F0F4F8;
+      color: #6B7280;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Right Panel Content ── */
+    .form-heading {
+      font-size: 22px;
+      font-weight: 700;
+      color: #30313D;
+      margin-bottom: 6px;
+    }
+    .form-subheading {
+      font-size: 13px;
+      color: #6B7280;
+      margin-bottom: 36px;
+    }
+
+    /* Section headings */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #30313D;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid #E6EBF1;
+      margin: 28px 0;
+    }
+
+    /* Field groups */
+    .form-section { margin-bottom: 0; }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .field-row-3 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+    .field-group:last-child { margin-bottom: 0; }
+
+    /* Labels */
+    label.field-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #30313D;
+      display: block;
+    }
+
+    /* Inputs */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select {
+      width: 100%;
+      height: 44px;
+      padding: 0 12px;
+      background: #fff;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      color: #30313D;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input::placeholder { color: #9CA3AF; }
+    input:focus,
+    select:focus {
+      border-color: #635BFF;
+      box-shadow: 0 0 0 3px rgba(99,91,255,0.12);
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239CA3AF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    /* Phone prefix field */
+    .phone-wrapper {
+      display: flex;
+      gap: 0;
+    }
+    .phone-prefix {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 44px;
+      padding: 0 12px;
+      background: #F6F9FC;
+      border: 1px solid #D1D5DB;
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #30313D;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .phone-prefix .fi { border-radius: 2px; }
+    .phone-wrapper input {
+      border-radius: 0 6px 6px 0;
+      flex: 1;
+    }
+
+    /* Card number wrapper */
+    .card-number-wrapper {
+      position: relative;
+    }
+    .card-number-wrapper input {
+      padding-right: 80px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.06em;
+    }
+    .card-brand-badge {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #6B7280;
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .card-brand-badge.visible { opacity: 1; }
+    /* Card brand colors */
+    .brand-visa { color: #1A1F71; }
+    .brand-mastercard { color: #EB001B; }
+    .brand-amex { color: #007BC1; }
+    .brand-elo { color: #F4A91B; }
+    .brand-hipercard { color: #CC0000; }
+
+    /* CEP row */
+    .cep-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    .cep-wrapper input { flex: 1; margin-bottom: 0; }
+    .btn-buscar {
+      height: 44px;
+      padding: 0 16px;
+      background: none;
+      border: 1px solid #635BFF;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: #635BFF;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-buscar:hover { background: #635BFF; color: #fff; }
+
+    /* Pay button */
+    .btn-pay {
+      width: 100%;
+      height: 48px;
+      background: #635BFF;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 28px;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .btn-pay:hover { background: #5149E8; box-shadow: 0 4px 14px rgba(99,91,255,0.30); }
+    .btn-pay:active { transform: scale(0.97); }
+
+    .secure-note {
+      text-align: center;
+      font-size: 11px;
+      color: #9CA3AF;
+      margin-top: 12px;
+    }
+
+    /* Powered by */
+    .powered-by {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 36px;
+      font-size: 11px;
+      color: #9CA3AF;
+    }
+    .powered-by span { font-weight: 600; color: #6B7280; }
+
+    /* ── Success Screen ── */
+    .success-wrapper {
+      display: none;
+      min-height: 100vh;
+      flex-direction: row;
+    }
+    .success-wrapper.active {
+      display: flex;
+    }
+
+    .success-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 56px;
+      flex: 1;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 24px;
+    }
+
+    .success-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #30313D;
+      margin-bottom: 8px;
+    }
+    .success-subtitle {
+      font-size: 14px;
+      color: #6B7280;
+      margin-bottom: 32px;
+      max-width: 360px;
+    }
+
+    .success-details {
+      background: #F6F9FC;
+      border: 1px solid #E6EBF1;
+      border-radius: 10px;
+      padding: 20px 24px;
+      width: 100%;
+      max-width: 420px;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+    .success-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid #E6EBF1;
+    }
+    .success-detail-row:last-child { border-bottom: none; }
+    .success-detail-row .sd-label {
+      font-size: 12px;
+      color: #6B7280;
+    }
+    .success-detail-row .sd-value {
+      font-size: 12px;
+      font-weight: 600;
+      color: #30313D;
+      font-variant-numeric: tabular-nums;
+    }
+    .success-detail-row .sd-value.green { color: #16A34A; }
+
+    .receipt-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 420px;
+      align-items: flex-end;
+    }
+    .receipt-row input {
+      flex: 1;
+    }
+    .btn-send {
+      height: 44px;
+      padding: 0 20px;
+      background: #635BFF;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
+      flex-shrink: 0;
+    }
+    .btn-send:hover { background: #5149E8; }
+    .btn-send:active { transform: scale(0.97); }
+
+    /* ── Version Switcher ── */
+    .version-switcher {
+      position: fixed;
+      left: 20px;
+      bottom: 28px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: rgba(27,34,45,0.94);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      padding: 10px 7px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    }
+    .vs-label {
+      font-family: Inter, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.32);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 4px;
+    }
+    .vs-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Inter, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      color: rgba(255,255,255,0.44);
+      transition: background 0.14s, color 0.14s, transform 0.1s;
+    }
+    .vs-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
+    .vs-btn:active { transform: scale(0.96); }
+    .vs-btn.vs-active { background: #635BFF; color: #fff; }
+    .vs-divider {
+      width: 20px;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin: 2px 0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      .checkout-wrapper {
+        flex-direction: column;
+        min-height: unset;
+      }
+      .panel-left {
+        width: 100%;
+        min-width: unset;
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #E6EBF1;
+        padding: 28px 24px;
+      }
+      .panel-right {
+        padding: 28px 24px 48px;
+      }
+      .success-wrapper.active {
+        flex-direction: column;
+      }
+      .security-section { margin-top: 24px; }
+    }
+
+    @media (max-width: 540px) {
+      .field-row, .field-row-3 {
+        grid-template-columns: 1fr;
+      }
+      .panel-right { padding: 24px 16px 48px; }
+      .panel-left { padding: 24px 16px; }
+      .success-content { padding: 40px 16px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     CHECKOUT PAGE
+═══════════════════════════════════════════════════ -->
+<div class="checkout-wrapper" id="checkoutPage">
+
+  <!-- LEFT PANEL -->
+  <aside class="panel-left">
+    <div class="left-header">
+      <div class="left-logo">
+        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <svg style="display:none" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="8" fill="#635BFF"/>
+          <path d="M10 10h10c3.3 0 6 2.7 6 6s-2.7 6-6 6H10V10z" fill="#fff"/>
+          <path d="M10 22h12c3.3 0 6 2.7 6 6H10V22z" fill="rgba(255,255,255,0.7)"/>
+          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#30313D">Bee2Pay</text>
+        </svg>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="lang-selector">
+        <button class="lang-btn" id="langBtn" onclick="toggleLang(event)">
+          <span class="fi fi-br"></span>
+          <span id="langText">PT</span>
+          <svg width="10" height="6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+          <div class="lang-option active" onclick="setLang('PT','br',this)">
+            <span class="fi fi-br"></span> Português
+          </div>
+          <div class="lang-option" onclick="setLang('EN','us',this)">
+            <span class="fi fi-us"></span> English
+          </div>
+          <div class="lang-option" onclick="setLang('ES','es',this)">
+            <span class="fi fi-es"></span> Español
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hotel Card -->
+    <div class="hotel-card">
+      <div class="hotel-tag">
+        <svg width="10" height="10" fill="none" viewBox="0 0 10 10"><path d="M5 1l1.18 2.39L9 3.82 7 5.76l.47 2.74L5 7.25 2.53 8.5 3 5.76 1 3.82l2.82-.43L5 1z" fill="#16A34A"/></svg>
+        Cancelamento gratuito
+      </div>
+      <div class="hotel-name">Blue Tree Premium Congonhas Airport</div>
+      <div class="hotel-room">Quarto Superior Duplo</div>
+
+      <table class="hotel-table">
+        <tr>
+          <td>Nº Reserva</td>
+          <td>RES024562-12648</td>
+        </tr>
+        <tr>
+          <td>Hóspede</td>
+          <td>Alberto Roberto</td>
+        </tr>
+        <tr>
+          <td>Check-in</td>
+          <td>08/06/2024</td>
+        </tr>
+        <tr>
+          <td>Check-out</td>
+          <td>10/06/2024</td>
+        </tr>
+        <tr>
+          <td>Período</td>
+          <td>2 noites</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-row">
+      <span class="label">Hospedagem</span>
+      <span class="amount">R$ 5.000,00</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Taxas e impostos</span>
+      <span class="amount">R$ 120,00</span>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-row total">
+      <span class="label">Total</span>
+      <span class="amount">R$ 5.120,00</span>
+    </div>
+
+    <!-- Security -->
+    <div class="security-section">
+      <div class="security-badges">
+        <span class="badge">LGPD</span>
+        <span class="badge">PCI Compliant</span>
+        <span class="badge">SSL Secured</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT PANEL -->
+  <main class="panel-right">
+    <h1 class="form-heading">Finalizar pagamento</h1>
+    <p class="form-subheading">Preencha os dados abaixo para concluir sua reserva.</p>
+
+    <form id="paymentForm" onsubmit="handlePay(event)" autocomplete="on" novalidate>
+
+      <!-- SECTION 1: Informações de contato -->
+      <div class="form-section">
+        <div class="section-title">Informações de contato</div>
+
+        <div class="field-group">
+          <label class="field-label" for="fullName">Nome completo</label>
+          <input type="text" id="fullName" name="fullName" placeholder="Alberto Roberto" autocomplete="name" value="Alberto Roberto">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="email">E-mail</label>
+          <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email">
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="dob">Data de nascimento</label>
+            <input type="text" id="dob" name="dob" placeholder="DD/MM/AAAA" maxlength="10" autocomplete="bday" inputmode="numeric">
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="country">País</label>
+            <select id="country" name="country" autocomplete="country">
+              <option value="BR" selected>Brasil</option>
+              <option value="AR">Argentina</option>
+              <option value="US">Estados Unidos</option>
+              <option value="PT">Portugal</option>
+              <option value="ES">Espanha</option>
+              <option value="FR">França</option>
+              <option value="DE">Alemanha</option>
+              <option value="GB">Reino Unido</option>
+              <option value="MX">México</option>
+              <option value="CO">Colômbia</option>
+              <option value="CL">Chile</option>
+              <option value="PE">Peru</option>
+              <option value="UY">Uruguai</option>
+              <option value="PY">Paraguai</option>
+              <option value="BO">Bolívia</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- SECTION 2: Telefone e documento -->
+      <div class="form-section">
+        <div class="section-title">Telefone e documento</div>
+
+        <div class="field-group">
+          <label class="field-label" for="phone">Telefone</label>
+          <div class="phone-wrapper">
+            <div class="phone-prefix">
+              <span class="fi fi-br" style="border-radius:2px"></span>
+              +55
+            </div>
+            <input type="tel" id="phone" name="phone" placeholder="(11) 9 9999-9999" autocomplete="tel" inputmode="tel">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="docType">Tipo de documento</label>
+            <select id="docType" name="docType">
+              <option value="CPF" selected>CPF</option>
+              <option value="CNPJ">CNPJ</option>
+              <option value="RG">RG</option>
+              <option value="PASSPORT">Passaporte</option>
+            </select>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="docNumber">Número do documento</label>
+            <input type="text" id="docNumber" name="docNumber" placeholder="000.000.000-00" inputmode="numeric">
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- SECTION 3: Endereço de cobrança -->
+      <div class="form-section">
+        <div class="section-title">Endereço de cobrança</div>
+
+        <div class="field-group">
+          <label class="field-label" for="cep">CEP</label>
+          <div class="cep-wrapper">
+            <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9" inputmode="numeric">
+            <button type="button" class="btn-buscar" onclick="fetchCEP()">Buscar</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="street">Logradouro</label>
+          <input type="text" id="street" name="street" placeholder="Rua, Avenida, Praça…" autocomplete="street-address">
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="streetNumber">Número</label>
+            <input type="text" id="streetNumber" name="streetNumber" placeholder="Nº" inputmode="numeric">
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="complement">Complemento</label>
+            <input type="text" id="complement" name="complement" placeholder="Apto, Bloco, Casa…">
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-top:14px">
+          <label class="field-label" for="neighborhood">Bairro</label>
+          <input type="text" id="neighborhood" name="neighborhood" placeholder="Bairro" autocomplete="address-level3">
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="state">Estado</label>
+            <select id="state" name="state" autocomplete="address-level1">
+              <option value="">Selecione</option>
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN">Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP" selected>São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+            </select>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="city">Cidade</label>
+            <input type="text" id="city" name="city" placeholder="Cidade" autocomplete="address-level2">
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- SECTION 4: Pagamento com cartão -->
+      <div class="form-section">
+        <div class="section-title">Pagamento com cartão</div>
+
+        <div class="field-group">
+          <label class="field-label" for="cardNumber">Número do cartão</label>
+          <div class="card-number-wrapper">
+            <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" autocomplete="cc-number">
+            <div class="card-brand-badge" id="cardBrandBadge"></div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="cardExpiry">Validade</label>
+            <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/AA" maxlength="5" inputmode="numeric" autocomplete="cc-exp">
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label" for="cardCVV">CVV</label>
+            <input type="text" id="cardCVV" name="cardCVV" placeholder="000" maxlength="4" inputmode="numeric" autocomplete="cc-csc">
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-top:14px">
+          <label class="field-label" for="cardName">Nome no cartão</label>
+          <input type="text" id="cardName" name="cardName" placeholder="Como escrito no cartão" autocomplete="cc-name" style="text-transform:uppercase">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="installments">Parcelamento</label>
+          <select id="installments" name="installments" autocomplete="off">
+            <option value="1">1x de R$ 5.120,00 (à vista)</option>
+            <option value="2">2x de R$ 2.560,00 sem juros</option>
+            <option value="3">3x de R$ 1.706,67 sem juros</option>
+            <option value="4">4x de R$ 1.280,00 sem juros</option>
+            <option value="5">5x de R$ 1.024,00 sem juros</option>
+            <option value="6">6x de R$ 853,33 sem juros</option>
+            <option value="7">7x de R$ 753,47 + juros</option>
+            <option value="8">8x de R$ 668,22 + juros</option>
+            <option value="9">9x de R$ 601,46 + juros</option>
+            <option value="10">10x de R$ 548,40 + juros</option>
+            <option value="11">11x de R$ 505,67 + juros</option>
+            <option value="12">12x de R$ 470,26 + juros</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Pay Button -->
+      <button type="submit" class="btn-pay">
+        <svg width="14" height="17" viewBox="0 0 14 17" fill="none" aria-hidden="true">
+          <rect x="1" y="7" width="12" height="9" rx="2" stroke="white" stroke-width="1.5"/>
+          <path d="M4 7V5a3 3 0 0 1 6 0v2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Pagar R$ 5.120,00
+      </button>
+
+      <p class="secure-note">🔒 Pagamento seguro com criptografia SSL</p>
+    </form>
+
+    <!-- Powered by -->
+    <div class="powered-by">Powered by <span>&nbsp;Bee2Pay</span></div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     SUCCESS PAGE
+═══════════════════════════════════════════════════ -->
+<div class="success-wrapper" id="successPage">
+
+  <!-- LEFT PANEL (same) -->
+  <aside class="panel-left">
+    <div class="left-header">
+      <div class="left-logo">
+        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <svg style="display:none" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="8" fill="#635BFF"/>
+          <path d="M10 10h10c3.3 0 6 2.7 6 6s-2.7 6-6 6H10V10z" fill="#fff"/>
+          <path d="M10 22h12c3.3 0 6 2.7 6 6H10V22z" fill="rgba(255,255,255,0.7)"/>
+          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#30313D">Bee2Pay</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-tag">
+        <svg width="10" height="10" fill="none" viewBox="0 0 10 10"><path d="M5 1l1.18 2.39L9 3.82 7 5.76l.47 2.74L5 7.25 2.53 8.5 3 5.76 1 3.82l2.82-.43L5 1z" fill="#16A34A"/></svg>
+        Cancelamento gratuito
+      </div>
+      <div class="hotel-name">Blue Tree Premium Congonhas Airport</div>
+      <div class="hotel-room">Quarto Superior Duplo</div>
+
+      <table class="hotel-table">
+        <tr><td>Nº Reserva</td><td>RES024562-12648</td></tr>
+        <tr><td>Hóspede</td><td>Alberto Roberto</td></tr>
+        <tr><td>Check-in</td><td>08/06/2024</td></tr>
+        <tr><td>Check-out</td><td>10/06/2024</td></tr>
+        <tr><td>Período</td><td>2 noites</td></tr>
+      </table>
+    </div>
+
+    <div class="summary-row">
+      <span class="label">Hospedagem</span>
+      <span class="amount">R$ 5.000,00</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Taxas e impostos</span>
+      <span class="amount">R$ 120,00</span>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-row total">
+      <span class="label">Total</span>
+      <span class="amount">R$ 5.120,00</span>
+    </div>
+
+    <div class="security-section">
+      <div class="security-badges">
+        <span class="badge">LGPD</span>
+        <span class="badge">PCI Compliant</span>
+        <span class="badge">SSL Secured</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- SUCCESS CONTENT -->
+  <main class="success-content">
+    <!-- Green Check Circle -->
+    <svg class="success-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="32" cy="32" r="32" fill="#F0FDF4"/>
+      <circle cx="32" cy="32" r="24" fill="#4BAF4F"/>
+      <path d="M21 32l8 8 14-14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <h2 class="success-title">Pagamento realizado com sucesso!</h2>
+    <p class="success-subtitle">Sua reserva foi confirmada. Você receberá os detalhes por e-mail em instantes.</p>
+
+    <!-- Payment details card -->
+    <div class="success-details">
+      <div class="success-detail-row">
+        <span class="sd-label">Status</span>
+        <span class="sd-value green">Aprovado</span>
+      </div>
+      <div class="success-detail-row">
+        <span class="sd-label">Nº Reserva</span>
+        <span class="sd-value">RES024562-12648</span>
+      </div>
+      <div class="success-detail-row">
+        <span class="sd-label">Hóspede</span>
+        <span class="sd-value">Alberto Roberto</span>
+      </div>
+      <div class="success-detail-row">
+        <span class="sd-label">Hotel</span>
+        <span class="sd-value">Blue Tree Premium Congonhas</span>
+      </div>
+      <div class="success-detail-row">
+        <span class="sd-label">Check-in / Check-out</span>
+        <span class="sd-value">08/06 – 10/06/2024</span>
+      </div>
+      <div class="success-detail-row">
+        <span class="sd-label">Total cobrado</span>
+        <span class="sd-value">R$ 5.120,00</span>
+      </div>
+      <div class="success-detail-row">
+        <span class="sd-label">Autorização</span>
+        <span class="sd-value" id="authCode">—</span>
+      </div>
+    </div>
+
+    <!-- Receipt email -->
+    <p style="font-size:13px;color:#6B7280;margin-bottom:10px;width:100%;max-width:420px;text-align:left">Enviar comprovante por e-mail:</p>
+    <div class="receipt-row">
+      <input type="email" id="receiptEmail" placeholder="seu@email.com">
+      <button type="button" class="btn-send" onclick="sendReceipt()">Enviar</button>
+    </div>
+    <div id="receiptMsg" style="font-size:12px;color:#16A34A;margin-top:8px;height:18px;text-align:left;width:100%;max-width:420px"></div>
+
+    <div class="powered-by" style="margin-top:40px;width:100%;max-width:420px">Powered by <span>&nbsp;Bee2Pay</span></div>
+  </main>
+</div>
+
+<!-- Version Switcher -->
+<nav class="version-switcher">
+  <div class="vs-label">Layout</div>
+  <a href="index.html" class="vs-btn" title="V1 — Bee2Pay atual">V1</a>
+  <div class="vs-divider"></div>
+  <a href="v2.html" class="vs-btn vs-active" title="V2 — Stripe inspired">V2</a>
+  <div class="vs-divider"></div>
+  <a href="v3.html" class="vs-btn" title="V3 — Modern Fintech">V3</a>
+</nav>
+
+<script>
+  // ─── Language Selector ───
+  function toggleLang(e) {
+    e.stopPropagation();
+    document.getElementById('langDropdown').classList.toggle('open');
+  }
+  function setLang(code, flag, el) {
+    document.getElementById('langText').textContent = code;
+    const btn = document.getElementById('langBtn');
+    btn.querySelector('.fi').className = `fi fi-${flag}`;
+    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('langDropdown').classList.remove('open');
+  }
+  document.addEventListener('click', () => {
+    document.getElementById('langDropdown').classList.remove('open');
+  });
+
+  // ─── Date of Birth mask (DD/MM/AAAA) ───
+  document.getElementById('dob').addEventListener('input', function(e) {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+    if (v.length > 5) v = v.slice(0,5) + '/' + v.slice(5);
+    this.value = v.slice(0, 10);
+  });
+
+  // ─── Phone mask ───
+  document.getElementById('phone').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    if (v.length > 10) {
+      v = `(${v.slice(0,2)}) ${v.slice(2,3)} ${v.slice(3,7)}-${v.slice(7)}`;
+    } else if (v.length > 6) {
+      v = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+    } else if (v.length > 2) {
+      v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    }
+    this.value = v;
+  });
+
+  // ─── CPF/CNPJ mask ───
+  const docType = document.getElementById('docType');
+  const docNumber = document.getElementById('docNumber');
+  docType.addEventListener('change', () => { docNumber.value = ''; applyDocMask(); });
+  docNumber.addEventListener('input', applyDocMask);
+  function applyDocMask() {
+    let v = docNumber.value.replace(/\D/g, '');
+    const t = docType.value;
+    if (t === 'CPF') {
+      if (v.length > 11) v = v.slice(0,11);
+      v = v.replace(/(\d{3})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+      docNumber.placeholder = '000.000.000-00';
+    } else if (t === 'CNPJ') {
+      if (v.length > 14) v = v.slice(0,14);
+      v = v.replace(/(\d{2})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d)/, '$1/$2')
+           .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+      docNumber.placeholder = '00.000.000/0001-00';
+    } else {
+      docNumber.placeholder = 'Número do documento';
+    }
+    docNumber.value = v;
+  }
+
+  // ─── CEP mask & fetch ───
+  document.getElementById('cep').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5,8);
+    this.value = v;
+  });
+  document.getElementById('cep').addEventListener('blur', function() {
+    if (this.value.replace(/\D/g,'').length === 8) fetchCEP();
+  });
+  async function fetchCEP() {
+    const raw = document.getElementById('cep').value.replace(/\D/g,'');
+    if (raw.length !== 8) return;
+    try {
+      const r = await fetch(`https://viacep.com.br/ws/${raw}/json/`);
+      const d = await r.json();
+      if (!d.erro) {
+        document.getElementById('street').value = d.logradouro || '';
+        document.getElementById('neighborhood').value = d.bairro || '';
+        document.getElementById('city').value = d.localidade || '';
+        const st = document.getElementById('state');
+        for (let i = 0; i < st.options.length; i++) {
+          if (st.options[i].value === d.uf) { st.selectedIndex = i; break; }
+        }
+        document.getElementById('streetNumber').focus();
+      }
+    } catch(e) { /* fail silently */ }
+  }
+
+  // ─── Card brand detection ───
+  const brands = [
+    { name: 'Elo', regex: /^(4011(78|79)|43(1274|8935)|45(1416|7393|763(1|2))|50(4175|6699|67[0-6][0-9]|677[0-8]|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9])|627780|63(6297|6368)|65(0(0(3([1-3]|[5-9])|4([0-9]|))|[0-9]{2}|[0-9]{3})|[0-9]{4}|[0-9]{5}))/, class: 'brand-elo', label: 'ELO' },
+    { name: 'Hipercard', regex: /^(606282|637095|637568|637599|637609|637612)/, class: 'brand-hipercard', label: 'Hipercard' },
+    { name: 'Amex', regex: /^3[47]/, class: 'brand-amex', label: 'Amex' },
+    { name: 'Mastercard', regex: /^(5[1-5]|2(2[2-9][1-9]|[3-6]\d{2}|7([01]\d|20)))/, class: 'brand-mastercard', label: 'Mastercard' },
+    { name: 'Visa', regex: /^4/, class: 'brand-visa', label: 'Visa' },
+  ];
+
+  const cardInput = document.getElementById('cardNumber');
+  const brandBadge = document.getElementById('cardBrandBadge');
+
+  cardInput.addEventListener('input', function() {
+    // Mask: groups of 4
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 16) v = v.slice(0,16);
+    this.value = v.replace(/(.{4})/g, '$1 ').trim();
+
+    // Brand detection
+    const digits = v;
+    let found = null;
+    for (const b of brands) {
+      if (b.regex.test(digits)) { found = b; break; }
+    }
+    if (found && digits.length >= 4) {
+      brandBadge.textContent = found.label;
+      brandBadge.className = `card-brand-badge visible ${found.class}`;
+    } else {
+      brandBadge.textContent = '';
+      brandBadge.className = 'card-brand-badge';
+    }
+  });
+
+  // ─── Expiry mask (MM/AA) ───
+  document.getElementById('cardExpiry').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 4) v = v.slice(0,4);
+    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+    this.value = v;
+  });
+
+  // ─── Card name: uppercase ───
+  document.getElementById('cardName').addEventListener('input', function() {
+    const pos = this.selectionStart;
+    this.value = this.value.toUpperCase();
+    this.setSelectionRange(pos, pos);
+  });
+
+  // ─── Pay handler ───
+  function handlePay(e) {
+    e.preventDefault();
+    // Generate random auth code
+    const code = 'AUTH' + Math.random().toString(36).slice(2,8).toUpperCase();
+    document.getElementById('authCode').textContent = code;
+
+    // Pre-fill receipt email
+    const emailVal = document.getElementById('email').value;
+    if (emailVal) document.getElementById('receiptEmail').value = emailVal;
+
+    // Switch screens
+    document.getElementById('checkoutPage').style.display = 'none';
+    document.getElementById('successPage').classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  // ─── Send receipt ───
+  function sendReceipt() {
+    const em = document.getElementById('receiptEmail').value.trim();
+    const msg = document.getElementById('receiptMsg');
+    if (!em || !em.includes('@')) {
+      msg.style.color = '#DC2626';
+      msg.textContent = 'Informe um e-mail válido.';
+      return;
+    }
+    msg.style.color = '#16A34A';
+    msg.textContent = `Comprovante enviado para ${em}`;
+  }
+</script>
+</body>
+</html>

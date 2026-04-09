@@ -2848,5 +2848,66 @@
   }
 </script>
 
+<!-- ═══ VERSION SWITCHER ═══ -->
+<style>
+  .version-switcher {
+    position: fixed;
+    left: 20px;
+    bottom: 28px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: rgba(27,34,45,0.94);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 14px;
+    padding: 10px 7px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22), 0 1.5px 0 rgba(255,255,255,0.04) inset;
+  }
+  .vs-label {
+    font-family: Inter, sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.32);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: 4px;
+  }
+  .vs-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Inter, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    color: rgba(255,255,255,0.44);
+    transition: background 0.14s, color 0.14s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .vs-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
+  .vs-btn:active { transform: scale(0.96); }
+  .vs-btn.vs-active { background: #FEC437; color: #1B2532; }
+  .vs-divider {
+    width: 20px;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 2px 0;
+  }
+</style>
+<nav class="version-switcher" aria-label="Versões do protótipo">
+  <div class="vs-label">Layout</div>
+  <a href="index.html" class="vs-btn vs-active" title="V1 — Bee2Pay atual">V1</a>
+  <div class="vs-divider"></div>
+  <a href="v2.html" class="vs-btn" title="V2 — Stripe inspired">V2</a>
+  <div class="vs-divider"></div>
+  <a href="v3.html" class="vs-btn" title="V3 — Modern Fintech">V3</a>
+</nav>
+
 </body>
 </html>
