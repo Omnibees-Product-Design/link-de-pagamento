@@ -1752,14 +1752,19 @@
             </div>
           </div>
 
-          <md-outlined-select id="f-parcelas" label="Parcelamento">
-            <md-select-option value="1" selected><div slot="headline">À vista — R$ 5.120,00</div></md-select-option>
-            <md-select-option value="2"><div slot="headline">Em 2x de R$ 2.560,00 sem juros</div></md-select-option>
-            <md-select-option value="3"><div slot="headline">Em 3x de R$ 1.706,66 sem juros</div></md-select-option>
-            <md-select-option value="4"><div slot="headline">Em 4x de R$ 1.280,00 sem juros</div></md-select-option>
-            <md-select-option value="5"><div slot="headline">Em 5x de R$ 1.024,00 sem juros</div></md-select-option>
-            <md-select-option value="6"><div slot="headline">Em 6x de R$ 853,33 sem juros</div></md-select-option>
-          </md-outlined-select>
+          <div class="cfield" style="max-width:380px;">
+            <span class="cfield-label">Parcelamento</span>
+            <div class="cfield-inner">
+              <select class="cfield-select" id="f-parcelas" style="width:100%;">
+                <option value="1">À vista — R$ 5.120,00</option>
+                <option value="2">Em 2x de R$ 2.560,00 sem juros</option>
+                <option value="3">Em 3x de R$ 1.706,66 sem juros</option>
+                <option value="4">Em 4x de R$ 1.280,00 sem juros</option>
+                <option value="5">Em 5x de R$ 1.024,00 sem juros</option>
+                <option value="6">Em 6x de R$ 853,33 sem juros</option>
+              </select>
+            </div>
+          </div>
 
           <!-- Pagar com segurança — botão verde full-width -->
           <md-filled-button class="btn-green" id="btn-pagar" onclick="submitPayment()" style="width:100%; max-width:380px;">
