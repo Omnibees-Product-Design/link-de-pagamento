@@ -31,8 +31,8 @@
     .panel-left {
       width: 420px;
       min-width: 420px;
-      background: #fff;
-      border-right: 1px solid #E6EBF1;
+      background: #0A2540;
+      border-right: none;
       display: flex;
       flex-direction: column;
       padding: 40px 36px 32px;
@@ -81,27 +81,27 @@
       align-items: center;
       gap: 6px;
       background: none;
-      border: 1px solid #E0E6EF;
+      border: 1px solid rgba(255,255,255,0.20);
       border-radius: 6px;
       padding: 5px 10px;
       font-family: inherit;
       font-size: 12px;
       font-weight: 500;
-      color: #6B7280;
+      color: rgba(255,255,255,0.65);
       cursor: pointer;
       transition: border-color 0.15s, background 0.15s;
     }
-    .lang-btn:hover { border-color: #635BFF; background: #F6F5FF; color: #635BFF; }
+    .lang-btn:hover { border-color: rgba(255,255,255,0.50); background: rgba(255,255,255,0.08); color: #fff; }
     .lang-btn .fi { border-radius: 2px; }
     .lang-dropdown {
       display: none;
       position: absolute;
       top: calc(100% + 6px);
       right: 0;
-      background: #fff;
-      border: 1px solid #E0E6EF;
+      background: #0D2E4F;
+      border: 1px solid rgba(255,255,255,0.14);
       border-radius: 8px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.30);
       min-width: 130px;
       z-index: 100;
       overflow: hidden;
@@ -114,20 +114,21 @@
       padding: 9px 14px;
       font-size: 12px;
       font-weight: 500;
-      color: #30313D;
+      color: rgba(255,255,255,0.75);
       cursor: pointer;
       transition: background 0.12s;
     }
-    .lang-option:hover { background: #F6F9FC; }
-    .lang-option.active { color: #635BFF; }
+    .lang-option:hover { background: rgba(255,255,255,0.08); }
+    .lang-option.active { color: #fff; }
     .lang-option .fi { border-radius: 2px; }
 
     /* Hotel Card */
     .hotel-card {
-      border: 1px solid #E6EBF1;
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 8px;
       padding: 20px;
       margin-bottom: 24px;
+      background: rgba(255,255,255,0.05);
     }
     .hotel-tag {
       display: inline-flex;
@@ -145,13 +146,13 @@
     .hotel-name {
       font-size: 15px;
       font-weight: 700;
-      color: #30313D;
+      color: #fff;
       line-height: 1.3;
       margin-bottom: 3px;
     }
     .hotel-room {
       font-size: 12px;
-      color: #6B7280;
+      color: rgba(255,255,255,0.55);
       margin-bottom: 16px;
     }
     .hotel-table {
@@ -164,11 +165,11 @@
       vertical-align: top;
     }
     .hotel-table tr td:first-child {
-      color: #6B7280;
+      color: rgba(255,255,255,0.50);
       width: 50%;
     }
     .hotel-table tr td:last-child {
-      color: #30313D;
+      color: rgba(255,255,255,0.90);
       font-weight: 500;
       text-align: right;
     }
@@ -176,7 +177,7 @@
     /* Summary */
     .summary-divider {
       border: none;
-      border-top: 1px solid #E6EBF1;
+      border-top: 1px solid rgba(255,255,255,0.12);
       margin: 18px 0;
     }
     .summary-row {
@@ -188,22 +189,22 @@
     .summary-row:last-child { margin-bottom: 0; }
     .summary-row .label {
       font-size: 13px;
-      color: #6B7280;
+      color: rgba(255,255,255,0.55);
     }
     .summary-row .amount {
       font-size: 13px;
-      color: #30313D;
+      color: rgba(255,255,255,0.85);
       font-variant-numeric: tabular-nums;
     }
     .summary-row.total .label {
       font-size: 14px;
       font-weight: 700;
-      color: #30313D;
+      color: #fff;
     }
     .summary-row.total .amount {
       font-size: 14px;
       font-weight: 700;
-      color: #30313D;
+      color: #fff;
     }
 
     /* Security badges */
@@ -217,8 +218,9 @@
       gap: 6px;
     }
     .badge {
-      background: #F0F4F8;
-      color: #6B7280;
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.12);
       font-size: 10px;
       font-weight: 600;
       padding: 4px 8px;
@@ -243,10 +245,8 @@
     .section-title {
       font-size: 13px;
       font-weight: 600;
-      color: #30313D;
+      color: #6B7280;
       margin-bottom: 16px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
     }
     .section-divider {
       border: none;
@@ -422,6 +422,8 @@
     }
     .btn-pay:hover { background: #5149E8; box-shadow: 0 4px 14px rgba(99,91,255,0.30); }
     .btn-pay:active { transform: scale(0.97); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-pay:disabled { opacity: 0.85; cursor: not-allowed; transform: none !important; }
 
     .secure-note {
       text-align: center;
@@ -599,7 +601,7 @@
         position: relative;
         height: auto;
         border-right: none;
-        border-bottom: 1px solid #E6EBF1;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
         padding: 28px 24px;
       }
       .panel-right {
@@ -619,6 +621,81 @@
       .panel-left { padding: 24px 16px; }
       .success-content { padding: 40px 16px; }
     }
+
+    /* ── Payment Method Bar ── */
+    .payment-method-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .pm-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1.5px solid #E0E6EB;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #8792A2;
+      cursor: pointer;
+    }
+    .pm-option.pm-active {
+      border-color: #635BFF;
+      color: #635BFF;
+      background: rgba(99,91,255,0.04);
+    }
+
+    /* ── Grouped Card Input ── */
+    .card-group {
+      border: 1.5px solid #E0E6EB;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: #fff;
+    }
+    .card-group:focus-within {
+      border-color: #635BFF;
+      box-shadow: 0 0 0 3px rgba(99,91,255,0.15);
+    }
+    .card-group-row {
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      position: relative;
+    }
+    .card-group-divider {
+      height: 1px;
+      background: #E0E6EB;
+    }
+    .card-group-bottom {
+      display: flex;
+      align-items: center;
+    }
+    .card-group-sep {
+      width: 1px;
+      height: 44px;
+      background: #E0E6EB;
+    }
+    .card-group-input {
+      flex: 1;
+      height: 44px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      font-family: Inter, sans-serif;
+      color: #30313D;
+      background: transparent;
+      padding: 0;
+    }
+    .card-group-input::placeholder { color: #B0B8C4; }
+    .card-half { padding: 0 14px; }
+    .card-brand-v2 {
+      font-size: 11px;
+      font-weight: 600;
+      color: #8792A2;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
@@ -633,12 +710,12 @@
   <aside class="panel-left">
     <div class="left-header">
       <div class="left-logo">
-        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" style="filter:brightness(10)" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <svg style="display:none" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="36" height="36" rx="8" fill="#635BFF"/>
           <path d="M10 10h10c3.3 0 6 2.7 6 6s-2.7 6-6 6H10V10z" fill="#fff"/>
           <path d="M10 22h12c3.3 0 6 2.7 6 6H10V22z" fill="rgba(255,255,255,0.7)"/>
-          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#30313D">Bee2Pay</text>
+          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#ffffff">Bee2Pay</text>
         </svg>
       </div>
 
@@ -886,22 +963,25 @@
       <div class="form-section">
         <div class="section-title">Pagamento com cartão</div>
 
-        <div class="field-group">
-          <label class="field-label" for="cardNumber">Número do cartão</label>
-          <div class="card-number-wrapper">
-            <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" autocomplete="cc-number">
-            <div class="card-brand-badge" id="cardBrandBadge"></div>
+        <div class="payment-method-bar">
+          <div class="pm-option pm-active">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect width="16" height="12" rx="2" fill="#635BFF" fill-opacity="0.15"/><rect y="3" width="16" height="3" fill="#635BFF" fill-opacity="0.4"/><rect x="2" y="8" width="4" height="1.5" rx="0.75" fill="#635BFF"/></svg>
+            Cartão de crédito
           </div>
         </div>
 
-        <div class="field-row">
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="cardExpiry">Validade</label>
-            <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/AA" maxlength="5" inputmode="numeric" autocomplete="cc-exp">
-          </div>
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="cardCVV">CVV</label>
-            <input type="text" id="cardCVV" name="cardCVV" placeholder="000" maxlength="4" inputmode="numeric" autocomplete="cc-csc">
+        <div class="field-group">
+          <div class="card-group">
+            <div class="card-group-row">
+              <input id="cardNumber" type="text" name="cardNumber" placeholder="Número do cartão" maxlength="19" inputmode="numeric" class="card-group-input" autocomplete="cc-number"/>
+              <div id="cardBrandBadge" class="card-brand-v2"></div>
+            </div>
+            <div class="card-group-divider"></div>
+            <div class="card-group-bottom">
+              <input id="cardExpiry" type="text" name="cardExpiry" placeholder="MM/AA" maxlength="5" class="card-group-input card-half" autocomplete="cc-exp" inputmode="numeric"/>
+              <div class="card-group-sep"></div>
+              <input id="cardCVV" type="text" name="cardCVV" placeholder="CVV" maxlength="4" class="card-group-input card-half" autocomplete="cc-csc" inputmode="numeric"/>
+            </div>
           </div>
         </div>
 
@@ -955,12 +1035,12 @@
   <aside class="panel-left">
     <div class="left-header">
       <div class="left-logo">
-        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" style="filter:brightness(10)" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
         <svg style="display:none" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="36" height="36" rx="8" fill="#635BFF"/>
           <path d="M10 10h10c3.3 0 6 2.7 6 6s-2.7 6-6 6H10V10z" fill="#fff"/>
           <path d="M10 22h12c3.3 0 6 2.7 6 6H10V22z" fill="rgba(255,255,255,0.7)"/>
-          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#30313D">Bee2Pay</text>
+          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#ffffff">Bee2Pay</text>
         </svg>
       </div>
     </div>
@@ -1192,10 +1272,8 @@
     }
     if (found && digits.length >= 4) {
       brandBadge.textContent = found.label;
-      brandBadge.className = `card-brand-badge visible ${found.class}`;
     } else {
       brandBadge.textContent = '';
-      brandBadge.className = 'card-brand-badge';
     }
   });
 
@@ -1217,18 +1295,18 @@
   // ─── Pay handler ───
   function handlePay(e) {
     e.preventDefault();
-    // Generate random auth code
-    const code = 'AUTH' + Math.random().toString(36).slice(2,8).toUpperCase();
-    document.getElementById('authCode').textContent = code;
-
-    // Pre-fill receipt email
-    const emailVal = document.getElementById('email').value;
-    if (emailVal) document.getElementById('receiptEmail').value = emailVal;
-
-    // Switch screens
-    document.getElementById('checkoutPage').style.display = 'none';
-    document.getElementById('successPage').classList.add('active');
-    window.scrollTo(0,0);
+    const btn = e.submitter || document.querySelector('.btn-pay');
+    btn.disabled = true;
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin 0.7s linear infinite;flex-shrink:0;vertical-align:middle;margin-right:8px;"><circle cx="9" cy="9" r="7" stroke="rgba(255,255,255,0.35)" stroke-width="2"/><path d="M9 2a7 7 0 017 7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Processando...`;
+    setTimeout(() => {
+      const code = 'AUTH' + Math.random().toString(36).slice(2,8).toUpperCase();
+      document.getElementById('authCode').textContent = code;
+      const emailVal = document.getElementById('email').value;
+      if (emailVal) document.getElementById('receiptEmail').value = emailVal;
+      document.getElementById('checkoutPage').style.display = 'none';
+      document.getElementById('successPage').classList.add('active');
+      window.scrollTo(0,0);
+    }, 1800);
   }
 
   // ─── Send receipt ───

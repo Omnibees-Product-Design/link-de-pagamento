@@ -770,7 +770,7 @@
     .section-fields > md-outlined-select:first-child,
     .section-fields > .row-cep-action:first-child { margin-top: 0; }
 
-    .section-fields { padding-bottom: 0; display: flex; flex-direction: column; gap: 20px; }
+    .section-fields { padding: 10px 10px; display: flex; flex-direction: column; gap: 20px; }
 
     /* Field row helpers */
     .row-2        { display: flex; gap: 20px; max-width: 380px; }
@@ -1194,7 +1194,7 @@
     .section.completed .section-header::after {
       content: 'Editar';
       position: absolute;
-      right: 0;
+      right: 10px;
       font-size: 14px;
       font-weight: 600;
       color: #0C83D9;
@@ -1449,6 +1449,7 @@
       margin-top: 10px;
       max-width: 380px;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── Green payment button ── */
     .btn-green {
@@ -1513,19 +1514,19 @@
       text-align: left;
       border-top: 1px solid #E6E6E6;
       padding-top: 35px;     /* Figma: divider y=179 → title y=214 = 35px */
-      margin-bottom: 30px;   /* Figma: last row y=314 → divider y=344 = 30px */
+      margin-bottom: 0;      /* Figma: rows terminam exatamente no divider (y=344) */
     }
     .success-section-title {
       font-size: 14px;       /* Figma: 14px Bold */
       font-weight: 700;
       color: #273240;
-      margin-bottom: 20px;   /* Figma: title y=234 → rows y=254 = 20px */
+      margin-bottom: 40px;   /* Figma: title y=214 → rows y=254 = 40px */
     }
     .success-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 20px;          /* Figma: 3 rows × 20px = 60px total */
+      height: 30px;          /* Figma: 3 rows × 30px = 90px total (254→344) */
       font-size: 12px;       /* Figma: 12px */
     }
     .success-label { color: #273240; font-weight: 400; }   /* Figma: Regular */
@@ -2862,17 +2863,21 @@
 
   /* ── Submit Payment — show success page ── */
   function submitPayment() {
-    // Show success page
-    const cardNum = document.getElementById('f-card-num')?.value || '';
-    const last4 = cardNum.replace(/\s/g,'').slice(-4);
-    document.getElementById('suc-card').textContent = '**** **** **** ' + (last4 || '____');
-    document.getElementById('suc-name').textContent = document.getElementById('f-card-name')?.value || '—';
-    // Detect brand
-    const first = cardNum.replace(/\s/g,'').charAt(0);
-    document.getElementById('suc-brand').textContent = first === '4' ? 'Visa' : first === '5' ? 'Mastercard' : 'Cartão';
-
-    document.querySelector('.page').style.display = 'none';
-    document.getElementById('success-page').style.display = 'block';
+    const btn = document.getElementById('btn-pagar');
+    if (btn) {
+      btn.setAttribute('disabled', '');
+      btn.innerHTML = `<span style="display:flex;align-items:center;gap:8px;justify-content:center;"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin 0.7s linear infinite;flex-shrink:0;"><circle cx="9" cy="9" r="7" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><path d="M9 2a7 7 0 017 7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Processando...</span>`;
+    }
+    setTimeout(() => {
+      const cardNum = document.getElementById('f-card-num')?.value || '';
+      const last4 = cardNum.replace(/\s/g,'').slice(-4);
+      document.getElementById('suc-card').textContent = '**** **** **** ' + (last4 || '____');
+      document.getElementById('suc-name').textContent = document.getElementById('f-card-name')?.value || '—';
+      const first = cardNum.replace(/\s/g,'').charAt(0);
+      document.getElementById('suc-brand').textContent = first === '4' ? 'Visa' : first === '5' ? 'Mastercard' : 'Cartão';
+      document.querySelector('.page').style.display = 'none';
+      document.getElementById('success-page').style.display = 'block';
+    }, 1800);
   }
 
   /* Language selector — tela de sucesso */
