@@ -66,7 +66,7 @@
       padding: 40px;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 40px;
     }
 
     /* Logo row */
@@ -92,6 +92,10 @@
     }
 
     /* Language selector */
+    .lang-wrap {
+      position: relative;
+      display: inline-flex;
+    }
     .lang-selector {
       display: flex;
       align-items: center;
@@ -104,11 +108,48 @@
       font-weight: 600;
       color: #1E293B;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s, border-color 0.15s;
       white-space: nowrap;
+      user-select: none;
     }
-    .lang-selector:hover { background: rgba(245, 175, 4,0.12); }
+    .lang-selector:hover,
+    .lang-selector.open { background: rgba(245,175,4,0.14); border-color: rgba(245,175,4,0.35); }
     .lang-selector .fi { font-size: 14px; border-radius: 2px; }
+    .lang-selector .lang-chevron { transition: transform 0.2s; }
+    .lang-selector.open .lang-chevron { transform: rotate(180deg); }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(245,175,4,0.18);
+      border-radius: 12px;
+      box-shadow: 0 8px 28px rgba(245,175,4,0.12), 0 2px 8px rgba(0,0,0,0.07);
+      min-width: 160px;
+      z-index: 600;
+      padding: 4px;
+      overflow: hidden;
+    }
+    .lang-dropdown.open { display: block; }
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #1E293B;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.1s;
+    }
+    .lang-option:hover { background: rgba(245,175,4,0.08); }
+    .lang-option.selected { background: rgba(245,175,4,0.12); color: #B87800; font-weight: 600; }
+    .lang-option .fi { border-radius: 2px; font-size: 15px; }
 
     /* Hotel info */
     .hotel-section { display: flex; flex-direction: column; gap: 8px; }
@@ -243,7 +284,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 700;
       transition: all 0.3s ease;
       position: relative;
@@ -251,16 +292,15 @@
     }
 
     .step-circle.done {
-      background: linear-gradient(135deg, #F5AF04, #F5AF04);
+      background: #F5AF04;
       border: none;
       color: #1B2532;
     }
 
     .step-circle.active {
-      background: rgba(245,175,4,0.15);
-      border: 2px solid #F5AF04;
+      background: #F5AF04;
+      border: none;
       color: #1B2532;
-      box-shadow: 0 0 0 4px rgba(245,175,4,0.12);
     }
 
     .step-circle.pending {
@@ -375,7 +415,7 @@
     input, select {
       width: 100%;
       height: 48px;
-      padding: 0 14px;
+      padding: 0 16px;
       background: rgba(255,255,255,0.92);
       border: 1.5px solid rgba(245,175,4,0.15);
       border-radius: 10px;
@@ -500,7 +540,7 @@
       position: relative;
       display: flex;
       align-items: center;
-      height: 44px;
+      height: 48px;
       background: rgba(255,255,255,0.8);
       border: 1.5px solid rgba(245,175,4,0.20);
       border-radius: 10px;
@@ -519,7 +559,7 @@
       align-items: center;
       gap: 6px;
       height: 100%;
-      padding: 0 28px 0 12px;
+      padding: 0 28px 0 16px;
       background: transparent;
       border: none;
       outline: none;
@@ -550,7 +590,7 @@
       border: none;
       outline: none;
       background: transparent;
-      padding: 0 12px;
+      padding: 0 16px;
       font-family: 'Open Sans', -apple-system, sans-serif;
       font-size: 14px;
       color: #1E293B;
@@ -616,9 +656,11 @@
     }
 
     .btn-primary:active { transform: scale(0.97); }
+    .form-step > .btn-primary,
+    .form-step .btn-row { margin-top: 20px; }
 
     .btn-pay {
-      border-radius: 999px;
+      border-radius: 12px;
       height: 56px;
       font-size: 16px;
       box-shadow: 0 6px 32px rgba(245,175,4,0.40);
@@ -626,13 +668,17 @@
 
     .btn-secondary {
       width: 100%;
-      height: 48px;
+      height: 52px;
       border-radius: 10px;
       background: transparent;
       border: 1px solid #D1D5DB;
       color: #64748B;
       font-family: 'Open Sans', -apple-system, sans-serif;
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s, color 0.15s, transform 0.12s;
@@ -643,11 +689,12 @@
 
     .btn-row {
       display: flex;
+      align-items: stretch;
       gap: 10px;
     }
 
-    .btn-row .btn-secondary { flex: 0 0 auto; width: auto; padding: 0 24px; }
-    .btn-row .btn-primary   { flex: 1; }
+    .btn-row .btn-secondary { flex: 0 0 auto; width: auto; padding: 0 24px; height: 52px; }
+    .btn-row .btn-primary   { flex: 1; height: 52px; }
 
     /* Security note */
     .security-note {
@@ -960,37 +1007,67 @@
     }
 
     /* ─── RESPONSIVE ─── */
+
+    /* Tablet: reduz padding lateral */
+    @media (max-width: 1024px) {
+      .checkout-wrapper { gap: 12px; padding: 0 16px; }
+      .panel-left  { padding: 32px 28px; }
+      .panel-right { padding: 32px 28px; }
+    }
+
+    /* Mobile: stack vertical */
     @media (max-width: 768px) {
+      body { background: #f4f6fa; }
+
       .checkout-wrapper {
         flex-direction: column;
         max-width: 520px;
+        gap: 0;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
       }
 
       .panel-left {
         flex: none;
         width: 100%;
-        padding: 28px 24px;
+        border-radius: 0;
+        padding: 24px 20px;
         gap: 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(245,175,4,0.15);
       }
 
       .panel-right {
         width: 100%;
-        padding: 28px 24px;
+        border-radius: 0;
+        padding: 24px 20px;
+        background: #fff;
       }
 
       .field-row {
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
       }
 
       .btn-row {
         flex-direction: column-reverse;
+        gap: 10px;
       }
 
-      .btn-row .btn-secondary {
+      .btn-row .btn-secondary,
+      .btn-row .btn-primary {
         width: 100%;
         padding: 0 16px;
       }
+
+      .combo-field { height: 48px; }
+    }
+
+    /* Telas muito pequenas */
+    @media (max-width: 400px) {
+      .panel-left, .panel-right { padding: 20px 16px; }
     }
 
     /* State: CEP loading */
@@ -1024,12 +1101,28 @@
         />
         <span id="logo-fallback" class="logo-fallback" style="display:none;">Bee2Pay</span>
 
-        <div class="lang-selector" onclick="cycleLang(this)">
-          <span class="fi fi-br" id="lang-flag"></span>
-          <span id="lang-text">PT</span>
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <path d="M1 2.5L4 5.5L7 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
+        <div class="lang-wrap" id="lang-wrap">
+          <div class="lang-selector" id="lang-selector" onclick="toggleLangDropdown()">
+            <span class="fi fi-br" id="lang-flag"></span>
+            <span id="lang-text">PT</span>
+            <svg class="lang-chevron" width="8" height="8" viewBox="0 0 8 8" fill="none">
+              <path d="M1 2.5L4 5.5L7 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <div class="lang-option selected" data-flag="br" data-code="PT" onclick="selectLang('br','PT',this)">
+              <span class="fi fi-br"></span> Português BR
+            </div>
+            <div class="lang-option" data-flag="pt" data-code="PT" onclick="selectLang('pt','PT',this)">
+              <span class="fi fi-pt"></span> Português PT
+            </div>
+            <div class="lang-option" data-flag="us" data-code="EN" onclick="selectLang('us','EN',this)">
+              <span class="fi fi-us"></span> English
+            </div>
+            <div class="lang-option" data-flag="es" data-code="ES" onclick="selectLang('es','ES',this)">
+              <span class="fi fi-es"></span> Español
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1274,25 +1367,26 @@
           </div>
         </div>
 
-        <div class="field-group">
-          <label class="field-label">Logradouro</label>
-          <input type="text" id="f-logradouro" placeholder="Rua, Avenida, Travessa..." autocomplete="street-address" />
-        </div>
-
         <div class="field-row">
-          <div class="field-group" style="flex:0 0 130px;">
+          <div class="field-group" style="flex:1;">
+            <label class="field-label">Logradouro</label>
+            <input type="text" id="f-logradouro" placeholder="Rua, Avenida, Travessa..." autocomplete="street-address" />
+          </div>
+          <div class="field-group" style="flex:0 0 120px;">
             <label class="field-label">Número</label>
             <input type="text" id="f-numero" placeholder="123" />
           </div>
-          <div class="field-group">
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="flex:1;">
             <label class="field-label">Complemento</label>
             <input type="text" id="f-complemento" placeholder="Apto, Bloco..." />
           </div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">Bairro</label>
-          <input type="text" id="f-bairro" placeholder="Nome do bairro" />
+          <div class="field-group" style="flex:1;">
+            <label class="field-label">Bairro</label>
+            <input type="text" id="f-bairro" placeholder="Nome do bairro" />
+          </div>
         </div>
 
         <div class="field-row">
@@ -1319,8 +1413,11 @@
 
         <div class="btn-row">
           <button class="btn-secondary" onclick="goToStep(1, true)">
-            ← Voltar
-          </button>
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Voltar
+</button>
           <button class="btn-primary" onclick="goToStep(3)">
             Próximo
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -1382,8 +1479,11 @@
 
         <div class="btn-row" style="margin-top:4px;">
           <button class="btn-secondary" onclick="goToStep(2, true)">
-            ← Voltar
-          </button>
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Voltar
+</button>
           <button class="btn-primary btn-pay" onclick="processPay(this)">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
               <rect x="2" y="6" width="12" height="8" rx="2" stroke="#1B2532" stroke-width="1.6"/>
@@ -1732,19 +1832,29 @@
   });
 
   // ─── LANGUAGE CYCLE ──────────────────────────────────────────────
-  const langs = [
-    { code: 'PT', flag: 'br' },
-    { code: 'EN', flag: 'us' },
-    { code: 'ES', flag: 'es' },
-  ];
-  let langIdx = 0;
-
-  function cycleLang(el) {
-    langIdx = (langIdx + 1) % langs.length;
-    const lang = langs[langIdx];
-    document.getElementById('lang-flag').className = 'fi fi-' + lang.flag;
-    document.getElementById('lang-text').textContent = lang.code;
+  function toggleLangDropdown() {
+    const selector = document.getElementById('lang-selector');
+    const dropdown = document.getElementById('lang-dropdown');
+    const isOpen = dropdown.classList.contains('open');
+    dropdown.classList.toggle('open', !isOpen);
+    selector.classList.toggle('open', !isOpen);
   }
+
+  function selectLang(flag, code, optionEl) {
+    document.getElementById('lang-flag').className = 'fi fi-' + flag;
+    document.getElementById('lang-text').textContent = code;
+    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('selected'));
+    optionEl.classList.add('selected');
+    document.getElementById('lang-dropdown').classList.remove('open');
+    document.getElementById('lang-selector').classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#lang-wrap')) {
+      document.getElementById('lang-dropdown').classList.remove('open');
+      document.getElementById('lang-selector').classList.remove('open');
+    }
+  });
 
   // ─── SPIN ANIMATION (for processing state) ───────────────────────
   const spinStyle = document.createElement('style');
@@ -1759,6 +1869,20 @@
     if (!wasOpen) el.classList.add('combo-open');
   }
 
+  // Mapa país → DDI (código + iso da bandeira)
+  const COUNTRY_DDI = {
+    BR: { ddi: '+55',  iso: 'br' }, AR: { ddi: '+54',  iso: 'ar' },
+    BO: { ddi: '+591', iso: 'bo' }, CL: { ddi: '+56',  iso: 'cl' },
+    CO: { ddi: '+57',  iso: 'co' }, EC: { ddi: '+593', iso: 'ec' },
+    MX: { ddi: '+52',  iso: 'mx' }, PY: { ddi: '+595', iso: 'py' },
+    PE: { ddi: '+51',  iso: 'pe' }, UY: { ddi: '+598', iso: 'uy' },
+    VE: { ddi: '+58',  iso: 've' }, US: { ddi: '+1',   iso: 'us' },
+    PT: { ddi: '+351', iso: 'pt' }, ES: { ddi: '+34',  iso: 'es' },
+    DE: { ddi: '+49',  iso: 'de' }, FR: { ddi: '+33',  iso: 'fr' },
+    IT: { ddi: '+39',  iso: 'it' }, GB: { ddi: '+44',  iso: 'gb' },
+    JP: { ddi: '+81',  iso: 'jp' }, CN: { ddi: '+86',  iso: 'cn' },
+  };
+
   function selectComboItem(comboId, value, flag, inputId, label) {
     const flagEl  = document.getElementById(comboId + '-flag');
     const labelEl = document.getElementById(comboId + '-label');
@@ -1769,6 +1893,12 @@
       o.classList.toggle('selected', o.dataset.value === value);
     });
     document.getElementById(comboId).classList.remove('combo-open');
+
+    // Ao mudar o país, sincroniza o DDI do telefone
+    if (comboId === 'combo-pais' && COUNTRY_DDI[value]) {
+      const { ddi, iso } = COUNTRY_DDI[value];
+      selectDDI(ddi, iso, ddi);
+    }
   }
 
   function selectDDI(value, flag, label) {

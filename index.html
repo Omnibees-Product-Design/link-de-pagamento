@@ -269,7 +269,8 @@
       font-family: 'Inter', sans-serif;
       font-size: 12px;
       color: #242424;
-      background: #F5F5F5;
+      /* Split bg: esquerda #FCFCFC, direita #fff — alinha com o divider central */
+      background: linear-gradient(to right, #FCFCFC 50%, #ffffff 50%);
       height: 100vh;
       overflow: hidden;
     }
@@ -280,29 +281,64 @@
     ═══════════════════════════════════════════ */
     .page { display: flex; height: 100vh; }
 
+    /* ══ LAYOUT PRINCIPAL (checkout) ══ */
+    .main-page {
+      flex-direction: column;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Header de largura total: logo+lang à esquerda, vazio à direita */
+    .page-header {
+      display: flex;
+      flex-shrink: 0;
+    }
+    .page-header-left {
+      width: 50%;
+      min-width: 50%;
+      padding: 20px 44px;
+      background: transparent;
+      border-right: 1px solid #EDEDED;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header-right {
+      flex: 1;
+      background: transparent;
+    }
+
+    /* Área de conteúdo abaixo do header */
+    .page-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
     /* ══ PAINEL ESQUERDO ══ */
     .left-panel {
       width: 50%;
       min-width: 50%;
-      background: #FCFCFC;
+      background: transparent;
       border-right: 1px solid #EDEDED;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
       overflow-y: auto;
     }
-    /* inner wrapper: max-width fixo, empurrado para a direita */
+    /* inner wrapper: alinhado a 100px do divider */
     .left-inner {
       width: 100%;
       max-width: 480px;
-      padding: 20px 44px 24px;
+      padding: 28px 0 24px;
+      margin-right: 100px;
       display: flex;
       flex-direction: column;
       gap: 0;
       flex: 1;
-      min-height: 100vh;
     }
-    /* Conteúdo central cresce e centra verticalmente */
+    /* Conteúdo cresce e centra verticalmente */
     .left-content {
       flex: 1;
       display: flex;
@@ -326,7 +362,7 @@
       display: flex;
       flex-direction: column;
       gap: 0;
-      margin-top: 30px;
+      margin-top: 0;
     }
 
     /* Seção 1: info básica */
@@ -411,18 +447,19 @@
     /* ══ PAINEL DIREITO ══ */
     .right-panel {
       width: 50%;
-      background: #ffffff;
+      background: transparent;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: flex-start;
       overflow-y: auto;
     }
-    /* inner wrapper: max-width fixo, centrado */
+    /* inner wrapper: alinhado a 100px do divider */
     .right-inner {
       width: 100%;
       max-width: 480px;
-      padding: 28px 44px 24px;
+      padding: 28px 0 24px;
+      margin-left: 100px;
       display: flex;
       flex-direction: column;
     }
@@ -430,6 +467,7 @@
     /* Cabeçalho do painel direito (título + subtítulo) */
     .panel-heading {
       margin-bottom: 20px;
+      max-width: 380px;
     }
     .panel-heading-title {
       font-size: 18px;
@@ -446,32 +484,27 @@
 
     /* ── Accordion sections ── */
     /* gap:30 entre Section 1 e o grupo colapsado (Figma 28181:14019 gap:30) */
-    #sec-address {
-      margin-top: 30px;
-      border-top: 1px solid #e6e6e6;
-    }
-    /* gap:30 entre Section 2 e Section 3 — mesma regra aplicada ao Endereço */
-    #sec-payment {
-      margin-top: 30px;
-      border-top: 1px solid #e6e6e6;
-    }
+    #sec-address { margin-top: 0; }
+    #sec-payment  { margin-top: 0; }
     .section { }
 
     .section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 10px;
+      padding: 20px 0;
       cursor: pointer;
       user-select: none;
+      max-width: 380px;
     }
     .section-label {
       display: flex;
       align-items: center;
       gap: 5px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #c5c5c5;
+      font-size: 16px;
+      font-weight: 700;
+      color: #27364A;
+      justify-content: flex-start;
     }
     .section-header.active .section-label { color: #27364A; }
     .section-header.done  .section-label { color: #4BAF4F; }
@@ -746,36 +779,36 @@
       z-index: 1;
     }
     .v1-step-circle {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 16px;
       font-weight: 700;
       font-family: inherit;
       transition: all 0.3s ease;
       line-height: 1;
+      flex-shrink: 0;
     }
-    .v1-step-circle.done  { background: #409644; border: none; color: #fff; }
-    .v1-step-circle.active { background: rgba(254,196,55,0.15); border: 2px solid #FEC437; color: #1B2532; box-shadow: 0 0 0 4px rgba(254,196,55,0.12); }
-    .v1-step-circle.pending { background: transparent; border: 2px solid #D1D5DB; color: #9CA3AF; }
+    .v1-step-circle.done    { background: #F5AF04; border: none; color: #1B2532; }
+    .v1-step-circle.active  { background: #F5AF04; border: none; color: #1B2532; }
+    .v1-step-circle.pending { background: transparent; border: 2px solid #D1D5DB; color: #CBD5E1; }
     .v1-step-label { font-size: 11px; font-weight: 600; white-space: nowrap; transition: color 0.3s; color: #94A3B8; }
-    .v1-step-item.done   .v1-step-label { color: #409644; }
-    .v1-step-item.active .v1-step-label { color: #27364A; }
+    .v1-step-item.done    .v1-step-label { color: #F5AF04; }
+    .v1-step-item.active  .v1-step-label { color: #1E293B; }
     .v1-step-item.pending .v1-step-label { color: #94A3B8; }
     .v1-step-line {
       flex: 1;
       height: 2px;
       position: relative;
       margin-bottom: 22px;
-      min-width: 20px;
+      min-width: 24px;
     }
-    .v1-step-line-bg   { position: absolute; inset: 0; background: #E6E6E6; border-radius: 2px; }
-    .v1-step-line-fill { position: absolute; top: 0; left: 0; bottom: 0; border-radius: 2px; background: #FEC437; transition: width 0.4s ease; width: 0%; }
+    .v1-step-line-bg   { position: absolute; inset: 0; background: rgba(0,0,0,0.08); border-radius: 2px; }
+    .v1-step-line-fill { position: absolute; top: 0; left: 0; bottom: 0; border-radius: 2px; background: linear-gradient(90deg, #F5AF04, #FFC107); transition: width 0.4s ease; width: 0%; }
     .v1-step-line.done    .v1-step-line-fill { width: 100%; }
-    .v1-step-line.active  .v1-step-line-fill { width: 50%; }
     .v1-step-line.pending .v1-step-line-fill { width: 0%; }
 
     .section-body {
@@ -802,7 +835,7 @@
     .section-fields > md-outlined-select:first-child,
     .section-fields > .row-cep-action:first-child { margin-top: 0; }
 
-    .section-fields { padding: 10px 10px; display: flex; flex-direction: column; gap: 20px; }
+    .section-fields { padding: 0; display: flex; flex-direction: column; gap: 20px; }
 
     /* Field row helpers */
     .row-2        { display: flex; gap: 20px; max-width: 380px; }
@@ -1615,68 +1648,62 @@
        RESPONSIVO
     ═══════════════════════════════════════════ */
 
+    /* Reduz gap do divider em telas médias */
+    @media (max-width: 1200px) {
+      .left-inner  { margin-right: 60px; }
+      .right-inner { margin-left:  60px; }
+    }
+
     /* Tablet — stack vertical */
     @media (max-width: 1024px) {
-      .page {
-        flex-direction: column;
-        height: auto;
-        overflow: visible;
-      }
       body {
         height: auto;
         overflow: auto;
+        background: #FCFCFC; /* cancela split gradient */
       }
-      .left-panel,
-      .right-panel {
+      .page { flex-direction: column; height: auto; overflow: visible; }
+      .main-page { max-width: 100%; }
+      .page-header { flex-direction: row; }
+      .page-header-left {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
+        border-bottom: 1px solid #EDEDED;
+      }
+      .page-header-right { display: none; }
+      .page-content { flex-direction: column; overflow: visible; }
+      .left-panel, .right-panel {
         width: 100%;
         min-width: 100%;
         overflow-y: visible;
+        align-items: center;
+        background: transparent;
       }
       .left-panel {
         border-right: none;
         border-bottom: 1px solid #EDEDED;
-        align-items: center;
       }
-      .right-panel {
-        align-items: center;
-      }
-      .left-inner,
-      .right-inner {
-        max-width: 540px;
+      .left-inner, .right-inner {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 28px 44px 24px;
+        max-width: 560px;
         min-height: auto;
       }
-      .left-inner {
-        min-height: auto;
-      }
-      /* Campos e botões ocupam largura total */
-      md-outlined-text-field,
-      md-filled-text-field,
-      md-outlined-select,
-      .cfield {
-        max-width: 100%;
-      }
-      .section-body .row {
-        flex-direction: column;
-      }
-      .section-body .row md-outlined-text-field,
-      .section-body .row md-outlined-select,
-      .section-body .row .cfield {
-        max-width: 100%;
-        width: 100%;
-      }
-      md-outlined-text-field.field-sm {
-        max-width: 100%;
-        width: 100%;
-      }
+      md-outlined-text-field, md-filled-text-field, md-outlined-select, .cfield { max-width: 100%; }
+      .row-2, .row-cep-action { max-width: 100%; }
     }
 
     /* Mobile */
     @media (max-width: 640px) {
       .left-inner,
       .right-inner {
-        padding: 20px 20px 24px;
+        padding: 20px;
         max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
       }
+      .page-header-left { padding: 16px 20px; }
       .hc-table {
         flex-direction: column;
         gap: 12px;
@@ -1758,14 +1785,11 @@
 </head>
 <body>
 
-<div class="page">
+<div class="page main-page">
 
-  <!-- ══════════════════════ PAINEL ESQUERDO ══════════════════════ -->
-  <div class="left-panel">
-  <div class="left-inner">
-
-    <!-- Logo + Language selector -->
-    <div class="left-header">
+  <!-- ══ HEADER DE LARGURA TOTAL: logo + lang ══ -->
+  <div class="page-header">
+    <div class="page-header-left">
       <a class="logo" href="#">
         <img src="assets/bee2pay-logo.png" height="40" alt="Bee2Pay">
       </a>
@@ -1791,12 +1815,15 @@
         </div>
       </div>
     </div>
+    <div class="page-header-right"></div>
+  </div>
 
-    <!-- Saudação ao hóspede -->
-    <div class="guest-greeting">
-      <div class="guest-name">Alberto Roberto</div>
-      <div class="guest-subtitle">Seguem dados de sua reserva para pagamento.</div>
-    </div>
+  <!-- ══ CONTEÚDO: dois painéis abaixo do header ══ -->
+  <div class="page-content">
+
+  <!-- ══════════════════════ PAINEL ESQUERDO ══════════════════════ -->
+  <div class="left-panel">
+  <div class="left-inner">
 
     <!-- Hotel card — layout Figma (Frame 28318) -->
     <div class="hotel-card">
@@ -1865,7 +1892,7 @@
     <div class="v1-step-indicator" id="v1-step-indicator">
       <div class="v1-step-item active" id="v1-si-1">
         <div class="v1-step-circle active" id="v1-sc-1">1</div>
-        <div class="v1-step-label">Pessoal</div>
+        <div class="v1-step-label">Dados</div>
       </div>
       <div class="v1-step-line pending" id="v1-sl-1">
         <div class="v1-step-line-bg"></div>
@@ -1889,7 +1916,6 @@
     <div class="section" id="sec-personal">
       <div class="section-header active" onclick="toggleSection('personal')">
         <div class="section-label">
-          <div class="step-dot" id="dot-personal">1</div>
           Dados Pessoais
         </div>
       </div>
@@ -1998,12 +2024,6 @@
 
     <!-- ── Seção 2 — Endereço ── -->
     <div class="section" id="sec-address">
-      <div class="section-header" id="hdr-address" onclick="toggleSection('address')">
-        <div class="section-label">
-          <div class="step-dot" id="dot-address">2</div>
-          Endereço
-        </div>
-      </div>
       <div class="section-body" id="body-address">
         <div class="section-fields">
           <!-- CEP + Preencher endereço (same row) -->
@@ -2090,12 +2110,6 @@
 
     <!-- ── Seção 3 — Dados de Pagamento ── -->
     <div class="section" id="sec-payment">
-      <div class="section-header" id="hdr-payment" onclick="toggleSection('payment')">
-        <div class="section-label">
-          <div class="step-dot" id="dot-payment">3</div>
-          Dados de pagamento
-        </div>
-      </div>
       <div class="section-body" id="body-payment">
         <div class="section-fields">
 
@@ -2177,6 +2191,7 @@
   </div><!-- /right-inner -->
   </div><!-- /right-panel -->
 
+  </div><!-- /page-content -->
 </div><!-- /page -->
 
 <!-- ═══ TELA DE SUCESSO ═══ -->
@@ -2282,13 +2297,14 @@
 
     const body = document.getElementById('body-' + name);
     const hdr  = document.querySelector('#sec-' + name + ' .section-header');
+    if (!body) return;
     const isOpen = body.classList.contains('open');
     if (isOpen) {
       body.classList.remove('open');
-      hdr.classList.remove('active');
+      if (hdr) hdr.classList.remove('active');
     } else {
       body.classList.add('open');
-      hdr.classList.add('active');
+      if (hdr) hdr.classList.add('active');
     }
   }
 
@@ -2299,29 +2315,26 @@
       const hdr  = document.querySelector('#sec-' + s + ' .section-header');
       const dot  = document.getElementById('dot-' + s);
       const sec  = document.getElementById('sec-' + s);
-      if (!hdr || !body) return;
+      if (!body) return;
 
       if (i < idx) {
         // Seções anteriores: concluídas
         body.classList.remove('open');
-        hdr.classList.remove('active');
-        hdr.classList.add('done');
-        dot.innerHTML = '<md-icon style="--md-icon-size:14px;font-size:14px;">check</md-icon>';
-        sec.classList.add('completed');
+        if (hdr) { hdr.classList.remove('active'); hdr.classList.add('done'); }
+        if (dot) dot.innerHTML = '<md-icon style="--md-icon-size:14px;font-size:14px;">check</md-icon>';
+        if (sec) sec.classList.add('completed');
       } else if (i === idx) {
         // Seção alvo: aberta e ativa
         body.classList.add('open');
-        hdr.classList.add('active');
-        hdr.classList.remove('done');
-        dot.textContent = i + 1;
-        sec.classList.remove('completed');
+        if (hdr) { hdr.classList.add('active'); hdr.classList.remove('done'); }
+        if (dot) dot.textContent = i + 1;
+        if (sec) sec.classList.remove('completed');
       } else {
         // Seções futuras: pendentes
         body.classList.remove('open');
-        hdr.classList.remove('active');
-        hdr.classList.remove('done');
-        dot.textContent = i + 1;
-        sec.classList.remove('completed');
+        if (hdr) { hdr.classList.remove('active'); hdr.classList.remove('done'); }
+        if (dot) dot.textContent = i + 1;
+        if (sec) sec.classList.remove('completed');
       }
     });
 
@@ -2484,7 +2497,7 @@
       if (isDone) {
         si.className = 'v1-step-item done';
         sc.className = 'v1-step-circle done';
-        sc.textContent = '✓';
+        sc.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L5.8 10L11 4.5" stroke="#1B2532" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       } else if (isActive) {
         si.className = 'v1-step-item active';
         sc.className = 'v1-step-circle active';
