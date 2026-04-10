@@ -2036,6 +2036,12 @@
 
     currentStep = n;
     updateStepIndicator(n);
+
+    // Reabilita o botão de pagamento ao entrar no step 3
+    if (n === 3) {
+      const payBtn = document.querySelector('.btn-pay');
+      if (payBtn) payBtn.disabled = false;
+    }
   }
 
   function updateStepIndicator(active) {
@@ -2331,6 +2337,38 @@
     if (match) {
       document.getElementById('success-parcelas').textContent = match[1] + '× de ' + match[2].trim();
     }
+
+    // Bandeira
+    const brandNames = {
+      visa: 'Visa', mc: 'Mastercard', amex: 'American Express',
+      elo: 'Elo', hipercard: 'Hipercard', discover: 'Discover',
+      diners: 'Diners Club', jcb: 'JCB', unionpay: 'UnionPay',
+      maestro: 'Maestro', aura: 'Aura'
+    };
+    const badgeEl = document.getElementById('card-brand-badge');
+    let detectedBrand = null;
+    if (badgeEl) {
+      badgeEl.classList.forEach(cls => {
+        if (cls.startsWith('brand-') && cls !== 'brand-generic') {
+          detectedBrand = cls.replace('brand-', '');
+        }
+      });
+    }
+    const sucBrand = document.getElementById('suc-brand');
+    if (sucBrand) sucBrand.textContent =
+      detectedBrand ? (brandNames[detectedBrand] || detectedBrand) : 'Cartão';
+
+    // Número do cartão — **** **** **** XXXX
+    const rawCard = (document.getElementById('f-cardnum').value || '').replace(/\s/g, '');
+    const sucCard = document.getElementById('suc-card');
+    if (sucCard && rawCard.length >= 4) {
+      sucCard.textContent = '**** **** **** ' + rawCard.slice(-4);
+    }
+
+    // Nome do titular
+    const holderName = (document.getElementById('f-cardname').value || '').trim();
+    const sucName = document.getElementById('suc-name');
+    if (sucName) sucName.textContent = holderName || '—';
 
     // Pre-fill receipt email
     const email = document.getElementById('f-email').value;
