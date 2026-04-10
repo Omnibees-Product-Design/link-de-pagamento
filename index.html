@@ -297,9 +297,18 @@
     .page-header-left {
       width: 50%;
       min-width: 50%;
-      padding: 20px 44px;
+      padding: 20px 0;
       background: transparent;
       border-right: 1px solid #EDEDED;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    /* Alinha logo com o conteúdo do left-inner */
+    .header-inner {
+      width: 100%;
+      max-width: 480px;
+      margin-right: 100px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -373,6 +382,19 @@
       flex-direction: column;
       gap: 5px;
     }
+    .hc-info-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .hc-chevron {
+      display: none;
+      flex-shrink: 0;
+      color: #9c9c9c;
+      margin-top: 3px;
+      transition: transform 0.25s ease;
+    }
     .hc-name        { font-size: 14px; font-weight: 700; color: #242424; line-height: 1.4; }
     .hc-room        { font-size: 13px; font-weight: 400; color: #242424; }
     .hc-cancel      { font-size: 12px; font-weight: 400; color: #409644; }
@@ -430,6 +452,8 @@
 
     /* Segurança (painel esquerdo) */
     .security { margin-top: auto; padding-top: 24px; border-top: 1px solid #EBEBEB; text-align: center; }
+    /* Selos mobile — escondido por padrão */
+    .security-footer { display: none; }
     .security-label { font-size: 10px; color: #273240; margin-bottom: 16px; }
     .security-badges {
       display: flex;
@@ -469,6 +493,8 @@
       margin-bottom: 20px;
       max-width: 380px;
     }
+    /* Versão mobile do panel-heading — dentro do hotel card colapsável */
+    .hc-panel-heading { display: none; }
     .panel-heading-title {
       font-size: 18px;
       font-weight: 700;
@@ -1545,6 +1571,40 @@
       --md-filled-button-container-shape:                  8px;
     }
 
+    /* ── Processing overlay ── */
+    #processing-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    #processing-overlay.fade-out { opacity: 0; pointer-events: none; }
+    .proc-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .proc-spinner { animation: spin 0.9s linear infinite; }
+    .proc-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+    }
+    .proc-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      margin: -8px 0 0;
+    }
+
     /* ── Success page ── */
     .success-page {
       position: fixed;
@@ -1564,9 +1624,42 @@
       margin: 0 auto;
       box-sizing: border-box;
     }
+    /* ── Animações do ícone de sucesso ── */
+    @keyframes iconBounceIn {
+      0%   { transform: scale(0);    opacity: 0; }
+      55%  { transform: scale(1.18); opacity: 1; }
+      75%  { transform: scale(0.93); }
+      90%  { transform: scale(1.05); }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+    @keyframes checkDraw {
+      from { stroke-dashoffset: 42; }
+      to   { stroke-dashoffset: 0;  }
+    }
+    @keyframes iconPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(75,175,79,0.45); }
+      60%  { box-shadow: 0 0 0 16px rgba(75,175,79,0); }
+      100% { box-shadow: 0 0 0 0   rgba(75,175,79,0); }
+    }
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.88) translateY(14px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
     .success-icon {
       margin-bottom: 10px;
       text-align: center;
+    }
+    .success-icon svg {
+      animation: iconBounceIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .success-icon svg circle {
+      animation: iconPulse 1s ease-out 0.55s both;
+    }
+    .success-icon svg path {
+      stroke-dasharray: 42;
+      stroke-dashoffset: 42;
+      animation: checkDraw 0.35s ease-out 0.45s forwards;
     }
     .success-title {
       font-size: 14px;       /* Figma: 14px Bold */
@@ -1619,6 +1712,7 @@
     }
     .email-sent-overlay.visible { display: flex; }
     .email-sent-modal {
+      animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.2, 0.64, 1) both;
       background: #fff;
       border-radius: 4px;
       width: 538px;
@@ -1630,7 +1724,10 @@
       text-align: center;
       gap: 16px;
     }
-    .email-sent-icon { flex-shrink: 0; }
+    .email-sent-icon {
+      flex-shrink: 0;
+      animation: iconBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+    }
     .email-sent-title {
       font-size: 18px;
       font-weight: 700;
@@ -1652,6 +1749,7 @@
     @media (max-width: 1200px) {
       .left-inner  { margin-right: 60px; }
       .right-inner { margin-left:  60px; }
+      .header-inner { margin-right: 60px; }
     }
 
     /* Tablet — stack vertical */
@@ -1669,6 +1767,13 @@
         min-width: 0;
         border-right: none;
         border-bottom: 1px solid #EDEDED;
+        justify-content: center;
+      }
+      .header-inner {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 0 44px;
+        max-width: 560px;
       }
       .page-header-right { display: none; }
       .page-content { flex-direction: column; overflow: visible; }
@@ -1704,6 +1809,7 @@
         margin-left: 0;
       }
       .page-header-left { padding: 16px 20px; }
+
       .hc-table {
         flex-direction: column;
         gap: 12px;
@@ -1758,15 +1864,48 @@
       .hc-value-cell:nth-child(5)::before { content: "Taxas e impostos"; }
       .hc-value-cell:nth-child(6)::before { content: "Parcelamento"; }
 
-      .hc-total {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-      }
-      .hc-total-value { font-size: 20px; text-align: left; }
+      .hc-total-value { font-size: 20px; }
 
       .security-badges {
         gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      /* Oculta selos no painel esquerdo e exibe no footer */
+      .left-inner .security { display: none; }
+      .security-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 20px 20px 28px;
+        background: #FCFCFC;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        border-top: 1px solid #EDEDED;
+      }
+
+      /* Esconde panel-heading do right-inner e mostra dentro do hotel card */
+      .right-inner .panel-heading { display: none; }
+      .hc-panel-heading {
+        display: block;
+        padding-bottom: 16px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid #E6E6E6;
+      }
+      .hc-panel-heading-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #273240;
+        margin-bottom: 6px;
+        line-height: 1.3;
+      }
+      .hc-panel-heading-subtitle {
+        font-size: 12px;
+        line-height: 1.6;
+        color: #6B7280;
       }
 
       .panel-heading-title { font-size: 16px; }
@@ -1780,6 +1919,64 @@
         width: 100% !important;
         max-width: 100% !important;
       }
+
+      /* Colapso do hc-table — deve ficar por último para não ser sobrescrito */
+      .hc-info { cursor: pointer; user-select: none; }
+      .hc-chevron { display: block; }
+      .hotel-card:not(.open) .hc-table { display: none !important; }
+      .hotel-card:not(.open) .hc-info { border-bottom: none; padding-bottom: 0; }
+      .hotel-card.open .hc-table { display: flex; }
+      .hotel-card.open .hc-chevron { transform: rotate(180deg); }
+
+      .header-inner { padding: 0 20px; max-width: 100%; }
+
+      /* Esconde botões originais — sticky bar assume o papel */
+      .desktop-cta-wrap { display: none !important; }
+
+      /* Padding para conteúdo não ficar atrás da sticky bar */
+      .right-inner { padding-bottom: 84px; }
+    }
+
+    /* ─── Sticky CTA Bar ─── */
+    #sticky-cta { display: none; }
+
+    @media (max-width: 640px) {
+      #sticky-cta {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 20px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        background: #fff;
+        border-top: 1px solid #EDEDED;
+        box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+        z-index: 200;
+      }
+      .sticky-state { display: none; width: 100%; gap: 10px; }
+      .sticky-state.active { display: flex; }
+      .sticky-btn {
+        flex: 1;
+        height: 50px;
+        border-radius: 10px;
+        border: none;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity 0.15s;
+        font-family: inherit;
+        letter-spacing: 0.01em;
+      }
+      .sticky-btn:active { opacity: 0.85; }
+      .sticky-yellow { background: #F5AF04; color: #273240; }
+      .sticky-green  { background: #16A34A; color: #fff; }
+      .sticky-outline {
+        background: transparent;
+        border: 1.5px solid #D3D3D3;
+        color: #273240;
+        flex: 0 0 100px;
+      }
     }
   </style>
 </head>
@@ -1790,6 +1987,7 @@
   <!-- ══ HEADER DE LARGURA TOTAL: logo + lang ══ -->
   <div class="page-header">
     <div class="page-header-left">
+      <div class="header-inner">
       <a class="logo" href="#">
         <img src="assets/bee2pay-logo.png" height="40" alt="Bee2Pay">
       </a>
@@ -1814,6 +2012,7 @@
           </div>
         </div>
       </div>
+      </div><!-- /header-inner -->
     </div>
     <div class="page-header-right"></div>
   </div>
@@ -1829,14 +2028,26 @@
     <div class="hotel-card">
 
       <!-- Seção 1: info básica -->
-      <div class="hc-info">
-        <div class="hc-name">Blue Tree Premium Congonhas Airport</div>
+      <div class="hc-info" onclick="toggleHcTable()">
+        <div class="hc-info-header">
+          <div class="hc-name">Blue Tree Premium Congonhas Airport</div>
+          <svg class="hc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 5.5L8 10.5L13 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <div class="hc-room">Quarto Superior Duplo</div>
         <div class="hc-cancel">Cancelamento grátis antes de 6 de junho de 2024</div>
       </div>
 
       <!-- Seção 2: tabela de dados -->
       <div class="hc-table">
+
+        <!-- Cabeçalho de contexto — visível só no mobile dentro do bloco colapsado -->
+        <div class="hc-panel-heading">
+          <div class="hc-panel-heading-title">Atualize os seus dados de pagamento</div>
+          <div class="hc-panel-heading-subtitle">A reserva RES024562-12648 não foi cobrada. Para garantir sua reserva, atualize os seus dados de pagamento.</div>
+        </div>
+
         <div class="hc-labels">
           <span class="hc-label-cell">Nº da Reserva</span>
           <span class="hc-label-cell">Hóspede</span>
@@ -2011,7 +2222,7 @@
           </div>
 
           <!-- Continuar — 180px alinhado à direita (Figma) -->
-          <div style="display:flex; justify-content:flex-end; max-width:380px;">
+          <div class="desktop-cta-wrap" style="display:flex; justify-content:flex-end; max-width:380px;">
             <md-filled-button class="btn-yellow" trailing-icon onclick="goToSection('address')" style="width:180px;">
               Continuar
               <md-icon slot="icon">arrow_forward</md-icon>
@@ -2094,7 +2305,7 @@
           </div>
 
           <!-- Voltar + Continuar -->
-          <div class="submit-row">
+          <div class="submit-row desktop-cta-wrap">
             <md-outlined-button onclick="goToSection('personal')">
               <md-icon slot="icon">arrow_back</md-icon>
               Voltar
@@ -2115,7 +2326,7 @@
 
           <!-- Número do cartão — bandeira genérica por padrão, substitui ao detectar -->
           <div class="card-number-wrap">
-            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric" autocomplete="off"></md-outlined-text-field>
+            <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric" autocomplete="new-password"></md-outlined-text-field>
             <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
               <div class="card-generic-icon">
                 <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2126,13 +2337,13 @@
             </div>
           </div>
 
-          <md-outlined-text-field id="f-card-name" label="Nome do titular do cartão" type="text" autocomplete="off"></md-outlined-text-field>
+          <md-outlined-text-field id="f-card-name" label="Nome do titular do cartão" type="text" autocomplete="new-password"></md-outlined-text-field>
 
           <!-- Validade + CVV (180px cada, gap 20px) + info icon sobreposto ao CVV -->
           <div class="row-2">
-            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA" autocomplete="off"></md-outlined-text-field>
+            <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA" autocomplete="new-password"></md-outlined-text-field>
             <div class="cvv-wrap">
-              <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" autocomplete="off"></md-outlined-text-field>
+              <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" autocomplete="new-password"></md-outlined-text-field>
               <span class="cvv-info" id="cvv-info-icon">info</span>
               <!-- Tooltip CVV customizado -->
               <div class="cvv-tooltip" id="cvv-tooltip">
@@ -2167,7 +2378,7 @@
                 <button type="button" class="doctype-trigger" id="parcelas-trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%;">
                   <span id="parcelas-label">À vista — R$ 5.120,00</span>
                 </button>
-                <div class="doctype-dropdown" id="parcelas-dropdown" role="listbox" style="min-width:280px; left:0;">
+                <div class="doctype-dropdown" id="parcelas-dropdown" role="listbox" style="width:100%; left:0; box-sizing:border-box;">
                   <div class="doctype-option selected" data-value="1" role="option">À vista — R$ 5.120,00</div>
                   <div class="doctype-option" data-value="2" role="option">Em 2x de R$ 2.560,00 sem juros</div>
                   <div class="doctype-option" data-value="3" role="option">Em 3x de R$ 1.706,66 sem juros</div>
@@ -2180,10 +2391,12 @@
           </div>
 
           <!-- Pagar com segurança — botão verde full-width -->
-          <md-filled-button class="btn-green" id="btn-pagar" onclick="submitPayment()" style="width:100%; max-width:380px;">
-            Pagar com segurança
-          </md-filled-button>
-          <p class="secure-note">🔒 Pagamento seguro com criptografia SSL</p>
+          <div class="desktop-cta-wrap" style="max-width:380px;">
+            <md-filled-button class="btn-green" id="btn-pagar" onclick="submitPayment()" style="width:100%;">
+              Pagar com segurança
+            </md-filled-button>
+            <p class="secure-note">🔒 Pagamento seguro com criptografia SSL</p>
+          </div>
         </div>
       </div>
     </div>
@@ -2192,6 +2405,36 @@
   </div><!-- /right-panel -->
 
   </div><!-- /page-content -->
+
+  <!-- ══ STICKY CTA BAR — mobile only ══ -->
+  <div id="sticky-cta">
+    <!-- Estado: dados pessoais -->
+    <div class="sticky-state active" id="sticky-personal">
+      <button class="sticky-btn sticky-yellow" onclick="goToSection('address')">Continuar →</button>
+    </div>
+    <!-- Estado: endereço -->
+    <div class="sticky-state" id="sticky-address">
+      <button class="sticky-btn sticky-outline" onclick="goToSection('personal')">← Voltar</button>
+      <button class="sticky-btn sticky-yellow" onclick="goToSection('payment')">Continuar →</button>
+    </div>
+    <!-- Estado: pagamento -->
+    <div class="sticky-state" id="sticky-payment">
+      <button class="sticky-btn sticky-green" onclick="submitPayment()">🔒 Pagar com segurança</button>
+    </div>
+  </div>
+
+  <!-- Selos mobile — visíveis só em mobile, no final da página -->
+  <div class="security-footer">
+    <div class="security-label">Este link é protegido por:</div>
+    <div class="security-badges">
+      <span class="compliance-badge">LGPD</span>
+      <span class="compliance-badge">PCI Compliant</span>
+      <span class="compliance-badge">SSL Secure</span>
+      <span class="compliance-badge">256-bit Encryption</span>
+    </div>
+    <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
+  </div>
+
 </div><!-- /page -->
 
 <!-- ═══ TELA DE SUCESSO ═══ -->
@@ -2199,7 +2442,7 @@
   <div class="page">
     <!-- Painel esquerdo: resultado do pagamento -->
     <div class="left-panel">
-      <div class="left-inner" style="padding:40px 52px; max-width:none; width:100%; align-items:stretch;">
+      <div class="left-inner" style="padding:40px 52px; max-width:none; width:100%; margin-right:0; align-items:stretch;">
         <!-- Logo + language selector (Figma 28112:37258) -->
         <div class="left-header" style="margin-bottom:36px;">
           <a class="logo" href="#">
@@ -2264,6 +2507,18 @@
         </md-filled-button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ OVERLAY: PROCESSANDO PAGAMENTO ═══ -->
+<div id="processing-overlay" style="display:none;">
+  <div class="proc-box">
+    <svg class="proc-spinner" width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <circle cx="26" cy="26" r="21" stroke="rgba(255,255,255,0.18)" stroke-width="4"/>
+      <path d="M26 5a21 21 0 0121 21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <p class="proc-title">Processando pagamento...</p>
+    <p class="proc-sub">Não feche esta janela</p>
   </div>
 </div>
 
@@ -2342,9 +2597,19 @@
     updateProgress();
     updateV1Steps();
 
+    // Atualiza sticky CTA bar (mobile)
+    updateStickyCta(target);
+
     // Scroll suave até a seção
     const el = document.getElementById('sec-' + target);
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  function updateStickyCta(section) {
+    ['personal','address','payment'].forEach(s => {
+      const el = document.getElementById('sticky-' + s);
+      if (el) el.classList.toggle('active', s === section);
+    });
   }
 
   /* ── Input masks ── */
@@ -2961,20 +3226,32 @@
   /* ── Submit Payment — show success page ── */
   function submitPayment() {
     const btn = document.getElementById('btn-pagar');
-    if (btn) {
-      btn.setAttribute('disabled', '');
-      btn.innerHTML = `<span style="display:flex;align-items:center;gap:8px;justify-content:center;"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin 0.7s linear infinite;flex-shrink:0;"><circle cx="9" cy="9" r="7" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><path d="M9 2a7 7 0 017 7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Processando...</span>`;
-    }
+    if (btn) btn.setAttribute('disabled', '');
+
+    // Pre-fill success page data (enquanto overlay está visível)
+    const cardNum = document.getElementById('f-card-num')?.value || '';
+    const last4 = cardNum.replace(/\s/g,'').slice(-4);
+    document.getElementById('suc-card').textContent = '**** **** **** ' + (last4 || '____');
+    document.getElementById('suc-name').textContent = document.getElementById('f-card-name')?.value || '—';
+    const first = cardNum.replace(/\s/g,'').charAt(0);
+    document.getElementById('suc-brand').textContent = first === '4' ? 'Visa' : first === '5' ? 'Mastercard' : 'Cartão';
+
+    // Esconde o formulário e mostra overlay (success page ainda não aparece)
+    document.querySelector('.page').style.display = 'none';
+
+    const overlay = document.getElementById('processing-overlay');
+    overlay.style.display = 'flex';
+    overlay.style.opacity = '1';
+
+    // Após 2.4s: fade out overlay → só então revela a tela de sucesso
     setTimeout(() => {
-      const cardNum = document.getElementById('f-card-num')?.value || '';
-      const last4 = cardNum.replace(/\s/g,'').slice(-4);
-      document.getElementById('suc-card').textContent = '**** **** **** ' + (last4 || '____');
-      document.getElementById('suc-name').textContent = document.getElementById('f-card-name')?.value || '—';
-      const first = cardNum.replace(/\s/g,'').charAt(0);
-      document.getElementById('suc-brand').textContent = first === '4' ? 'Visa' : first === '5' ? 'Mastercard' : 'Cartão';
-      document.querySelector('.page').style.display = 'none';
-      document.getElementById('success-page').style.display = 'block';
-    }, 1800);
+      overlay.classList.add('fade-out');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('fade-out');
+        document.getElementById('success-page').style.display = 'block';
+      }, 500);
+    }, 2400);
   }
 
   /* Language selector — tela de sucesso */
@@ -2994,6 +3271,12 @@
     document.querySelectorAll('#suc-lang-dropdown .lang-option').forEach(o => o.classList.remove('selected'));
     opt.classList.add('selected');
     document.getElementById('suc-lang-dropdown').classList.remove('open');
+  }
+
+  /* Colapso do hc-table no mobile */
+  function toggleHcTable() {
+    if (window.innerWidth > 640) return; // só colapsa em mobile
+    document.querySelector('.hotel-card').classList.toggle('open');
   }
 
   /* Reabre uma seção para edição */
