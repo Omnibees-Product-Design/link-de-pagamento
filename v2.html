@@ -1,545 +1,912 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pagamento — Blue Tree Premium Congonhas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.3/css/flag-icons.min.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagamento — V2 Bee2Pay Yellow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.15.0/css/flag-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
-      height: 100%;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #F6F9FC;
-      color: #30313D;
+    body {
+      font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(145deg, #F0F4FF 0%, #FFFBEA 50%, #F5F3FF 100%);
+      min-height: 100vh;
+      color: #1E293B;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      position: relative;
     }
 
-    /* ── Layout ── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(245,175,4,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── PAGE WRAPPER ─── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    /* ─── TWO-PANEL LAYOUT ─── */
     .checkout-wrapper {
       display: flex;
-      min-height: 100vh;
+      gap: 20px;
+      width: 100%;
+      max-width: 1120px;
+      align-items: flex-start;
     }
 
-    /* LEFT PANEL */
+    /* ─── GLASS CARD ─── */
+    .glass-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(245,175,4,0.12);
+      border-radius: 20px;
+    }
+
+    /* ─── LEFT PANEL ─── */
     .panel-left {
-      width: 420px;
-      min-width: 420px;
-      background: #0A2540;
-      border-right: none;
+      flex: 0 0 42%;
+      padding: 40px;
       display: flex;
       flex-direction: column;
-      padding: 40px 36px 32px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
+      gap: 28px;
     }
 
-    /* RIGHT PANEL */
-    .panel-right {
-      flex: 1;
-      background: #fff;
-      padding: 40px 56px 60px;
-      overflow-y: auto;
-    }
-
-    /* Form content constrained to usability-friendly width */
-    .panel-right .form-heading,
-    .panel-right .form-subheading,
-    .panel-right form {
-      max-width: 480px;
-    }
-
-    /* ── Left Panel Content ── */
-    .left-header {
+    /* Logo row */
+    .logo-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 32px;
+      gap: 12px;
     }
 
-    .left-logo img {
-      height: 36px;
+    .logo-img {
+      height: 32px;
+      width: auto;
+      filter: none;
       display: block;
     }
 
-    /* Language Selector */
-    .lang-selector {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
+    .logo-fallback {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #1E293B;
     }
-    .lang-btn {
+
+    /* Language selector */
+    .lang-selector {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: none;
-      border: 1px solid rgba(255,255,255,0.20);
-      border-radius: 6px;
-      padding: 5px 10px;
-      font-family: inherit;
+      background: rgba(245,175,4,0.07);
+      border: 1px solid rgba(245,175,4,0.18);
+      border-radius: 999px;
+      padding: 5px 12px;
       font-size: 12px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.65);
+      font-weight: 600;
+      color: #1E293B;
       cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
+      transition: background 0.15s;
+      white-space: nowrap;
     }
-    .lang-btn:hover { border-color: rgba(255,255,255,0.50); background: rgba(255,255,255,0.08); color: #fff; }
-    .lang-btn .fi { border-radius: 2px; }
-    .lang-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
-      background: #0D2E4F;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 8px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.30);
-      min-width: 130px;
-      z-index: 100;
-      overflow: hidden;
+    .lang-selector:hover { background: rgba(245, 175, 4,0.12); }
+    .lang-selector .fi { font-size: 14px; border-radius: 2px; }
+
+    /* Hotel info */
+    .hotel-section { display: flex; flex-direction: column; gap: 8px; }
+
+    .hotel-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1E293B;
+      text-wrap: balance;
+      line-height: 1.3;
     }
-    .lang-dropdown.open { display: block; }
-    .lang-option {
+
+    .hotel-room {
+      font-size: 13px;
+      color: #64748B;
+    }
+
+    .hotel-cancel {
+      font-size: 11px;
+      color: #059669;
+      font-weight: 500;
       display: flex;
       align-items: center;
+      gap: 4px;
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(0,0,0,0.07);
+      margin: 4px 0;
+    }
+
+    /* Reservation table */
+    .reservation-table {
+      display: flex;
+      flex-direction: column;
       gap: 8px;
-      padding: 9px 14px;
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.75);
-      cursor: pointer;
-      transition: background 0.12s;
-    }
-    .lang-option:hover { background: rgba(255,255,255,0.08); }
-    .lang-option.active { color: #fff; }
-    .lang-option .fi { border-radius: 2px; }
-
-    /* Hotel Card */
-    .hotel-card {
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 24px;
-      background: rgba(255,255,255,0.05);
-    }
-    .hotel-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #F0FDF4;
-      color: #16A34A;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-      letter-spacing: 0.02em;
-    }
-    .hotel-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.3;
-      margin-bottom: 3px;
-    }
-    .hotel-room {
-      font-size: 12px;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 16px;
-    }
-    .hotel-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .hotel-table tr td {
-      padding: 5px 0;
-      font-size: 12px;
-      vertical-align: top;
-    }
-    .hotel-table tr td:first-child {
-      color: rgba(255,255,255,0.50);
-      width: 50%;
-    }
-    .hotel-table tr td:last-child {
-      color: rgba(255,255,255,0.90);
-      font-weight: 500;
-      text-align: right;
+      margin-top: 4px;
     }
 
-    /* Summary */
-    .summary-divider {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,0.12);
-      margin: 18px 0;
+    .res-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
     }
-    .summary-row {
+
+    .res-label { font-size: 12px; color: #64748B; white-space: nowrap; }
+    .res-value { font-size: 12px; color: #1E293B; font-weight: 500; text-align: right; }
+
+    /* Price breakdown */
+    .price-section { display: flex; flex-direction: column; gap: 10px; }
+
+    .price-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
     }
-    .summary-row:last-child { margin-bottom: 0; }
-    .summary-row .label {
-      font-size: 13px;
-      color: rgba(255,255,255,0.55);
+
+    .price-label { font-size: 13px; color: #64748B; }
+    .price-value { font-size: 13px; color: #1E293B; font-variant-numeric: tabular-nums; }
+
+    .price-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid rgba(0,0,0,0.07);
     }
-    .summary-row .amount {
-      font-size: 13px;
-      color: rgba(255,255,255,0.85);
+
+    .price-total-label { font-size: 15px; font-weight: 700; color: #1E293B; }
+    .price-total-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1E293B;
       font-variant-numeric: tabular-nums;
-    }
-    .summary-row.total .label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .summary-row.total .amount {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
+      letter-spacing: -0.02em;
     }
 
     /* Security badges */
-    .security-section {
-      margin-top: auto;
-      padding-top: 24px;
-    }
-    .security-badges {
+    .badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-    }
-    .badge {
-      background: rgba(255,255,255,0.10);
-      color: rgba(255,255,255,0.55);
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 10px;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 4px;
-      letter-spacing: 0.03em;
+      gap: 8px;
     }
 
-    /* ── Right Panel Content ── */
-    .form-heading {
-      font-size: 22px;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(245,175,4,0.06);
+      border: 1px solid rgba(245,175,4,0.15);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748B;
+      letter-spacing: 0.04em;
+    }
+
+    .badge svg { width: 12px; height: 12px; opacity: 0.7; }
+
+    /* ─── RIGHT PANEL ─── */
+    .panel-right {
+      flex: 1;
+      padding: 40px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* ─── STEP INDICATOR ─── */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
       font-weight: 700;
-      color: #30313D;
+      transition: all 0.3s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .step-circle.done {
+      background: linear-gradient(135deg, #F5AF04, #F5AF04);
+      border: none;
+      color: #1B2532;
+    }
+
+    .step-circle.active {
+      background: rgba(245,175,4,0.15);
+      border: 2px solid #F5AF04;
+      color: #1B2532;
+      box-shadow: 0 0 0 4px rgba(245,175,4,0.12);
+    }
+
+    .step-circle.pending {
+      background: transparent;
+      border: 2px solid #D1D5DB;
+      color: #CBD5E1;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+
+    .step-item.done .step-label { color: #F5AF04; }
+    .step-item.active .step-label { color: #1E293B; }
+    .step-item.pending .step-label { color: #94A3B8; }
+
+    /* Connecting line */
+    .step-line {
+      flex: 1;
+      height: 2px;
+      position: relative;
+      margin-bottom: 22px;
+      min-width: 24px;
+    }
+
+    .step-line-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.08);
+      border-radius: 2px;
+    }
+
+    .step-line-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #F5AF04, #FFC107);
+      transition: width 0.4s ease;
+    }
+
+    .step-line.done .step-line-fill { width: 100%; }
+    .step-line.pending .step-line-fill { width: 0%; }
+
+    /* ─── FORM STEPS ─── */
+    .form-step {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: stepEnter 0.35s ease forwards;
+    }
+
+    .form-step.active {
+      display: flex;
+    }
+
+    @keyframes stepEnter {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes stepEnterLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .form-step.going-back {
+      animation: stepEnterLeft 0.35s ease forwards;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1E293B;
+      text-wrap: balance;
       margin-bottom: 6px;
     }
-    .form-subheading {
+
+    .step-subtitle {
       font-size: 13px;
-      color: #6B7280;
-      margin-bottom: 36px;
+      color: #64748B;
+      margin-top: 0;
+      margin-bottom: 8px;
     }
 
-    /* Section headings */
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #6B7280;
-      margin-bottom: 16px;
-    }
-    .section-divider {
-      border: none;
-      border-top: 1px solid #E6EBF1;
-      margin: 28px 0;
-    }
-
-    /* Field groups */
-    .form-section { margin-bottom: 0; }
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .field-row-3 {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 16px;
-    }
+    /* ─── FIELD GROUPS ─── */
     .field-group {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      margin-bottom: 14px;
-    }
-    .field-group:last-child { margin-bottom: 0; }
-
-    /* Labels */
-    label.field-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: #30313D;
-      display: block;
+      gap: 6px;
     }
 
-    /* Inputs */
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"],
-    select {
-      width: 100%;
-      height: 44px;
-      padding: 0 12px;
-      background: #fff;
-      border: 1px solid #D1D5DB;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 14px;
-      color: #30313D;
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-    input::placeholder { color: #9CA3AF; }
-    input:focus,
-    select:focus {
-      border-color: #635BFF;
-      box-shadow: 0 0 0 3px rgba(99,91,255,0.12);
-    }
-    select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239CA3AF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 36px;
-      cursor: pointer;
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
     }
 
-    /* Phone prefix field */
-    .phone-wrapper {
+    .field-row {
       display: flex;
-      gap: 0;
+      gap: 12px;
     }
-    .phone-prefix {
+
+    .field-row .field-group { flex: 1; }
+
+    input, select {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      background: rgba(255,255,255,0.92);
+      border: 1.5px solid rgba(245,175,4,0.15);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      color: #1E293B;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+      box-shadow: 0 1px 3px rgba(245,175,4,0.06);
+    }
+
+    input:hover, select:hover {
+      border-color: rgba(245,175,4,0.30);
+    }
+
+    input::placeholder { color: rgba(0,0,0,0.35); }
+
+    input:focus, select:focus {
+      border-color: rgba(245,175,4,0.7);
+      box-shadow: 0 0 0 3px rgba(245,175,4,0.12);
+      background: #fff;
+    }
+
+    select option { background: #fff; color: #1E293B; }
+
+    /* Wrapper for inputs with icons/addons */
+    .input-wrap {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 6px;
-      height: 44px;
-      padding: 0 12px;
-      background: #F6F9FC;
-      border: 1px solid #D1D5DB;
-      border-right: none;
-      border-radius: 6px 0 0 6px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #30313D;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .phone-prefix .fi { border-radius: 2px; }
-    .phone-wrapper input {
-      border-radius: 0 6px 6px 0;
-      flex: 1;
     }
 
-    /* Card number wrapper */
-    .card-number-wrapper {
-      position: relative;
+    .input-wrap input { padding-right: 14px; }
+
+    .input-addon-right {
+      position: absolute;
+      right: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #F5AF04;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      user-select: none;
+      transition: color 0.15s;
     }
-    .card-number-wrapper input {
-      padding-right: 80px;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.06em;
-    }
+    .input-addon-right:hover { color: #FFC107; }
+
+    /* Card brand badge */
     .card-brand-badge {
       position: absolute;
       right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
       display: flex;
       align-items: center;
       gap: 4px;
       font-size: 11px;
       font-weight: 700;
-      color: #6B7280;
-      letter-spacing: 0.04em;
+      color: #64748B;
       pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.2s;
+      transition: all 0.2s;
     }
-    .card-brand-badge.visible { opacity: 1; }
-    /* Card brand colors */
-    .brand-visa { color: #1A1F71; }
-    .brand-mastercard { color: #EB001B; }
-    .brand-amex { color: #007BC1; }
-    .brand-elo { color: #F4A91B; }
-    .brand-hipercard { color: #CC0000; }
 
-    /* CEP row */
-    .cep-wrapper {
+    .card-brand-badge.visa   { color: #1A1F71; background: #EFF2FF; padding: 2px 8px; border-radius: 5px; }
+    .card-brand-badge.mc    { color: #EB001B; background: #FFF0F0; padding: 2px 8px; border-radius: 5px; }
+    .card-brand-badge.amex  { color: #007BC1; background: #EFF8FF; padding: 2px 8px; border-radius: 5px; }
+    .card-brand-badge.elo   { color: #FFD700; background: #1a1a1a; padding: 2px 8px; border-radius: 5px; }
+    .card-brand-badge.hiper { color: #E63946; background: #FFF5F5; padding: 2px 8px; border-radius: 5px; }
+
+    /* Phone DDI row */
+    .phone-row {
       display: flex;
-      gap: 10px;
-      align-items: flex-end;
+      gap: 8px;
     }
-    .cep-wrapper input { flex: 1; margin-bottom: 0; }
-    .btn-buscar {
-      height: 44px;
-      padding: 0 16px;
-      background: none;
-      border: 1px solid #635BFF;
-      border-radius: 6px;
-      font-family: inherit;
+
+    .ddi-select-wrap {
+      position: relative;
+      flex: 0 0 110px;
+    }
+
+    .ddi-select-wrap select {
+      padding-left: 10px;
+      padding-right: 24px;
       font-size: 13px;
-      font-weight: 600;
-      color: #635BFF;
+    }
+
+    .ddi-select-wrap::after {
+      content: "";
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events: none;
+    }
+
+    .select-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .select-wrap select {
+      padding-right: 36px;
+    }
+
+    .select-wrap::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events: none;
+    }
+
+    /* ── Combo Field: unified selector + input ── */
+    .combo-field {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 44px;
+      background: rgba(255,255,255,0.8);
+      border: 1.5px solid rgba(245,175,4,0.20);
+      border-radius: 10px;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      width: 100%;
+    }
+    .combo-field:hover:not(.combo-open) { border-color: rgba(245,175,4,0.45); }
+    .combo-field:focus-within,
+    .combo-field.combo-open {
+      border-color: rgba(245,175,4,0.8);
+      box-shadow: 0 0 0 3px rgba(245,175,4,0.14);
+      background: #fff;
+    }
+    .combo-trigger {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      padding: 0 28px 0 12px;
+      background: transparent;
+      border: none;
+      outline: none;
       cursor: pointer;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      color: #1E293B;
       white-space: nowrap;
-      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      border-radius: 10px 0 0 10px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      background-size: 16px;
+    }
+    .combo-trigger:hover { background-color: rgba(245,175,4,0.05); }
+    .flag-select-field .combo-trigger { flex: 1; border-radius: 10px; }
+    .combo-sep {
+      width: 1px;
+      height: 24px;
+      background: rgba(245,175,4,0.20);
       flex-shrink: 0;
     }
-    .btn-buscar:hover { background: #635BFF; color: #fff; }
-
-    /* Pay button */
-    .btn-pay {
-      width: 100%;
-      height: 48px;
-      background: #635BFF;
-      color: #fff;
+    .combo-input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
       border: none;
-      border-radius: 6px;
-      font-family: inherit;
+      outline: none;
+      background: transparent;
+      padding: 0 12px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      color: #1E293B;
+    }
+    .combo-input::placeholder { color: rgba(0,0,0,0.35); }
+    .combo-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 180px;
+      max-height: 240px;
+      overflow-y: auto;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(245,175,4,0.18);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(245,175,4,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      z-index: 500;
+      padding: 4px;
+    }
+    .combo-field.combo-open .combo-dropdown { display: block; }
+    .combo-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 13px;
+      color: #1E293B;
+      cursor: pointer;
+      transition: background 0.1s;
+      border-radius: 8px;
+    }
+    .combo-option:hover { background: rgba(245,175,4,0.08); }
+    .combo-option.selected { background: rgba(245,175,4,0.14); color: #B87800; font-weight: 600; }
+
+    /* ─── BUTTONS ─── */
+    .btn-primary {
+      width: 100%;
+      height: 52px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F5AF04 0%, #FFC107 100%);
+      border: none;
+      color: #1B2532;
+      font-family: 'Open Sans', -apple-system, sans-serif;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-top: 28px;
-      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      transition: transform 0.12s, box-shadow 0.15s, opacity 0.15s;
+      box-shadow: 0 4px 24px rgba(245,175,4,0.30);
       letter-spacing: 0.01em;
     }
-    .btn-pay:hover { background: #5149E8; box-shadow: 0 4px 14px rgba(99,91,255,0.30); }
-    .btn-pay:active { transform: scale(0.97); }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .btn-pay:disabled { opacity: 0.85; cursor: not-allowed; transform: none !important; }
 
-    .secure-note {
+    .btn-primary:hover {
+      box-shadow: 0 6px 32px rgba(245, 175, 4,0.45);
+      opacity: 0.95;
+    }
+
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-pay {
+      border-radius: 999px;
+      height: 56px;
+      font-size: 16px;
+      box-shadow: 0 6px 32px rgba(245,175,4,0.40);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      height: 48px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid #D1D5DB;
+      color: #64748B;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, transform 0.12s;
+    }
+
+    .btn-secondary:hover { background: #F8FAFC; border-color: #F5AF04; color: #E09A00; }
+    .btn-secondary:active { transform: scale(0.97); }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-row .btn-secondary { flex: 0 0 auto; width: auto; padding: 0 24px; }
+    .btn-row .btn-primary   { flex: 1; }
+
+    /* Security note */
+    .security-note {
       text-align: center;
       font-size: 11px;
-      color: #9CA3AF;
-      margin-top: 12px;
+      color: #64748B;
+      letter-spacing: 0.02em;
+      margin-top: -8px;
     }
 
-    /* Powered by */
-    .powered-by {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 36px;
-      font-size: 11px;
-      color: #9CA3AF;
+    /* ─── INSTALLMENT SELECT ─── */
+    .installment-wrap {
+      position: relative;
     }
-    .powered-by span { font-weight: 600; color: #6B7280; }
 
-    /* ── Success Screen ── */
-    .success-wrapper {
+    .installment-wrap select {
+      padding-right: 28px;
+    }
+
+    .installment-wrap::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events: none;
+    }
+
+    /* ─── SUCCESS PAGE ─── */
+    #success-page {
       display: none;
-      min-height: 100vh;
-      flex-direction: row;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: linear-gradient(145deg, #F0F4FF 0%, #FFFBEA 50%, #F5F3FF 100%);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
-    .success-wrapper.active {
+
+    #success-page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(245,175,4,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    #success-page.visible {
       display: flex;
     }
 
-    .success-content {
+    .success-card {
+      position: relative;
+      z-index: 1;
+      max-width: 540px;
+      width: 100%;
+      padding: 48px 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      gap: 24px;
       text-align: center;
-      padding: 60px 56px;
-      flex: 1;
     }
 
-    .success-icon {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 24px;
+    /* Animated checkmark */
+    .check-wrap {
+      width: 80px;
+      height: 80px;
+      position: relative;
+    }
+
+    .check-svg { width: 80px; height: 80px; }
+
+    .check-circle {
+      fill: none;
+      stroke: #34D399;
+      stroke-width: 3;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      stroke-linecap: round;
+      animation: drawCircle 0.6s ease forwards 0.1s;
+    }
+
+    .check-mark {
+      fill: none;
+      stroke: #34D399;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 0.4s ease forwards 0.65s;
+    }
+
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
     }
 
     .success-title {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
-      color: #30313D;
-      margin-bottom: 8px;
-    }
-    .success-subtitle {
-      font-size: 14px;
-      color: #6B7280;
-      margin-bottom: 32px;
-      max-width: 360px;
+      color: #1E293B;
+      text-wrap: balance;
+      line-height: 1.3;
     }
 
-    .success-details {
-      background: #F6F9FC;
-      border: 1px solid #E6EBF1;
-      border-radius: 10px;
-      padding: 20px 24px;
-      width: 100%;
-      max-width: 420px;
-      text-align: left;
-      margin-bottom: 28px;
+    .success-subtitle {
+      font-size: 14px;
+      color: #64748B;
+      margin-top: -12px;
     }
-    .success-detail-row {
+
+    /* Payment details nested card */
+    .payment-details {
+      width: 100%;
+      background: rgba(245,175,4,0.05);
+      border: 1px solid rgba(245,175,4,0.12);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .pd-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 7px 0;
-      border-bottom: 1px solid #E6EBF1;
     }
-    .success-detail-row:last-child { border-bottom: none; }
-    .success-detail-row .sd-label {
-      font-size: 12px;
-      color: #6B7280;
+
+    .pd-label { font-size: 12px; color: #64748B; }
+    .pd-value { font-size: 12px; color: #1E293B; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .pd-value.green { color: #34D399; font-weight: 700; }
+
+    /* Receipt section */
+    .receipt-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .success-detail-row .sd-value {
-      font-size: 12px;
+
+    .receipt-title {
+      font-size: 13px;
       font-weight: 600;
-      color: #30313D;
-      font-variant-numeric: tabular-nums;
+      color: #64748B;
+      text-align: left;
     }
-    .success-detail-row .sd-value.green { color: #16A34A; }
 
     .receipt-row {
       display: flex;
-      gap: 10px;
-      width: 100%;
-      max-width: 420px;
-      align-items: flex-end;
+      gap: 8px;
     }
+
     .receipt-row input {
       flex: 1;
+      height: 46px;
     }
-    .btn-send {
-      height: 44px;
+
+    .btn-receipt {
+      height: 46px;
       padding: 0 20px;
-      background: #635BFF;
-      color: #fff;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #F5AF04, #FFC107);
       border: none;
-      border-radius: 6px;
-      font-family: inherit;
+      color: #1B2532;
+      font-family: 'Open Sans', -apple-system, sans-serif;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: background 0.15s, transform 0.1s;
-      flex-shrink: 0;
+      transition: transform 0.12s, opacity 0.15s;
+      box-shadow: 0 4px 16px rgba(245,175,4,0.3);
     }
-    .btn-send:hover { background: #5149E8; }
-    .btn-send:active { transform: scale(0.97); }
+    .btn-receipt:hover { opacity: 0.92; }
+    .btn-receipt:active { transform: scale(0.97); }
 
-    /* ── Version Switcher ── */
+    /* ─── EMAIL SENT MODAL ─── */
+    #email-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    #email-modal.visible { display: flex; }
+
+    .modal-card {
+      max-width: 400px;
+      width: 100%;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.93) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(52,211,153,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1E293B;
+    }
+
+    .modal-text {
+      font-size: 13px;
+      color: #64748B;
+      line-height: 1.6;
+    }
+
+    .btn-modal-close {
+      margin-top: 8px;
+      height: 44px;
+      padding: 0 28px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #D1D5DB;
+      color: #1E293B;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .btn-modal-close:hover { background: #F8FAFC; }
+    .btn-modal-close:active { transform: scale(0.97); }
+
+    /* ─── VERSION SWITCHER ─── */
     .version-switcher {
       position: fixed;
       left: 20px;
@@ -549,22 +916,24 @@
       flex-direction: column;
       align-items: center;
       gap: 4px;
-      background: rgba(27,34,45,0.94);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(245,175,4,0.15);
       border-radius: 14px;
       padding: 10px 7px;
       backdrop-filter: blur(12px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     }
+
     .vs-label {
-      font-family: Inter, sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-size: 8px;
       font-weight: 600;
-      color: rgba(255,255,255,0.32);
+      color: rgba(0,0,0,0.32);
       text-transform: uppercase;
       letter-spacing: 0.09em;
       margin-bottom: 4px;
     }
+
     .vs-btn {
       width: 38px;
       height: 38px;
@@ -572,755 +941,864 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: Inter, sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-size: 10px;
       font-weight: 700;
       text-decoration: none;
-      color: rgba(255,255,255,0.44);
+      color: rgba(0,0,0,0.44);
       transition: background 0.14s, color 0.14s, transform 0.1s;
     }
-    .vs-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
+
+    .vs-btn:hover { background: rgba(245,175,4,0.09); color: #F5AF04; }
     .vs-btn:active { transform: scale(0.96); }
-    .vs-btn.vs-active { background: #635BFF; color: #fff; }
+
     .vs-divider {
       width: 20px;
       height: 1px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.08);
       margin: 2px 0;
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 860px) {
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
       .checkout-wrapper {
         flex-direction: column;
-        min-height: unset;
+        max-width: 520px;
       }
+
       .panel-left {
+        flex: none;
         width: 100%;
-        min-width: unset;
-        position: relative;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid rgba(255,255,255,0.12);
+        padding: 28px 24px;
+        gap: 20px;
+      }
+
+      .panel-right {
+        width: 100%;
         padding: 28px 24px;
       }
-      .panel-right {
-        padding: 28px 24px 48px;
-      }
-      .success-wrapper.active {
+
+      .field-row {
         flex-direction: column;
+        gap: 16px;
       }
-      .security-section { margin-top: 24px; }
-    }
 
-    @media (max-width: 540px) {
-      .field-row, .field-row-3 {
-        grid-template-columns: 1fr;
+      .btn-row {
+        flex-direction: column-reverse;
       }
-      .panel-right { padding: 24px 16px 48px; }
-      .panel-left { padding: 24px 16px; }
-      .success-content { padding: 40px 16px; }
+
+      .btn-row .btn-secondary {
+        width: 100%;
+        padding: 0 16px;
+      }
     }
 
-    /* ── Payment Method Bar ── */
-    .payment-method-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .pm-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border: 1.5px solid #E0E6EB;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #8792A2;
-      cursor: pointer;
-    }
-    .pm-option.pm-active {
-      border-color: #635BFF;
-      color: #635BFF;
-      background: rgba(99,91,255,0.04);
-    }
+    /* State: CEP loading */
+    .cep-loading input { opacity: 0.7; }
+    .cep-loading .input-addon-right { animation: pulse 0.8s ease-in-out infinite; }
 
-    /* ── Grouped Card Input ── */
-    .card-group {
-      border: 1.5px solid #E0E6EB;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      background: #fff;
-    }
-    .card-group:focus-within {
-      border-color: #635BFF;
-      box-shadow: 0 0 0 3px rgba(99,91,255,0.15);
-    }
-    .card-group-row {
-      display: flex;
-      align-items: center;
-      padding: 0 14px;
-      position: relative;
-    }
-    .card-group-divider {
-      height: 1px;
-      background: #E0E6EB;
-    }
-    .card-group-bottom {
-      display: flex;
-      align-items: center;
-    }
-    .card-group-sep {
-      width: 1px;
-      height: 44px;
-      background: #E0E6EB;
-    }
-    .card-group-input {
-      flex: 1;
-      height: 44px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      font-family: Inter, sans-serif;
-      color: #30313D;
-      background: transparent;
-      padding: 0;
-    }
-    .card-group-input::placeholder { color: #B0B8C4; }
-    .card-half { padding: 0 14px; }
-    .card-brand-v2 {
-      font-size: 11px;
-      font-weight: 600;
-      color: #8792A2;
-      white-space: nowrap;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
     }
   </style>
 </head>
-
 <body>
 
-<!-- ══════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════
      CHECKOUT PAGE
-═══════════════════════════════════════════════════ -->
-<div class="checkout-wrapper" id="checkoutPage">
+══════════════════════════════════════════ -->
+<div class="page" id="checkout-page">
+  <div class="checkout-wrapper">
 
-  <!-- LEFT PANEL -->
-  <aside class="panel-left">
-    <div class="left-header">
-      <div class="left-logo">
-        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" style="filter:brightness(10)" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-        <svg style="display:none" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="36" height="36" rx="8" fill="#635BFF"/>
-          <path d="M10 10h10c3.3 0 6 2.7 6 6s-2.7 6-6 6H10V10z" fill="#fff"/>
-          <path d="M10 22h12c3.3 0 6 2.7 6 6H10V22z" fill="rgba(255,255,255,0.7)"/>
-          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#ffffff">Bee2Pay</text>
-        </svg>
+    <!-- ── LEFT PANEL ── -->
+    <div class="panel-left glass-card">
+
+      <!-- Logo + Lang -->
+      <div class="logo-row">
+        <img
+          src="assets/bee2pay-logo.png"
+          alt="Bee2Pay"
+          class="logo-img"
+          onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';"
+        />
+        <span id="logo-fallback" class="logo-fallback" style="display:none;">Bee2Pay</span>
+
+        <div class="lang-selector" onclick="cycleLang(this)">
+          <span class="fi fi-br" id="lang-flag"></span>
+          <span id="lang-text">PT</span>
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+            <path d="M1 2.5L4 5.5L7 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
 
-      <!-- Language Selector -->
-      <div class="lang-selector">
-        <button class="lang-btn" id="langBtn" onclick="toggleLang(event)">
-          <span class="fi fi-br"></span>
-          <span id="langText">PT</span>
-          <svg width="10" height="6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- Hotel info -->
+      <div class="hotel-section">
+        <div class="hotel-name">Blue Tree Premium Congonhas Airport</div>
+        <div class="hotel-room">Quarto Superior Duplo</div>
+        <div class="hotel-cancel">
+          <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;flex-shrink:0;">
+            <circle cx="6" cy="6" r="5.25" stroke="#34D399" stroke-width="1.5"/>
+            <path d="M3.5 6L5.2 7.8L8.5 4.5" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Cancelamento grátis antes de 6 jun 2024
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="reservation-table">
+          <div class="res-row">
+            <span class="res-label">Hóspede</span>
+            <span class="res-value">Alberto Roberto</span>
+          </div>
+          <div class="res-row">
+            <span class="res-label">Reserva</span>
+            <span class="res-value">RES024562-12648</span>
+          </div>
+          <div class="res-row">
+            <span class="res-label">Check-in</span>
+            <span class="res-value">08/06/2024</span>
+          </div>
+          <div class="res-row">
+            <span class="res-label">Check-out</span>
+            <span class="res-value">10/06/2024</span>
+          </div>
+          <div class="res-row">
+            <span class="res-label">Período</span>
+            <span class="res-value">2 noites</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price breakdown -->
+      <div class="price-section">
+        <div class="price-row">
+          <span class="price-label">Hospedagem</span>
+          <span class="price-value">R$ 5.000,00</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Taxas e encargos</span>
+          <span class="price-value">R$ 120,00</span>
+        </div>
+        <div class="price-total-row">
+          <span class="price-total-label">Total</span>
+          <span class="price-total-value">R$ 5.120,00</span>
+        </div>
+      </div>
+
+      <!-- Security badges -->
+      <div class="badges">
+        <span class="badge">
+          <svg viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="1" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M4 7l2 2 4-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          LGPD
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 14 14" fill="none">
+            <rect x="2" y="3" width="10" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M5 3V2.5a2 2 0 014 0V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          PCI DSS
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 14 14" fill="none">
+            <path d="M7 1l4 2v4c0 2.5-2 4.5-4 5.5C5 11.5 3 9.5 3 7V3l4-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+          SSL 256-bit
+        </span>
+      </div>
+    </div>
+    <!-- /LEFT PANEL -->
+
+    <!-- ── RIGHT PANEL ── -->
+    <div class="panel-right glass-card">
+
+      <!-- Step indicator -->
+      <div class="step-indicator" id="step-indicator">
+        <!-- Step 1 -->
+        <div class="step-item active" id="si-1">
+          <div class="step-circle active" id="sc-1">1</div>
+          <div class="step-label">Dados</div>
+        </div>
+        <!-- Line 1-2 -->
+        <div class="step-line pending" id="sl-1">
+          <div class="step-line-bg"></div>
+          <div class="step-line-fill"></div>
+        </div>
+        <!-- Step 2 -->
+        <div class="step-item pending" id="si-2">
+          <div class="step-circle pending" id="sc-2">2</div>
+          <div class="step-label">Endereço</div>
+        </div>
+        <!-- Line 2-3 -->
+        <div class="step-line pending" id="sl-2">
+          <div class="step-line-bg"></div>
+          <div class="step-line-fill"></div>
+        </div>
+        <!-- Step 3 -->
+        <div class="step-item pending" id="si-3">
+          <div class="step-circle pending" id="sc-3">3</div>
+          <div class="step-label">Pagamento</div>
+        </div>
+      </div>
+
+      <!-- ───── STEP 1: Dados Pessoais ───── -->
+      <div class="form-step active" id="step-1">
+        <div>
+          <div class="step-title">Dados Pessoais</div>
+          <div class="step-subtitle">Preencha seus dados de identificação</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Nome completo</label>
+          <input type="text" id="f-nome" placeholder="Alberto Roberto" autocomplete="name" value="Alberto Roberto" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">E-mail</label>
+          <input type="email" id="f-email" placeholder="seu@email.com" autocomplete="email" />
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Data de nascimento</label>
+            <input type="text" id="f-dob" placeholder="DD/MM/AAAA" maxlength="10" inputmode="numeric" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">País</label>
+            <div class="combo-field flag-select-field" id="combo-pais">
+              <button type="button" class="combo-trigger" id="combo-pais-trigger" onclick="toggleCombo('combo-pais')">
+                <span class="fi fi-br" id="combo-pais-flag"></span>
+                <span id="combo-pais-label">Brasil</span>
+              </button>
+              <input type="hidden" id="f-pais" value="BR">
+              <div class="combo-dropdown" id="combo-pais-dd">
+                <div class="combo-option selected" data-value="BR" onclick="selectComboItem('combo-pais','BR','br','f-pais','Brasil')"><span class="fi fi-br"></span> Brasil</div>
+                <div class="combo-option" data-value="AR" onclick="selectComboItem('combo-pais','AR','ar','f-pais','Argentina')"><span class="fi fi-ar"></span> Argentina</div>
+                <div class="combo-option" data-value="BO" onclick="selectComboItem('combo-pais','BO','bo','f-pais','Bolívia')"><span class="fi fi-bo"></span> Bolívia</div>
+                <div class="combo-option" data-value="CL" onclick="selectComboItem('combo-pais','CL','cl','f-pais','Chile')"><span class="fi fi-cl"></span> Chile</div>
+                <div class="combo-option" data-value="CO" onclick="selectComboItem('combo-pais','CO','co','f-pais','Colômbia')"><span class="fi fi-co"></span> Colômbia</div>
+                <div class="combo-option" data-value="EC" onclick="selectComboItem('combo-pais','EC','ec','f-pais','Equador')"><span class="fi fi-ec"></span> Equador</div>
+                <div class="combo-option" data-value="MX" onclick="selectComboItem('combo-pais','MX','mx','f-pais','México')"><span class="fi fi-mx"></span> México</div>
+                <div class="combo-option" data-value="PY" onclick="selectComboItem('combo-pais','PY','py','f-pais','Paraguai')"><span class="fi fi-py"></span> Paraguai</div>
+                <div class="combo-option" data-value="PE" onclick="selectComboItem('combo-pais','PE','pe','f-pais','Peru')"><span class="fi fi-pe"></span> Peru</div>
+                <div class="combo-option" data-value="UY" onclick="selectComboItem('combo-pais','UY','uy','f-pais','Uruguai')"><span class="fi fi-uy"></span> Uruguai</div>
+                <div class="combo-option" data-value="VE" onclick="selectComboItem('combo-pais','VE','ve','f-pais','Venezuela')"><span class="fi fi-ve"></span> Venezuela</div>
+                <div class="combo-option" data-value="US" onclick="selectComboItem('combo-pais','US','us','f-pais','Estados Unidos')"><span class="fi fi-us"></span> Estados Unidos</div>
+                <div class="combo-option" data-value="PT" onclick="selectComboItem('combo-pais','PT','pt','f-pais','Portugal')"><span class="fi fi-pt"></span> Portugal</div>
+                <div class="combo-option" data-value="ES" onclick="selectComboItem('combo-pais','ES','es','f-pais','Espanha')"><span class="fi fi-es"></span> Espanha</div>
+                <div class="combo-option" data-value="DE" onclick="selectComboItem('combo-pais','DE','de','f-pais','Alemanha')"><span class="fi fi-de"></span> Alemanha</div>
+                <div class="combo-option" data-value="FR" onclick="selectComboItem('combo-pais','FR','fr','f-pais','França')"><span class="fi fi-fr"></span> França</div>
+                <div class="combo-option" data-value="IT" onclick="selectComboItem('combo-pais','IT','it','f-pais','Itália')"><span class="fi fi-it"></span> Itália</div>
+                <div class="combo-option" data-value="GB" onclick="selectComboItem('combo-pais','GB','gb','f-pais','Reino Unido')"><span class="fi fi-gb"></span> Reino Unido</div>
+                <div class="combo-option" data-value="JP" onclick="selectComboItem('combo-pais','JP','jp','f-pais','Japão')"><span class="fi fi-jp"></span> Japão</div>
+                <div class="combo-option" data-value="CN" onclick="selectComboItem('combo-pais','CN','cn','f-pais','China')"><span class="fi fi-cn"></span> China</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Telefone</label>
+          <div class="combo-field" id="combo-ddi">
+            <button type="button" class="combo-trigger" id="combo-ddi-trigger" onclick="toggleCombo('combo-ddi')">
+              <span class="fi fi-br" id="combo-ddi-flag"></span>
+              <span id="combo-ddi-label">+55</span>
+            </button>
+            <input type="hidden" id="f-ddi" value="+55">
+            <div class="combo-sep"></div>
+            <input type="tel" class="combo-input" id="f-tel" placeholder="(11) 99999-9999" inputmode="numeric" maxlength="15">
+            <div class="combo-dropdown" id="combo-ddi-dd">
+              <div class="combo-option selected" data-value="+55" onclick="selectDDI('+55','br','+55')"><span class="fi fi-br"></span> +55 Brasil</div>
+              <div class="combo-option" data-value="+54" onclick="selectDDI('+54','ar','+54')"><span class="fi fi-ar"></span> +54 Argentina</div>
+              <div class="combo-option" data-value="+591" onclick="selectDDI('+591','bo','+591')"><span class="fi fi-bo"></span> +591 Bolívia</div>
+              <div class="combo-option" data-value="+56" onclick="selectDDI('+56','cl','+56')"><span class="fi fi-cl"></span> +56 Chile</div>
+              <div class="combo-option" data-value="+57" onclick="selectDDI('+57','co','+57')"><span class="fi fi-co"></span> +57 Colômbia</div>
+              <div class="combo-option" data-value="+593" onclick="selectDDI('+593','ec','+593')"><span class="fi fi-ec"></span> +593 Equador</div>
+              <div class="combo-option" data-value="+52" onclick="selectDDI('+52','mx','+52')"><span class="fi fi-mx"></span> +52 México</div>
+              <div class="combo-option" data-value="+595" onclick="selectDDI('+595','py','+595')"><span class="fi fi-py"></span> +595 Paraguai</div>
+              <div class="combo-option" data-value="+51" onclick="selectDDI('+51','pe','+51')"><span class="fi fi-pe"></span> +51 Peru</div>
+              <div class="combo-option" data-value="+598" onclick="selectDDI('+598','uy','+598')"><span class="fi fi-uy"></span> +598 Uruguai</div>
+              <div class="combo-option" data-value="+58" onclick="selectDDI('+58','ve','+58')"><span class="fi fi-ve"></span> +58 Venezuela</div>
+              <div class="combo-option" data-value="+1" onclick="selectDDI('+1','us','+1')"><span class="fi fi-us"></span> +1 EUA</div>
+              <div class="combo-option" data-value="+351" onclick="selectDDI('+351','pt','+351')"><span class="fi fi-pt"></span> +351 Portugal</div>
+              <div class="combo-option" data-value="+34" onclick="selectDDI('+34','es','+34')"><span class="fi fi-es"></span> +34 Espanha</div>
+              <div class="combo-option" data-value="+44" onclick="selectDDI('+44','gb','+44')"><span class="fi fi-gb"></span> +44 Reino Unido</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Documento</label>
+          <div class="combo-field" id="combo-doc">
+            <button type="button" class="combo-trigger" id="combo-doc-trigger" onclick="toggleCombo('combo-doc')">
+              <span id="combo-doc-label">CPF</span>
+            </button>
+            <input type="hidden" id="f-doctype" value="CPF">
+            <div class="combo-sep"></div>
+            <input type="text" class="combo-input" id="f-docnum" placeholder="000.000.000-00" maxlength="18" inputmode="numeric">
+            <div class="combo-dropdown" id="combo-doc-dd">
+              <div class="combo-option selected" data-value="CPF" onclick="selectDoctype('CPF')">CPF</div>
+              <div class="combo-option" data-value="RG" onclick="selectDoctype('RG')">RG</div>
+              <div class="combo-option" data-value="Passaporte" onclick="selectDoctype('Passaporte')">Passaporte</div>
+              <div class="combo-option" data-value="CNH" onclick="selectDoctype('CNH')">CNH</div>
+            </div>
+          </div>
+        </div>
+        </div><!-- /field-row telefone+documento -->
+
+        <button class="btn-primary" onclick="goToStep(2)">
+          Próximo
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
-        <div class="lang-dropdown" id="langDropdown">
-          <div class="lang-option active" onclick="setLang('PT','br',this)">
-            <span class="fi fi-br"></span> Português
-          </div>
-          <div class="lang-option" onclick="setLang('EN','us',this)">
-            <span class="fi fi-us"></span> English
-          </div>
-          <div class="lang-option" onclick="setLang('ES','es',this)">
-            <span class="fi fi-es"></span> Español
-          </div>
-        </div>
       </div>
-    </div>
 
-    <!-- Hotel Card -->
-    <div class="hotel-card">
-      <div class="hotel-tag">
-        <svg width="10" height="10" fill="none" viewBox="0 0 10 10"><path d="M5 1l1.18 2.39L9 3.82 7 5.76l.47 2.74L5 7.25 2.53 8.5 3 5.76 1 3.82l2.82-.43L5 1z" fill="#16A34A"/></svg>
-        Cancelamento gratuito
-      </div>
-      <div class="hotel-name">Blue Tree Premium Congonhas Airport</div>
-      <div class="hotel-room">Quarto Superior Duplo</div>
-
-      <table class="hotel-table">
-        <tr>
-          <td>Nº Reserva</td>
-          <td>RES024562-12648</td>
-        </tr>
-        <tr>
-          <td>Hóspede</td>
-          <td>Alberto Roberto</td>
-        </tr>
-        <tr>
-          <td>Check-in</td>
-          <td>08/06/2024</td>
-        </tr>
-        <tr>
-          <td>Check-out</td>
-          <td>10/06/2024</td>
-        </tr>
-        <tr>
-          <td>Período</td>
-          <td>2 noites</td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- Summary -->
-    <div class="summary-row">
-      <span class="label">Hospedagem</span>
-      <span class="amount">R$ 5.000,00</span>
-    </div>
-    <div class="summary-row">
-      <span class="label">Taxas e impostos</span>
-      <span class="amount">R$ 120,00</span>
-    </div>
-    <hr class="summary-divider">
-    <div class="summary-row total">
-      <span class="label">Total</span>
-      <span class="amount">R$ 5.120,00</span>
-    </div>
-
-    <!-- Security -->
-    <div class="security-section">
-      <div class="security-badges">
-        <span class="badge">LGPD</span>
-        <span class="badge">PCI Compliant</span>
-        <span class="badge">SSL Secured</span>
-      </div>
-    </div>
-  </aside>
-
-  <!-- RIGHT PANEL -->
-  <main class="panel-right">
-    <h1 class="form-heading">Finalizar pagamento</h1>
-    <p class="form-subheading">Preencha os dados abaixo para concluir sua reserva.</p>
-
-    <form id="paymentForm" onsubmit="handlePay(event)" autocomplete="on" novalidate>
-
-      <!-- SECTION 1: Informações de contato -->
-      <div class="form-section">
-        <div class="section-title">Informações de contato</div>
-
-        <div class="field-group">
-          <label class="field-label" for="fullName">Nome completo</label>
-          <input type="text" id="fullName" name="fullName" placeholder="Alberto Roberto" autocomplete="name" value="Alberto Roberto">
+      <!-- ───── STEP 2: Endereço ───── -->
+      <div class="form-step" id="step-2">
+        <div>
+          <div class="step-title">Endereço de Cobrança</div>
+          <div class="step-subtitle">Informe o endereço vinculado ao seu cartão</div>
         </div>
 
         <div class="field-group">
-          <label class="field-label" for="email">E-mail</label>
-          <input type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email">
+          <label class="field-label">CEP</label>
+          <div class="input-wrap" id="cep-wrap">
+            <input type="text" id="f-cep" placeholder="00000-000" maxlength="9" inputmode="numeric" />
+            <span class="input-addon-right" onclick="lookupCEP()">Buscar</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Logradouro</label>
+          <input type="text" id="f-logradouro" placeholder="Rua, Avenida, Travessa..." autocomplete="street-address" />
         </div>
 
         <div class="field-row">
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="dob">Data de nascimento</label>
-            <input type="text" id="dob" name="dob" placeholder="DD/MM/AAAA" maxlength="10" autocomplete="bday" inputmode="numeric">
+          <div class="field-group" style="flex:0 0 130px;">
+            <label class="field-label">Número</label>
+            <input type="text" id="f-numero" placeholder="123" />
           </div>
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="country">País</label>
-            <select id="country" name="country" autocomplete="country">
-              <option value="BR" selected>Brasil</option>
-              <option value="AR">Argentina</option>
-              <option value="US">Estados Unidos</option>
-              <option value="PT">Portugal</option>
-              <option value="ES">Espanha</option>
-              <option value="FR">França</option>
-              <option value="DE">Alemanha</option>
-              <option value="GB">Reino Unido</option>
-              <option value="MX">México</option>
-              <option value="CO">Colômbia</option>
-              <option value="CL">Chile</option>
-              <option value="PE">Peru</option>
-              <option value="UY">Uruguai</option>
-              <option value="PY">Paraguai</option>
-              <option value="BO">Bolívia</option>
+          <div class="field-group">
+            <label class="field-label">Complemento</label>
+            <input type="text" id="f-complemento" placeholder="Apto, Bloco..." />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Bairro</label>
+          <input type="text" id="f-bairro" placeholder="Nome do bairro" />
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Estado</label>
+            <div class="select-wrap">
+              <select id="f-estado">
+                <option value="">Selecione</option>
+                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                <option selected>SP</option><option>SE</option><option>TO</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Cidade</label>
+            <input type="text" id="f-cidade" placeholder="São Paulo" />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="goToStep(1, true)">
+            ← Voltar
+          </button>
+          <button class="btn-primary" onclick="goToStep(3)">
+            Próximo
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ───── STEP 3: Pagamento ───── -->
+      <div class="form-step" id="step-3">
+        <div>
+          <div class="step-title">Dados do Cartão</div>
+          <div class="step-subtitle">Pagamento seguro e criptografado</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Número do cartão</label>
+          <div class="input-wrap">
+            <input type="text" id="f-cardnum" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric"
+              oninput="handleCardNumber(this)" />
+            <span class="card-brand-badge" id="card-brand-badge" style="display:none;"></span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Validade</label>
+            <input type="text" id="f-expiry" placeholder="MM/AA" maxlength="5" inputmode="numeric"
+              oninput="handleExpiry(this)" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">CVV</label>
+            <input type="text" id="f-cvv" placeholder="123" maxlength="4" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Nome no cartão</label>
+          <input type="text" id="f-cardname" placeholder="ALBERTO ROBERTO"
+            oninput="this.value = this.value.toUpperCase()" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Parcelamento</label>
+          <div class="installment-wrap">
+            <select id="f-parcelas">
+              <option value="1">1× de R$ 5.120,00 (sem juros)</option>
+              <option value="2">2× de R$ 2.560,00 (sem juros)</option>
+              <option value="3">3× de R$ 1.706,67 (sem juros)</option>
+              <option value="4">4× de R$ 1.337,20 (1,99% a.m.)</option>
+              <option value="5">5× de R$ 1.081,25 (1,99% a.m.)</option>
+              <option value="6">6× de R$ 909,87  (1,99% a.m.)</option>
+              <option value="10">10× de R$ 563,50 (2,49% a.m.)</option>
+              <option value="12">12× de R$ 476,22 (2,49% a.m.)</option>
             </select>
           </div>
         </div>
+
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn-secondary" onclick="goToStep(2, true)">
+            ← Voltar
+          </button>
+          <button class="btn-primary btn-pay" onclick="processPay(this)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+              <rect x="2" y="6" width="12" height="8" rx="2" stroke="#1B2532" stroke-width="1.6"/>
+              <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#1B2532" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            Pagar R$ 5.120,00
+          </button>
+        </div>
+
+        <p class="security-note">🔒 Seus dados são protegidos com criptografia de ponta-a-ponta</p>
       </div>
 
-      <hr class="section-divider">
+    </div>
+    <!-- /RIGHT PANEL -->
 
-      <!-- SECTION 2: Telefone e documento -->
-      <div class="form-section">
-        <div class="section-title">Telefone e documento</div>
-
-        <div class="field-group">
-          <label class="field-label" for="phone">Telefone</label>
-          <div class="phone-wrapper">
-            <div class="phone-prefix">
-              <span class="fi fi-br" style="border-radius:2px"></span>
-              +55
-            </div>
-            <input type="tel" id="phone" name="phone" placeholder="(11) 9 9999-9999" autocomplete="tel" inputmode="tel">
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="docType">Tipo de documento</label>
-            <select id="docType" name="docType">
-              <option value="CPF" selected>CPF</option>
-              <option value="CNPJ">CNPJ</option>
-              <option value="RG">RG</option>
-              <option value="PASSPORT">Passaporte</option>
-            </select>
-          </div>
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="docNumber">Número do documento</label>
-            <input type="text" id="docNumber" name="docNumber" placeholder="000.000.000-00" inputmode="numeric">
-          </div>
-        </div>
-      </div>
-
-      <hr class="section-divider">
-
-      <!-- SECTION 3: Endereço de cobrança -->
-      <div class="form-section">
-        <div class="section-title">Endereço de cobrança</div>
-
-        <div class="field-group">
-          <label class="field-label" for="cep">CEP</label>
-          <div class="cep-wrapper">
-            <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9" inputmode="numeric">
-            <button type="button" class="btn-buscar" onclick="fetchCEP()">Buscar</button>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="street">Logradouro</label>
-          <input type="text" id="street" name="street" placeholder="Rua, Avenida, Praça…" autocomplete="street-address">
-        </div>
-
-        <div class="field-row">
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="streetNumber">Número</label>
-            <input type="text" id="streetNumber" name="streetNumber" placeholder="Nº" inputmode="numeric">
-          </div>
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="complement">Complemento</label>
-            <input type="text" id="complement" name="complement" placeholder="Apto, Bloco, Casa…">
-          </div>
-        </div>
-
-        <div class="field-group" style="margin-top:14px">
-          <label class="field-label" for="neighborhood">Bairro</label>
-          <input type="text" id="neighborhood" name="neighborhood" placeholder="Bairro" autocomplete="address-level3">
-        </div>
-
-        <div class="field-row">
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="state">Estado</label>
-            <select id="state" name="state" autocomplete="address-level1">
-              <option value="">Selecione</option>
-              <option value="AC">Acre</option>
-              <option value="AL">Alagoas</option>
-              <option value="AP">Amapá</option>
-              <option value="AM">Amazonas</option>
-              <option value="BA">Bahia</option>
-              <option value="CE">Ceará</option>
-              <option value="DF">Distrito Federal</option>
-              <option value="ES">Espírito Santo</option>
-              <option value="GO">Goiás</option>
-              <option value="MA">Maranhão</option>
-              <option value="MT">Mato Grosso</option>
-              <option value="MS">Mato Grosso do Sul</option>
-              <option value="MG">Minas Gerais</option>
-              <option value="PA">Pará</option>
-              <option value="PB">Paraíba</option>
-              <option value="PR">Paraná</option>
-              <option value="PE">Pernambuco</option>
-              <option value="PI">Piauí</option>
-              <option value="RJ">Rio de Janeiro</option>
-              <option value="RN">Rio Grande do Norte</option>
-              <option value="RS">Rio Grande do Sul</option>
-              <option value="RO">Rondônia</option>
-              <option value="RR">Roraima</option>
-              <option value="SC">Santa Catarina</option>
-              <option value="SP" selected>São Paulo</option>
-              <option value="SE">Sergipe</option>
-              <option value="TO">Tocantins</option>
-            </select>
-          </div>
-          <div class="field-group" style="margin-bottom:0">
-            <label class="field-label" for="city">Cidade</label>
-            <input type="text" id="city" name="city" placeholder="Cidade" autocomplete="address-level2">
-          </div>
-        </div>
-      </div>
-
-      <hr class="section-divider">
-
-      <!-- SECTION 4: Pagamento com cartão -->
-      <div class="form-section">
-        <div class="section-title">Pagamento com cartão</div>
-
-        <div class="payment-method-bar">
-          <div class="pm-option pm-active">
-            <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect width="16" height="12" rx="2" fill="#635BFF" fill-opacity="0.15"/><rect y="3" width="16" height="3" fill="#635BFF" fill-opacity="0.4"/><rect x="2" y="8" width="4" height="1.5" rx="0.75" fill="#635BFF"/></svg>
-            Cartão de crédito
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="card-group">
-            <div class="card-group-row">
-              <input id="cardNumber" type="text" name="cardNumber" placeholder="Número do cartão" maxlength="19" inputmode="numeric" class="card-group-input" autocomplete="cc-number"/>
-              <div id="cardBrandBadge" class="card-brand-v2"></div>
-            </div>
-            <div class="card-group-divider"></div>
-            <div class="card-group-bottom">
-              <input id="cardExpiry" type="text" name="cardExpiry" placeholder="MM/AA" maxlength="5" class="card-group-input card-half" autocomplete="cc-exp" inputmode="numeric"/>
-              <div class="card-group-sep"></div>
-              <input id="cardCVV" type="text" name="cardCVV" placeholder="CVV" maxlength="4" class="card-group-input card-half" autocomplete="cc-csc" inputmode="numeric"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="field-group" style="margin-top:14px">
-          <label class="field-label" for="cardName">Nome no cartão</label>
-          <input type="text" id="cardName" name="cardName" placeholder="Como escrito no cartão" autocomplete="cc-name" style="text-transform:uppercase">
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="installments">Parcelamento</label>
-          <select id="installments" name="installments" autocomplete="off">
-            <option value="1">1x de R$ 5.120,00 (à vista)</option>
-            <option value="2">2x de R$ 2.560,00 sem juros</option>
-            <option value="3">3x de R$ 1.706,67 sem juros</option>
-            <option value="4">4x de R$ 1.280,00 sem juros</option>
-            <option value="5">5x de R$ 1.024,00 sem juros</option>
-            <option value="6">6x de R$ 853,33 sem juros</option>
-            <option value="7">7x de R$ 753,47 + juros</option>
-            <option value="8">8x de R$ 668,22 + juros</option>
-            <option value="9">9x de R$ 601,46 + juros</option>
-            <option value="10">10x de R$ 548,40 + juros</option>
-            <option value="11">11x de R$ 505,67 + juros</option>
-            <option value="12">12x de R$ 470,26 + juros</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Pay Button -->
-      <button type="submit" class="btn-pay">
-        <svg width="14" height="17" viewBox="0 0 14 17" fill="none" aria-hidden="true">
-          <rect x="1" y="7" width="12" height="9" rx="2" stroke="white" stroke-width="1.5"/>
-          <path d="M4 7V5a3 3 0 0 1 6 0v2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        Pagar R$ 5.120,00
-      </button>
-
-      <p class="secure-note">🔒 Pagamento seguro com criptografia SSL</p>
-    </form>
-
-    <!-- Powered by -->
-    <div class="powered-by">Powered by <span>&nbsp;Bee2Pay</span></div>
-  </main>
+  </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════
      SUCCESS PAGE
-═══════════════════════════════════════════════════ -->
-<div class="success-wrapper" id="successPage">
+══════════════════════════════════════════ -->
+<div id="success-page">
+  <div class="success-card glass-card">
 
-  <!-- LEFT PANEL (same) -->
-  <aside class="panel-left">
-    <div class="left-header">
-      <div class="left-logo">
-        <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay" style="filter:brightness(10)" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-        <svg style="display:none" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="36" height="36" rx="8" fill="#635BFF"/>
-          <path d="M10 10h10c3.3 0 6 2.7 6 6s-2.7 6-6 6H10V10z" fill="#fff"/>
-          <path d="M10 22h12c3.3 0 6 2.7 6 6H10V22z" fill="rgba(255,255,255,0.7)"/>
-          <text x="44" y="25" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="#ffffff">Bee2Pay</text>
-        </svg>
+    <!-- Animated checkmark -->
+    <div class="check-wrap">
+      <svg class="check-svg" viewBox="0 0 80 80">
+        <circle class="check-circle" cx="40" cy="40" r="35" transform="rotate(-90 40 40)"/>
+        <path class="check-mark" d="M24 40 L35 52 L56 28"/>
+      </svg>
+    </div>
+
+    <div>
+      <div class="success-title">Pagamento realizado com sucesso!</div>
+      <div class="success-subtitle" style="margin-top:8px;">Sua reserva está confirmada. Obrigado, Alberto!</div>
+    </div>
+
+    <!-- Payment details -->
+    <div class="payment-details">
+      <div class="pd-row">
+        <span class="pd-label">Hotel</span>
+        <span class="pd-value">Blue Tree Premium Congonhas</span>
+      </div>
+      <div class="pd-row">
+        <span class="pd-label">Reserva</span>
+        <span class="pd-value">RES024562-12648</span>
+      </div>
+      <div class="pd-row">
+        <span class="pd-label">Período</span>
+        <span class="pd-value">08/06 — 10/06/2024</span>
+      </div>
+      <div class="pd-row">
+        <span class="pd-label">Parcelamento</span>
+        <span class="pd-value" id="success-parcelas">1× de R$ 5.120,00</span>
+      </div>
+      <div style="height:1px;background:rgba(0,0,0,0.07);margin:4px 0;"></div>
+      <div class="pd-row">
+        <span class="pd-label" style="font-weight:700;">Total pago</span>
+        <span class="pd-value green">R$ 5.120,00</span>
       </div>
     </div>
 
-    <div class="hotel-card">
-      <div class="hotel-tag">
-        <svg width="10" height="10" fill="none" viewBox="0 0 10 10"><path d="M5 1l1.18 2.39L9 3.82 7 5.76l.47 2.74L5 7.25 2.53 8.5 3 5.76 1 3.82l2.82-.43L5 1z" fill="#16A34A"/></svg>
-        Cancelamento gratuito
-      </div>
-      <div class="hotel-name">Blue Tree Premium Congonhas Airport</div>
-      <div class="hotel-room">Quarto Superior Duplo</div>
-
-      <table class="hotel-table">
-        <tr><td>Nº Reserva</td><td>RES024562-12648</td></tr>
-        <tr><td>Hóspede</td><td>Alberto Roberto</td></tr>
-        <tr><td>Check-in</td><td>08/06/2024</td></tr>
-        <tr><td>Check-out</td><td>10/06/2024</td></tr>
-        <tr><td>Período</td><td>2 noites</td></tr>
-      </table>
-    </div>
-
-    <div class="summary-row">
-      <span class="label">Hospedagem</span>
-      <span class="amount">R$ 5.000,00</span>
-    </div>
-    <div class="summary-row">
-      <span class="label">Taxas e impostos</span>
-      <span class="amount">R$ 120,00</span>
-    </div>
-    <hr class="summary-divider">
-    <div class="summary-row total">
-      <span class="label">Total</span>
-      <span class="amount">R$ 5.120,00</span>
-    </div>
-
-    <div class="security-section">
-      <div class="security-badges">
-        <span class="badge">LGPD</span>
-        <span class="badge">PCI Compliant</span>
-        <span class="badge">SSL Secured</span>
-      </div>
-    </div>
-  </aside>
-
-  <!-- SUCCESS CONTENT -->
-  <main class="success-content">
-    <!-- Green Check Circle -->
-    <svg class="success-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <circle cx="32" cy="32" r="32" fill="#F0FDF4"/>
-      <circle cx="32" cy="32" r="24" fill="#4BAF4F"/>
-      <path d="M21 32l8 8 14-14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-
-    <h2 class="success-title">Pagamento realizado com sucesso!</h2>
-    <p class="success-subtitle">Sua reserva foi confirmada. Você receberá os detalhes por e-mail em instantes.</p>
-
-    <!-- Payment details card -->
-    <div class="success-details">
-      <div class="success-detail-row">
-        <span class="sd-label">Status</span>
-        <span class="sd-value green">Aprovado</span>
-      </div>
-      <div class="success-detail-row">
-        <span class="sd-label">Nº Reserva</span>
-        <span class="sd-value">RES024562-12648</span>
-      </div>
-      <div class="success-detail-row">
-        <span class="sd-label">Hóspede</span>
-        <span class="sd-value">Alberto Roberto</span>
-      </div>
-      <div class="success-detail-row">
-        <span class="sd-label">Hotel</span>
-        <span class="sd-value">Blue Tree Premium Congonhas</span>
-      </div>
-      <div class="success-detail-row">
-        <span class="sd-label">Check-in / Check-out</span>
-        <span class="sd-value">08/06 – 10/06/2024</span>
-      </div>
-      <div class="success-detail-row">
-        <span class="sd-label">Total cobrado</span>
-        <span class="sd-value">R$ 5.120,00</span>
-      </div>
-      <div class="success-detail-row">
-        <span class="sd-label">Autorização</span>
-        <span class="sd-value" id="authCode">—</span>
+    <!-- Receipt section -->
+    <div class="receipt-section">
+      <div class="receipt-title">Receber comprovante por e-mail</div>
+      <div class="receipt-row">
+        <input type="email" id="receipt-email" placeholder="seu@email.com" />
+        <button class="btn-receipt" onclick="sendReceipt()">Enviar</button>
       </div>
     </div>
 
-    <!-- Receipt email -->
-    <p style="font-size:13px;color:#6B7280;margin-bottom:10px;width:100%;max-width:420px;text-align:left">Enviar comprovante por e-mail:</p>
-    <div class="receipt-row">
-      <input type="email" id="receiptEmail" placeholder="seu@email.com">
-      <button type="button" class="btn-send" onclick="sendReceipt()">Enviar</button>
-    </div>
-    <div id="receiptMsg" style="font-size:12px;color:#16A34A;margin-top:8px;height:18px;text-align:left;width:100%;max-width:420px"></div>
-
-    <div class="powered-by" style="margin-top:40px;width:100%;max-width:420px">Powered by <span>&nbsp;Bee2Pay</span></div>
-  </main>
+  </div>
 </div>
 
-<!-- Version Switcher -->
-<nav class="version-switcher">
+<!-- ══════════════════════════════════════════
+     EMAIL SENT MODAL
+══════════════════════════════════════════ -->
+<div id="email-modal">
+  <div class="modal-card glass-card">
+    <div class="modal-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect x="3" y="6" width="22" height="16" rx="3" stroke="#34D399" stroke-width="1.8"/>
+        <path d="M3 10l11 7 11-7" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="modal-title">Comprovante enviado!</div>
+    <div class="modal-text">
+      Enviamos o comprovante para<br>
+      <strong id="modal-email" style="color:#1E293B;"></strong>.<br>
+      Verifique sua caixa de entrada.
+    </div>
+    <button class="btn-modal-close" onclick="closeModal()">Fechar</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VERSION SWITCHER
+══════════════════════════════════════════ -->
+<nav class="version-switcher" aria-label="Versões do protótipo">
   <div class="vs-label">Layout</div>
   <a href="index.html" class="vs-btn" title="V1 — Bee2Pay atual">V1</a>
   <div class="vs-divider"></div>
-  <a href="v2.html" class="vs-btn vs-active" title="V2 — Stripe inspired">V2</a>
-  <div class="vs-divider"></div>
-  <a href="v3.html" class="vs-btn" title="V3 — Modern Fintech">V3</a>
+  <a href="v2.html" class="vs-btn vs-active" title="V2 — Bee2Pay Yellow" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#1B2532;">V2</a>
 </nav>
 
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
 <script>
-  // ─── Language Selector ───
-  function toggleLang(e) {
-    e.stopPropagation();
-    document.getElementById('langDropdown').classList.toggle('open');
-  }
-  function setLang(code, flag, el) {
-    document.getElementById('langText').textContent = code;
-    const btn = document.getElementById('langBtn');
-    btn.querySelector('.fi').className = `fi fi-${flag}`;
-    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('langDropdown').classList.remove('open');
-  }
-  document.addEventListener('click', () => {
-    document.getElementById('langDropdown').classList.remove('open');
-  });
+  // ─── STEP MANAGEMENT ────────────────────────────────────────────
+  let currentStep = 1;
 
-  // ─── Date of Birth mask (DD/MM/AAAA) ───
-  document.getElementById('dob').addEventListener('input', function(e) {
+  function goToStep(n, goingBack = false) {
+    const prev = document.getElementById('step-' + currentStep);
+    const next = document.getElementById('step-' + n);
+
+    prev.classList.remove('active');
+
+    if (goingBack) {
+      next.classList.add('going-back');
+    } else {
+      next.classList.remove('going-back');
+    }
+
+    // Force reflow so animation re-triggers
+    void next.offsetWidth;
+    next.classList.add('active');
+
+    // Remove going-back after animation
+    if (goingBack) {
+      setTimeout(() => next.classList.remove('going-back'), 400);
+    }
+
+    currentStep = n;
+    updateStepIndicator(n);
+  }
+
+  function updateStepIndicator(active) {
+    for (let i = 1; i <= 3; i++) {
+      const item   = document.getElementById('si-' + i);
+      const circle = document.getElementById('sc-' + i);
+
+      item.className   = 'step-item';
+      circle.className = 'step-circle';
+
+      if (i < active) {
+        item.classList.add('done');
+        circle.classList.add('done');
+        circle.innerHTML = checkSVG();
+      } else if (i === active) {
+        item.classList.add('active');
+        circle.classList.add('active');
+        circle.textContent = i;
+      } else {
+        item.classList.add('pending');
+        circle.classList.add('pending');
+        circle.textContent = i;
+      }
+    }
+
+    // Lines
+    for (let l = 1; l <= 2; l++) {
+      const line = document.getElementById('sl-' + l);
+      line.className = 'step-line ' + (l < active ? 'done' : 'pending');
+    }
+  }
+
+  function checkSVG() {
+    return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M3 7L5.8 10L11 4.5" stroke="#1B2532" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  }
+
+  // ─── INPUT MASKS ─────────────────────────────────────────────────
+
+  // Date of birth: DD/MM/AAAA
+  document.getElementById('f-dob').addEventListener('input', function() {
     let v = this.value.replace(/\D/g, '');
     if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
     if (v.length > 5) v = v.slice(0,5) + '/' + v.slice(5);
     this.value = v.slice(0, 10);
   });
 
-  // ─── Phone mask ───
-  document.getElementById('phone').addEventListener('input', function() {
+  // CEP: 00000-000
+  document.getElementById('f-cep').addEventListener('input', function() {
     let v = this.value.replace(/\D/g, '');
-    if (v.length > 11) v = v.slice(0, 11);
-    if (v.length > 10) {
-      v = `(${v.slice(0,2)}) ${v.slice(2,3)} ${v.slice(3,7)}-${v.slice(7)}`;
-    } else if (v.length > 6) {
-      v = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
-    } else if (v.length > 2) {
-      v = `(${v.slice(0,2)}) ${v.slice(2)}`;
-    }
-    this.value = v;
+    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+    this.value = v.slice(0, 9);
   });
 
-  // ─── CPF/CNPJ mask ───
-  const docType = document.getElementById('docType');
-  const docNumber = document.getElementById('docNumber');
-  docType.addEventListener('change', () => { docNumber.value = ''; applyDocMask(); });
-  docNumber.addEventListener('input', applyDocMask);
-  function applyDocMask() {
-    let v = docNumber.value.replace(/\D/g, '');
-    const t = docType.value;
-    if (t === 'CPF') {
-      if (v.length > 11) v = v.slice(0,11);
-      v = v.replace(/(\d{3})(\d)/, '$1.$2')
-           .replace(/(\d{3})(\d)/, '$1.$2')
-           .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-      docNumber.placeholder = '000.000.000-00';
-    } else if (t === 'CNPJ') {
-      if (v.length > 14) v = v.slice(0,14);
-      v = v.replace(/(\d{2})(\d)/, '$1.$2')
-           .replace(/(\d{3})(\d)/, '$1.$2')
-           .replace(/(\d{3})(\d)/, '$1/$2')
-           .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
-      docNumber.placeholder = '00.000.000/0001-00';
+  document.getElementById('f-cep').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') lookupCEP();
+  });
+
+  // Phone: (XX) XXXXX-XXXX
+  document.getElementById('f-tel').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 0) v = '(' + v;
+    if (v.length > 3) v = v.slice(0,3) + ') ' + v.slice(3);
+    if (v.length > 10) v = v.slice(0,10) + '-' + v.slice(10);
+    this.value = v.slice(0, 15);
+  });
+
+  // CPF / doc formatting
+  document.getElementById('f-docnum').addEventListener('input', function() {
+    const type = document.getElementById('f-doctype').value;
+    let v = this.value.replace(/\D/g, '');
+    if (type === 'CPF') {
+      if (v.length > 3) v = v.slice(0,3) + '.' + v.slice(3);
+      if (v.length > 7) v = v.slice(0,7) + '.' + v.slice(7);
+      if (v.length > 11) v = v.slice(0,11) + '-' + v.slice(11);
+      this.value = v.slice(0, 14);
     } else {
-      docNumber.placeholder = 'Número do documento';
+      this.value = this.value.slice(0, 18);
     }
-    docNumber.value = v;
+  });
+
+  // f-doctype is now a hidden input; placeholder updates handled by selectDoctype()
+
+  // ─── CARD NUMBER MASK & BRAND DETECTION ─────────────────────────
+  function handleCardNumber(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 16);
+    let spaced = v.replace(/(.{4})/g, '$1 ').trim();
+    input.value = spaced;
+    detectCardBrand(v);
   }
 
-  // ─── CEP mask & fetch ───
-  document.getElementById('cep').addEventListener('input', function() {
-    let v = this.value.replace(/\D/g, '');
-    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5,8);
-    this.value = v;
-  });
-  document.getElementById('cep').addEventListener('blur', function() {
-    if (this.value.replace(/\D/g,'').length === 8) fetchCEP();
-  });
-  async function fetchCEP() {
-    const raw = document.getElementById('cep').value.replace(/\D/g,'');
-    if (raw.length !== 8) return;
+  function detectCardBrand(num) {
+    const badge = document.getElementById('card-brand-badge');
+    let brand = null;
+    let cls   = '';
+
+    if (/^4/.test(num))                                       { brand = 'VISA';      cls = 'visa';  }
+    else if (/^5[1-5]/.test(num) || /^2[2-7]/.test(num))    { brand = 'MC';        cls = 'mc';    }
+    else if (/^3[47]/.test(num))                              { brand = 'AMEX';      cls = 'amex';  }
+    else if (/^(40117[8-9]|43135|45763|50670|50671|50672|50673|50674|50675|50676|5067[7-9]|50682|50688|50689|506[9][0-9]|5090[4-9]|5091[0-2]|509[1-9]|6362|6363|6500|6501|6504|6505|6507|6509|6516|6550|655)/.test(num)) { brand = 'ELO'; cls = 'elo'; }
+    else if (/^(3841[0-4]6|60|637|6062|637)/.test(num))     { brand = 'HIPER';     cls = 'hiper'; }
+
+    if (brand && num.length >= 4) {
+      badge.textContent = brand;
+      badge.className   = 'card-brand-badge ' + cls;
+      badge.style.display = 'flex';
+      document.getElementById('f-cardnum').style.paddingRight = '70px';
+    } else {
+      badge.style.display = 'none';
+      document.getElementById('f-cardnum').style.paddingRight = '14px';
+    }
+  }
+
+  // ─── EXPIRY MASK ─────────────────────────────────────────────────
+  function handleExpiry(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 4);
+    if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+    input.value = v;
+  }
+
+  // ─── VIA CEP LOOKUP ──────────────────────────────────────────────
+  async function lookupCEP() {
+    const cep = document.getElementById('f-cep').value.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+
+    const wrap = document.getElementById('cep-wrap');
+    wrap.classList.add('cep-loading');
+    const btn = wrap.querySelector('.input-addon-right');
+    const origText = btn.textContent;
+    btn.textContent = '…';
+
     try {
-      const r = await fetch(`https://viacep.com.br/ws/${raw}/json/`);
-      const d = await r.json();
-      if (!d.erro) {
-        document.getElementById('street').value = d.logradouro || '';
-        document.getElementById('neighborhood').value = d.bairro || '';
-        document.getElementById('city').value = d.localidade || '';
-        const st = document.getElementById('state');
-        for (let i = 0; i < st.options.length; i++) {
-          if (st.options[i].value === d.uf) { st.selectedIndex = i; break; }
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await res.json();
+      if (!data.erro) {
+        document.getElementById('f-logradouro').value = data.logradouro || '';
+        document.getElementById('f-bairro').value     = data.bairro     || '';
+        document.getElementById('f-cidade').value     = data.localidade  || '';
+        const estado = document.getElementById('f-estado');
+        for (let opt of estado.options) {
+          if (opt.value === data.uf) { opt.selected = true; break; }
         }
-        document.getElementById('streetNumber').focus();
+        document.getElementById('f-numero').focus();
       }
-    } catch(e) { /* fail silently */ }
+    } catch(e) {
+      // silent fail
+    } finally {
+      wrap.classList.remove('cep-loading');
+      btn.textContent = origText;
+    }
   }
 
-  // ─── Card brand detection ───
-  const brands = [
-    { name: 'Elo', regex: /^(4011(78|79)|43(1274|8935)|45(1416|7393|763(1|2))|50(4175|6699|67[0-6][0-9]|677[0-8]|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9])|627780|63(6297|6368)|65(0(0(3([1-3]|[5-9])|4([0-9]|))|[0-9]{2}|[0-9]{3})|[0-9]{4}|[0-9]{5}))/, class: 'brand-elo', label: 'ELO' },
-    { name: 'Hipercard', regex: /^(606282|637095|637568|637599|637609|637612)/, class: 'brand-hipercard', label: 'Hipercard' },
-    { name: 'Amex', regex: /^3[47]/, class: 'brand-amex', label: 'Amex' },
-    { name: 'Mastercard', regex: /^(5[1-5]|2(2[2-9][1-9]|[3-6]\d{2}|7([01]\d|20)))/, class: 'brand-mastercard', label: 'Mastercard' },
-    { name: 'Visa', regex: /^4/, class: 'brand-visa', label: 'Visa' },
-  ];
-
-  const cardInput = document.getElementById('cardNumber');
-  const brandBadge = document.getElementById('cardBrandBadge');
-
-  cardInput.addEventListener('input', function() {
-    // Mask: groups of 4
-    let v = this.value.replace(/\D/g, '');
-    if (v.length > 16) v = v.slice(0,16);
-    this.value = v.replace(/(.{4})/g, '$1 ').trim();
-
-    // Brand detection
-    const digits = v;
-    let found = null;
-    for (const b of brands) {
-      if (b.regex.test(digits)) { found = b; break; }
-    }
-    if (found && digits.length >= 4) {
-      brandBadge.textContent = found.label;
-    } else {
-      brandBadge.textContent = '';
-    }
-  });
-
-  // ─── Expiry mask (MM/AA) ───
-  document.getElementById('cardExpiry').addEventListener('input', function() {
-    let v = this.value.replace(/\D/g, '');
-    if (v.length > 4) v = v.slice(0,4);
-    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
-    this.value = v;
-  });
-
-  // ─── Card name: uppercase ───
-  document.getElementById('cardName').addEventListener('input', function() {
-    const pos = this.selectionStart;
-    this.value = this.value.toUpperCase();
-    this.setSelectionRange(pos, pos);
-  });
-
-  // ─── Pay handler ───
-  function handlePay(e) {
-    e.preventDefault();
-    const btn = e.submitter || document.querySelector('.btn-pay');
+  // ─── PAYMENT PROCESSING ──────────────────────────────────────────
+  function processPay(btn) {
     btn.disabled = true;
-    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin 0.7s linear infinite;flex-shrink:0;vertical-align:middle;margin-right:8px;"><circle cx="9" cy="9" r="7" stroke="rgba(255,255,255,0.35)" stroke-width="2"/><path d="M9 2a7 7 0 017 7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>Processando...`;
+    btn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin 0.7s linear infinite;flex-shrink:0;">
+        <circle cx="9" cy="9" r="7" stroke="rgba(27,37,50,0.25)" stroke-width="2"/>
+        <path d="M9 2a7 7 0 017 7" stroke="#1B2532" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Processando...
+    `;
+
+    // Update installments on success page
+    const parcOption = document.getElementById('f-parcelas');
+    const parcText   = parcOption.options[parcOption.selectedIndex].text;
+    const match = parcText.match(/^(\d+)× de (R\$[^(]+)/);
+    if (match) {
+      document.getElementById('success-parcelas').textContent = match[1] + '× de ' + match[2].trim();
+    }
+
+    // Pre-fill receipt email
+    const email = document.getElementById('f-email').value;
+    if (email) document.getElementById('receipt-email').value = email;
+
     setTimeout(() => {
-      const code = 'AUTH' + Math.random().toString(36).slice(2,8).toUpperCase();
-      document.getElementById('authCode').textContent = code;
-      const emailVal = document.getElementById('email').value;
-      if (emailVal) document.getElementById('receiptEmail').value = emailVal;
-      document.getElementById('checkoutPage').style.display = 'none';
-      document.getElementById('successPage').classList.add('active');
-      window.scrollTo(0,0);
+      showSuccess();
     }, 1800);
   }
 
-  // ─── Send receipt ───
+  function showSuccess() {
+    document.getElementById('success-page').classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // ─── RECEIPT / MODAL ─────────────────────────────────────────────
   function sendReceipt() {
-    const em = document.getElementById('receiptEmail').value.trim();
-    const msg = document.getElementById('receiptMsg');
-    if (!em || !em.includes('@')) {
-      msg.style.color = '#DC2626';
-      msg.textContent = 'Informe um e-mail válido.';
+    const email = document.getElementById('receipt-email').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('receipt-email').focus();
+      document.getElementById('receipt-email').style.borderColor = 'rgba(248,113,113,0.6)';
+      document.getElementById('receipt-email').style.boxShadow  = '0 0 0 3px rgba(248,113,113,0.12)';
+      setTimeout(() => {
+        document.getElementById('receipt-email').style.borderColor = '';
+        document.getElementById('receipt-email').style.boxShadow  = '';
+      }, 2000);
       return;
     }
-    msg.style.color = '#16A34A';
-    msg.textContent = `Comprovante enviado para ${em}`;
+    document.getElementById('modal-email').textContent = email;
+    document.getElementById('email-modal').classList.add('visible');
   }
+
+  function closeModal() {
+    document.getElementById('email-modal').classList.remove('visible');
+  }
+
+  // Close modal on backdrop click
+  document.getElementById('email-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ─── LANGUAGE CYCLE ──────────────────────────────────────────────
+  const langs = [
+    { code: 'PT', flag: 'br' },
+    { code: 'EN', flag: 'us' },
+    { code: 'ES', flag: 'es' },
+  ];
+  let langIdx = 0;
+
+  function cycleLang(el) {
+    langIdx = (langIdx + 1) % langs.length;
+    const lang = langs[langIdx];
+    document.getElementById('lang-flag').className = 'fi fi-' + lang.flag;
+    document.getElementById('lang-text').textContent = lang.code;
+  }
+
+  // ─── SPIN ANIMATION (for processing state) ───────────────────────
+  const spinStyle = document.createElement('style');
+  spinStyle.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+  document.head.appendChild(spinStyle);
+
+  // ─── COMBO FIELD LOGIC ───────────────────────────────────────────
+  function toggleCombo(id) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('combo-open');
+    document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
+    if (!wasOpen) el.classList.add('combo-open');
+  }
+
+  function selectComboItem(comboId, value, flag, inputId, label) {
+    const flagEl  = document.getElementById(comboId + '-flag');
+    const labelEl = document.getElementById(comboId + '-label');
+    if (flagEl)  flagEl.className = 'fi fi-' + flag;
+    if (labelEl) labelEl.textContent = label;
+    document.getElementById(inputId).value = value;
+    document.querySelectorAll('#' + comboId + '-dd .combo-option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.value === value);
+    });
+    document.getElementById(comboId).classList.remove('combo-open');
+  }
+
+  function selectDDI(value, flag, label) {
+    document.getElementById('combo-ddi-flag').className = 'fi fi-' + flag;
+    document.getElementById('combo-ddi-label').textContent = label;
+    document.getElementById('f-ddi').value = value;
+    document.querySelectorAll('#combo-ddi-dd .combo-option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.value === value);
+    });
+    document.getElementById('combo-ddi').classList.remove('combo-open');
+  }
+
+  function selectDoctype(value) {
+    document.getElementById('combo-doc-label').textContent = value;
+    document.getElementById('f-doctype').value = value;
+    document.querySelectorAll('#combo-doc-dd .combo-option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.value === value);
+    });
+    document.getElementById('combo-doc').classList.remove('combo-open');
+    const placeholders = { CPF: '000.000.000-00', RG: '00.000.000-0', Passaporte: 'AB123456', CNH: '00000000000' };
+    document.getElementById('f-docnum').placeholder = placeholders[value] || '';
+    document.getElementById('f-docnum').value = '';
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.combo-field')) {
+      document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
+    }
+  });
 </script>
+
 </body>
 </html>

@@ -729,22 +729,54 @@
     .doctype-option:hover,
     .doctype-option.selected { background: #F5F5F5; }
 
-    /* Barra de progresso DS: 4px, #FEC437 */
-    .progress-bar {
+    /* ── Step Indicator V3-style ── */
+    .v1-step-indicator {
+      display: flex;
+      align-items: center;
       width: 100%;
       max-width: 380px;
-      height: 4px;
-      background: #E6E6E6;
-      border-radius: 2px;
       margin-bottom: 30px;
-      overflow: hidden;
     }
-    .progress-bar-fill {
-      height: 100%;
-      background: #FEC437;
-      border-radius: 2px;
-      transition: width 0.4s ease;
+    .v1-step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+      z-index: 1;
     }
+    .v1-step-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+    .v1-step-circle.done  { background: #409644; border: none; color: #fff; }
+    .v1-step-circle.active { background: rgba(254,196,55,0.15); border: 2px solid #FEC437; color: #1B2532; box-shadow: 0 0 0 4px rgba(254,196,55,0.12); }
+    .v1-step-circle.pending { background: transparent; border: 2px solid #D1D5DB; color: #9CA3AF; }
+    .v1-step-label { font-size: 11px; font-weight: 600; white-space: nowrap; transition: color 0.3s; color: #94A3B8; }
+    .v1-step-item.done   .v1-step-label { color: #409644; }
+    .v1-step-item.active .v1-step-label { color: #27364A; }
+    .v1-step-item.pending .v1-step-label { color: #94A3B8; }
+    .v1-step-line {
+      flex: 1;
+      height: 2px;
+      position: relative;
+      margin-bottom: 22px;
+      min-width: 20px;
+    }
+    .v1-step-line-bg   { position: absolute; inset: 0; background: #E6E6E6; border-radius: 2px; }
+    .v1-step-line-fill { position: absolute; top: 0; left: 0; bottom: 0; border-radius: 2px; background: #FEC437; transition: width 0.4s ease; width: 0%; }
+    .v1-step-line.done    .v1-step-line-fill { width: 100%; }
+    .v1-step-line.active  .v1-step-line-fill { width: 50%; }
+    .v1-step-line.pending .v1-step-line-fill { width: 0%; }
 
     .section-body {
       overflow: hidden;
@@ -1829,9 +1861,28 @@
       <div class="panel-heading-subtitle">A reserva RES024562-12648 não foi cobrada. Para garantir sua reserva, atualize os seus dados de pagamento.</div>
     </div>
 
-    <!-- Barra de progresso DS -->
-    <div class="progress-bar" id="progress-bar">
-      <div class="progress-bar-fill" id="progress-fill" style="width: 33%"></div>
+    <!-- Barra de progresso — Step Indicator V3-style -->
+    <div class="v1-step-indicator" id="v1-step-indicator">
+      <div class="v1-step-item active" id="v1-si-1">
+        <div class="v1-step-circle active" id="v1-sc-1">1</div>
+        <div class="v1-step-label">Pessoal</div>
+      </div>
+      <div class="v1-step-line pending" id="v1-sl-1">
+        <div class="v1-step-line-bg"></div>
+        <div class="v1-step-line-fill"></div>
+      </div>
+      <div class="v1-step-item pending" id="v1-si-2">
+        <div class="v1-step-circle pending" id="v1-sc-2">2</div>
+        <div class="v1-step-label">Endereço</div>
+      </div>
+      <div class="v1-step-line pending" id="v1-sl-2">
+        <div class="v1-step-line-bg"></div>
+        <div class="v1-step-line-fill"></div>
+      </div>
+      <div class="v1-step-item pending" id="v1-si-3">
+        <div class="v1-step-circle pending" id="v1-sc-3">3</div>
+        <div class="v1-step-label">Pagamento</div>
+      </div>
     </div>
 
     <!-- ── Seção 1 — Dados Pessoais ── -->
@@ -2276,6 +2327,7 @@
 
     // Atualiza a barra de progresso com base nos campos preenchidos
     updateProgress();
+    updateV1Steps();
 
     // Scroll suave até a seção
     const el = document.getElementById('sec-' + target);
@@ -2373,6 +2425,7 @@
     /* Registra listeners de progresso e calcula estado inicial */
     attachProgressListeners();
     updateProgress();
+    updateV1Steps();
   });
 
   /* ── Progress bar dinâmica (por campo preenchido) ── */
@@ -2413,9 +2466,40 @@
     if (document.getElementById('sec-personal')?.classList.contains('completed')) sectionMin = 33;
     if (document.getElementById('sec-address')?.classList.contains('completed'))  sectionMin = 66;
 
-    const pct  = Math.max(fieldPct, sectionMin);
-    const fill = document.getElementById('progress-fill');
-    if (fill) fill.style.width = pct + '%';
+    updateV1Steps();
+  }
+
+  /* ── Atualiza step indicator V3-style ── */
+  function updateV1Steps() {
+    const steps = ['personal', 'address', 'payment'];
+    steps.forEach(function(sec, i) {
+      var idx = i + 1;
+      var secEl = document.getElementById('sec-' + sec);
+      var si = document.getElementById('v1-si-' + idx);
+      var sc = document.getElementById('v1-sc-' + idx);
+      if (!si || !sc || !secEl) return;
+      var isDone = secEl.classList.contains('completed');
+      var bodyEl = document.getElementById('body-' + sec);
+      var isActive = bodyEl && bodyEl.classList.contains('open');
+      if (isDone) {
+        si.className = 'v1-step-item done';
+        sc.className = 'v1-step-circle done';
+        sc.textContent = '✓';
+      } else if (isActive) {
+        si.className = 'v1-step-item active';
+        sc.className = 'v1-step-circle active';
+        sc.textContent = String(idx);
+      } else {
+        si.className = 'v1-step-item pending';
+        sc.className = 'v1-step-circle pending';
+        sc.textContent = String(idx);
+      }
+      // connecting line
+      if (idx < 3) {
+        var sl = document.getElementById('v1-sl-' + idx);
+        if (sl) sl.className = 'v1-step-line ' + (isDone ? 'done' : 'pending');
+      }
+    });
   }
 
   function attachProgressListeners() {
@@ -2963,9 +3047,7 @@
   <div class="vs-label">Layout</div>
   <a href="index.html" class="vs-btn vs-active" title="V1 — Bee2Pay atual">V1</a>
   <div class="vs-divider"></div>
-  <a href="v2.html" class="vs-btn" title="V2 — Stripe inspired">V2</a>
-  <div class="vs-divider"></div>
-  <a href="v3.html" class="vs-btn" title="V3 — Modern Fintech">V3</a>
+  <a href="v2.html" class="vs-btn" title="V2 — Bee2Pay Yellow">V2</a>
 </nav>
 
 </body>
