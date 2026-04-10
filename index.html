@@ -1494,7 +1494,7 @@
       transition: background 0.1s;
     }
     .lang-option:hover { background: #F5F5F5; }
-    .lang-option.selected { background: #FFF8E1; }
+    .lang-option.selected { background: #F5F5F5; font-weight: 600; }
 
     /* ── CEP row with link ── */
     .row-cep-action {
@@ -1611,9 +1611,97 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 2000;
-      background: #fff;
+      background: linear-gradient(135deg, #fffdf5 0%, #fffff8 40%, #f5faff 100%);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
     }
-    .success-page .page { height: 100vh; }
+
+    /* Topbar: logo + lang */
+    .suc-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      flex-shrink: 0;
+    }
+
+    /* Área central que centraliza o card */
+    .suc-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 40px;
+    }
+
+    /* O único bloco de informação */
+    .suc-block {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(245,175,4,0.12);
+      border-radius: 20px;
+      padding: 40px 44px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+      box-sizing: border-box;
+    }
+
+    /* Comprovante section dentro do bloco */
+    .suc-receipt {
+      border-top: 1px solid #EDEDED;
+      padding-top: 28px;
+      margin-top: 28px;
+    }
+    .suc-receipt-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #273240;
+      margin-bottom: 6px;
+    }
+    .suc-receipt-sub {
+      font-size: 13px;
+      color: #6B7280;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .suc-email-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      border: 1.5px solid #EDEDED;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: #273240;
+      background: #fff;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 6px;
+    }
+    .suc-email-input:focus { border-color: #BDBDBD; box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
+    .suc-receipt-hint {
+      font-size: 11px;
+      color: #A6A6A6;
+      margin-bottom: 16px;
+    }
+    .suc-send-btn {
+      width: 100%;
+      height: 50px;
+      background: #F5AF04;
+      color: #273240;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .suc-send-btn:hover { background: #E09E00; }
     /* Card centrado na left-panel, largura máxima conforme Figma 28112:37263 (578px) */
     .success-card {
       background: #F5F5F5;
@@ -1998,16 +2086,16 @@
           <span class="lang-arrow">expand_more</span>
         </button>
         <div class="lang-dropdown" id="lang-dropdown">
-          <div class="lang-option selected" data-lang="pt-BR" data-iso="br">
+          <div class="lang-option selected" data-lang="pt-BR" data-iso="br" onclick="setLang(this)">
             <span class="fi fi-br"></span> Português (BR)
           </div>
-          <div class="lang-option" data-lang="pt-PT" data-iso="pt">
+          <div class="lang-option" data-lang="pt-PT" data-iso="pt" onclick="setLang(this)">
             <span class="fi fi-pt"></span> Português (PT)
           </div>
-          <div class="lang-option" data-lang="en" data-iso="us">
+          <div class="lang-option" data-lang="en" data-iso="us" onclick="setLang(this)">
             <span class="fi fi-us"></span> English
           </div>
-          <div class="lang-option" data-lang="es" data-iso="es">
+          <div class="lang-option" data-lang="es" data-iso="es" onclick="setLang(this)">
             <span class="fi fi-es"></span> Español
           </div>
         </div>
@@ -2439,75 +2527,73 @@
 
 <!-- ═══ TELA DE SUCESSO ═══ -->
 <div class="success-page" id="success-page" style="display:none;">
-  <div class="page">
-    <!-- Painel esquerdo: resultado do pagamento -->
-    <div class="left-panel">
-      <div class="left-inner" style="padding:40px 52px; max-width:none; width:100%; margin-right:0; align-items:stretch;">
-        <!-- Logo + language selector (Figma 28112:37258) -->
-        <div class="left-header" style="margin-bottom:36px;">
-          <a class="logo" href="#">
-            <img src="assets/bee2pay-logo.png" height="40" alt="Bee2Pay">
-          </a>
-          <div class="lang-selector" id="suc-lang-selector">
-            <button class="lang-trigger" id="suc-lang-trigger" type="button">
-              <span class="fi fi-br" id="suc-lang-flag"></span>
-              <span class="lang-text" id="suc-lang-text">Português (BR)</span>
-              <span class="lang-arrow">expand_more</span>
-            </button>
-            <div class="lang-dropdown" id="suc-lang-dropdown">
-              <div class="lang-option selected" data-lang="pt-BR" data-iso="br" onclick="setSucLang(this)"><span class="fi fi-br"></span> Português (BR)</div>
-              <div class="lang-option" data-lang="pt-PT" data-iso="pt" onclick="setSucLang(this)"><span class="fi fi-pt"></span> Português (PT)</div>
-              <div class="lang-option" data-lang="en" data-iso="us" onclick="setSucLang(this)"><span class="fi fi-us"></span> English</div>
-              <div class="lang-option" data-lang="es" data-iso="es" onclick="setSucLang(this)"><span class="fi fi-es"></span> Español</div>
-            </div>
-          </div>
-        </div>
-        <div class="success-card">
-          <div class="success-icon">
-            <!-- Ícone: círculo sólido verde #4BAF4F + checkmark branco (Figma 28112:37273) -->
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="32" fill="#4BAF4F"/>
-              <path d="M19 33L28 42L45 24" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="success-title">Pagamento realizado com sucesso!</div>
-          <div class="success-details">
-            <div class="success-section-title">Dados do Pagamento</div>
-            <div class="success-row">
-              <span class="success-label">Bandeira</span>
-              <span class="success-value" id="suc-brand">Mastercard</span>
-            </div>
-            <div class="success-row">
-              <span class="success-label">Número do Cartão</span>
-              <span class="success-value" id="suc-card">**** **** **** 1234</span>
-            </div>
-            <div class="success-row">
-              <span class="success-label">Nome do Titular</span>
-              <span class="success-value" id="suc-name">—</span>
-            </div>
-          </div>
-          <div class="success-total">
-            <span class="success-total-label">Valor da reserva</span>
-            <span class="success-total-value">R$ 5.120,00</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Painel direito: enviar comprovante -->
-    <div class="right-panel">
-      <div class="right-inner" style="justify-content:center; min-height:100vh;">
-        <div class="panel-heading">
-          <div class="panel-heading-title">Comprovante do pagamento</div>
-          <div class="panel-heading-subtitle">Caso deseje, você pode enviar o comprovante por e-mail.</div>
-        </div>
-        <md-outlined-text-field id="f-receipt-email" label="E-mail" type="email" autocomplete="off" style="margin-bottom:8px;"></md-outlined-text-field>
-        <div style="font-size:11px; color:#A6A6A6; margin-bottom:16px;">Para mais de um e-mail, separe-os por vírgula.</div>
-        <md-filled-button class="btn-yellow" onclick="sendReceipt()" style="width:100%; max-width:380px;">
-          Enviar
-        </md-filled-button>
+
+  <!-- Header: logo + lang -->
+  <div class="suc-topbar">
+    <a class="logo" href="#">
+      <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay">
+    </a>
+    <div class="lang-selector" id="suc-lang-selector">
+      <button class="lang-trigger" id="suc-lang-trigger" type="button">
+        <span class="fi fi-br" id="suc-lang-flag"></span>
+        <span class="lang-text" id="suc-lang-text">Português (BR)</span>
+        <span class="lang-arrow">expand_more</span>
+      </button>
+      <div class="lang-dropdown" id="suc-lang-dropdown">
+        <div class="lang-option selected" data-lang="pt-BR" data-iso="br" onclick="setSucLang(this)"><span class="fi fi-br"></span> Português (BR)</div>
+        <div class="lang-option" data-lang="pt-PT" data-iso="pt" onclick="setSucLang(this)"><span class="fi fi-pt"></span> Português (PT)</div>
+        <div class="lang-option" data-lang="en" data-iso="us" onclick="setSucLang(this)"><span class="fi fi-us"></span> English</div>
+        <div class="lang-option" data-lang="es" data-iso="es" onclick="setSucLang(this)"><span class="fi fi-es"></span> Español</div>
       </div>
     </div>
   </div>
+
+  <!-- Single centered card -->
+  <div class="suc-center">
+    <div class="suc-block">
+
+      <!-- ── Ícone + título ── -->
+      <div class="success-icon">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="32" fill="#4BAF4F"/>
+          <path d="M19 33L28 42L45 24" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-title">Pagamento realizado com sucesso!</div>
+
+      <!-- ── Dados do pagamento ── -->
+      <div class="success-details">
+        <div class="success-section-title">Dados do Pagamento</div>
+        <div class="success-row">
+          <span class="success-label">Bandeira</span>
+          <span class="success-value" id="suc-brand">Cartão</span>
+        </div>
+        <div class="success-row">
+          <span class="success-label">Número do Cartão</span>
+          <span class="success-value" id="suc-card">**** **** **** ____</span>
+        </div>
+        <div class="success-row">
+          <span class="success-label">Nome do Titular</span>
+          <span class="success-value" id="suc-name">—</span>
+        </div>
+      </div>
+      <div class="success-total">
+        <span class="success-total-label">Valor da reserva</span>
+        <span class="success-total-value">R$ 5.120,00</span>
+      </div>
+
+      <!-- ── Comprovante ── -->
+      <div class="suc-receipt">
+        <div class="suc-receipt-title">Comprovante do pagamento</div>
+        <div class="suc-receipt-sub">Caso deseje, você pode enviar o comprovante por e-mail.</div>
+        <input type="email" id="f-receipt-email" placeholder="E-mail" autocomplete="off" class="suc-email-input" />
+        <div class="suc-receipt-hint">Para mais de um e-mail, separe-os por vírgula.</div>
+        <button class="suc-send-btn" onclick="sendReceipt()">Enviar</button>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <!-- ═══ OVERLAY: PROCESSANDO PAGAMENTO ═══ -->
@@ -3229,12 +3315,34 @@
     if (btn) btn.setAttribute('disabled', '');
 
     // Pre-fill success page data (enquanto overlay está visível)
-    const cardNum = document.getElementById('f-card-num')?.value || '';
-    const last4 = cardNum.replace(/\s/g,'').slice(-4);
+    const cardNum  = document.getElementById('f-card-num')?.value || '';
+    const rawDigits = cardNum.replace(/\s/g,'');
+    const last4 = rawDigits.slice(-4);
     document.getElementById('suc-card').textContent = '**** **** **** ' + (last4 || '____');
-    document.getElementById('suc-name').textContent = document.getElementById('f-card-name')?.value || '—';
-    const first = cardNum.replace(/\s/g,'').charAt(0);
-    document.getElementById('suc-brand').textContent = first === '4' ? 'Visa' : first === '5' ? 'Mastercard' : 'Cartão';
+    document.getElementById('suc-name').textContent = document.getElementById('f-card-name')?.value?.trim() || '—';
+
+    // Detecção de bandeira completa (reutiliza mesma lógica do campo)
+    const brandNames = { visa:'Visa', mc:'Mastercard', amex:'American Express',
+      elo:'Elo', hipercard:'Hipercard', discover:'Discover', diners:'Diners Club',
+      jcb:'JCB', unionpay:'UnionPay', maestro:'Maestro', aura:'Aura' };
+    const d = rawDigits;
+    const f2 = parseInt(d.slice(0,2)||'0',10);
+    const f4 = parseInt(d.slice(0,4).padEnd(4,'0'),10);
+    const f6 = parseInt(d.slice(0,6).padEnd(6,'0'),10);
+    let detectedBrand = null;
+    const eloBins6=[401178,401179,431274,438935,451416,457393,457631,457632,504175,627780,636297,636368,506699,506700,506701,506702,506703,506704,509000];
+    if(eloBins6.includes(f6)||[4011,4312,4389,4514,4576].includes(f4)) detectedBrand='elo';
+    if(!detectedBrand&&(f6===606282||f4===3841)) detectedBrand='hipercard';
+    if(!detectedBrand&&f2===50) detectedBrand='aura';
+    if(!detectedBrand&&d[0]==='3'&&(d[1]==='4'||d[1]==='7')) detectedBrand='amex';
+    if(!detectedBrand&&d[0]==='3'&&(f2>=30&&f2<=38)) detectedBrand='diners';
+    if(!detectedBrand&&f4>=3528&&f4<=3589) detectedBrand='jcb';
+    if(!detectedBrand&&f2===62) detectedBrand='unionpay';
+    if(!detectedBrand&&(f4===6011||(f6>=622126&&f6<=622925)||(f2>=64&&f2<=65))) detectedBrand='discover';
+    if(!detectedBrand&&[6304,6759,6761,6762,6763].includes(f4)) detectedBrand='maestro';
+    if(!detectedBrand&&((f2>=51&&f2<=55)||(f4>=2221&&f4<=2720))) detectedBrand='mc';
+    if(!detectedBrand&&d[0]==='4') detectedBrand='visa';
+    document.getElementById('suc-brand').textContent = detectedBrand ? (brandNames[detectedBrand]||detectedBrand) : 'Cartão';
 
     // Esconde o formulário e mostra overlay (success page ainda não aparece)
     document.querySelector('.page').style.display = 'none';
@@ -3252,6 +3360,25 @@
         document.getElementById('success-page').style.display = 'block';
       }, 500);
     }, 2400);
+  }
+
+  /* Language selector — cabeçalho principal */
+  (function() {
+    const trigger = document.getElementById('lang-trigger');
+    const dropdown = document.getElementById('lang-dropdown');
+    if (!trigger || !dropdown) return;
+    trigger.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+  })();
+
+  function setLang(opt) {
+    const iso = opt.dataset.iso;
+    const text = opt.textContent.trim();
+    document.querySelector('#lang-trigger .fi').className = 'fi fi-' + iso;
+    document.querySelector('#lang-trigger .lang-text').textContent = text;
+    document.querySelectorAll('#lang-dropdown .lang-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    document.getElementById('lang-dropdown').classList.remove('open');
   }
 
   /* Language selector — tela de sucesso */
@@ -3304,7 +3431,10 @@
     padding: 10px 7px;
     backdrop-filter: blur(12px);
     box-shadow: 0 8px 32px rgba(0,0,0,0.22), 0 1.5px 0 rgba(255,255,255,0.04) inset;
+    opacity: 0;
+    transition: opacity 0.2s ease;
   }
+  .version-switcher:hover { opacity: 1; }
   .vs-label {
     font-family: Inter, sans-serif;
     font-size: 8px;
