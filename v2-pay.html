@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pagamento — V2 Bee2Pay Yellow</title>
+  <title>Pagamento — Bee2Pay Yellow</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -296,133 +296,19 @@
       gap: 32px;
     }
 
-    /* ─── STEP INDICATOR ─── */
-    .step-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0;
-    }
-
-    .step-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .step-circle {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .step-circle.done {
-      background: #F5AF04;
-      border: none;
-      color: #273240;
-    }
-
-    .step-circle.active {
-      background: #F5AF04;
-      border: none;
-      color: #273240;
-    }
-
-    .step-circle.pending {
-      background: transparent;
-      border: 2px solid #D1D5DB;
-      color: #CBD5E1;
-    }
-
-    .step-label {
-      font-size: 11px;
-      font-weight: 600;
-      white-space: nowrap;
-      transition: color 0.3s;
-    }
-
-    .step-item.done .step-label { color: #F5AF04; }
-    .step-item.active .step-label { color: #273240; }
-    .step-item.pending .step-label { color: #94A3B8; }
-
-    /* Connecting line */
-    .step-line {
-      flex: 1;
-      height: 2px;
-      position: relative;
-      margin-bottom: 22px;
-      min-width: 24px;
-    }
-
-    .step-line-bg {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.08);
-      border-radius: 2px;
-    }
-
-    .step-line-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      border-radius: 2px;
-      background: linear-gradient(90deg, #F5AF04, #FFC107);
-      transition: width 0.4s ease;
-    }
-
-    .step-line.done .step-line-fill { width: 100%; }
-    .step-line.pending .step-line-fill { width: 0%; }
-
-    /* ─── FORM STEPS ─── */
-    .form-step {
-      display: none;
-      flex-direction: column;
-      gap: 20px;
-      animation: stepEnter 0.35s ease forwards;
-    }
-
-    .form-step.active {
-      display: flex;
-    }
-
-    @keyframes stepEnter {
-      from { opacity: 0; transform: translateX(20px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes stepEnterLeft {
-      from { opacity: 0; transform: translateX(-20px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    .form-step.going-back {
-      animation: stepEnterLeft 0.35s ease forwards;
-    }
-
-    .step-title {
+    /* ─── PAYMENT TITLE ─── */
+    .payment-title {
       font-size: 20px;
       font-weight: 700;
       color: #273240;
+      margin-bottom: 4px;
       text-wrap: balance;
-      margin-bottom: 6px;
     }
 
-    .step-subtitle {
+    .payment-subtitle {
       font-size: 13px;
       color: #9C9C9C;
       margin-top: 0;
-      margin-bottom: 8px;
     }
 
     /* ─── FIELD GROUPS ─── */
@@ -487,37 +373,6 @@
 
     .input-wrap input { padding-right: 14px; }
 
-    /* CEP: input deixa espaço para o botão pill */
-    #cep-wrap input { padding-right: 108px; }
-
-    .input-addon-right {
-      position: absolute;
-      right: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 32px;
-      height: 32px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px;
-      background: #ffffff;
-      border: 1px solid #C5C5C5;
-      border-radius: 4px;
-      color: #273240;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
-    }
-    .input-addon-right:hover {
-      background: #E6E6E6;
-      border-color: #C5C5C5;
-    }
-    .input-addon-right:active {
-      transform: translateY(-50%) scale(0.96);
-    }
-    .input-addon-right svg { flex-shrink: 0; }
-
     /* Card brand badge */
     .card-brand-badge {
       position: absolute;
@@ -557,7 +412,7 @@
     .maestro-right { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #0057A8; opacity: 0.9; }
     .card-brand-badge.brand-aura { background: #008000; }
     .card-brand-badge.brand-text {
-      font-family: 'Inter', sans-serif; font-size: 6px; font-weight: 900;
+      font-family: 'Open Sans', sans-serif; font-size: 6px; font-weight: 900;
       color: #fff; letter-spacing: 0.2px; text-align: center; line-height: 1;
     }
 
@@ -650,35 +505,6 @@
       margin-right: -1px; border-radius: 0 2px 2px 0;
     }
 
-    /* Phone DDI row */
-    .phone-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .ddi-select-wrap {
-      position: relative;
-      flex: 0 0 110px;
-    }
-
-    .ddi-select-wrap select {
-      padding-left: 10px;
-      padding-right: 24px;
-      font-size: 13px;
-    }
-
-    .ddi-select-wrap::after {
-      content: "";
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
-      pointer-events: none;
-    }
-
     .select-wrap {
       position: relative;
       flex: 1;
@@ -699,100 +525,6 @@
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
       pointer-events: none;
     }
-
-    /* ── Combo Field: unified selector + input ── */
-    .combo-field {
-      position: relative;
-      display: flex;
-      align-items: center;
-      height: 48px;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid #C5C5C5;
-      border-radius: 4px;
-      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-      width: 100%;
-    }
-    .combo-field:hover:not(.combo-open) { border-color: #4E4076; }
-    .combo-field:focus-within,
-    .combo-field.combo-open {
-      border-color: #C5C5C5;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
-      background: #fff;
-    }
-    .combo-trigger {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      height: 100%;
-      padding: 0 28px 0 16px;
-      background: transparent;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 14px;
-      color: #273240;
-      white-space: nowrap;
-      flex-shrink: 0;
-      border-radius: 4px 0 0 4px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 6px center;
-      background-size: 16px;
-    }
-    .combo-trigger:hover { background-color: #F8F8F8; }
-    .flag-select-field .combo-trigger { flex: 1; border-radius: 4px; }
-    .combo-sep {
-      width: 1px;
-      height: 24px;
-      background: rgba(245,175,4,0.20);
-      flex-shrink: 0;
-    }
-    .combo-input {
-      flex: 1;
-      min-width: 0;
-      height: 100%;
-      border: none;
-      outline: none;
-      background: transparent;
-      padding: 0 16px;
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 14px;
-      color: #273240;
-    }
-    .combo-input::placeholder { color: #9C9C9C; }
-    .combo-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      min-width: 180px;
-      max-height: 240px;
-      overflow-y: auto;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(245,175,4,0.18);
-      border-radius: 4px;
-      box-shadow: 0 8px 32px rgba(245,175,4,0.12), 0 2px 8px rgba(0,0,0,0.06);
-      z-index: 500;
-      padding: 4px;
-    }
-    .combo-field.combo-open .combo-dropdown { display: block; }
-    .combo-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 13px;
-      color: #273240;
-      cursor: pointer;
-      transition: background 0.1s;
-      border-radius: 8px;
-    }
-    .combo-option:hover { background: #F5F5F5; }
-    .combo-option.selected { background: #F5F5F5; font-weight: 600; }
 
     /* ─── BUTTONS ─── */
     .btn-primary {
@@ -815,46 +547,13 @@
     }
 
     .btn-primary:hover { background: #F5AF04; }
-
     .btn-primary:active { background: #F5AF04; transform: scale(0.97); }
-    .form-step > .btn-primary,
-    .form-step .btn-row { margin-top: 20px; }
 
     .btn-pay {
       border-radius: 4px;
       height: 56px;
       font-size: 16px;
     }
-
-    .btn-secondary {
-      width: 100%;
-      height: 52px;
-      border-radius: 4px;
-      background: transparent;
-      border: 1px solid #D1D5DB;
-      color: #273240;
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s, transform 0.12s;
-    }
-
-    .btn-secondary:hover { background: #E6E6E6; border-color: #D1D5DB; color: #273240; }
-    .btn-secondary:active { background: #E6E6E6; color: #273240; transform: scale(0.97); }
-
-    .btn-row {
-      display: flex;
-      align-items: stretch;
-      gap: 10px;
-    }
-
-    .btn-row .btn-secondary { flex: 0 0 auto; width: auto; padding: 0 24px; height: 52px; }
-    .btn-row .btn-primary   { flex: 1; height: 52px; }
 
     /* Security note */
     .security-note {
@@ -881,7 +580,7 @@
       border: 1px solid #C5C5C5;
       border-radius: 4px;
       cursor: pointer;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-size: 14px;
       color: #273240;
       box-sizing: border-box;
@@ -923,7 +622,7 @@
       align-items: center;
       height: 40px;
       padding: 0 16px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-size: 13px;
       color: #273240;
       cursor: pointer;
@@ -1026,10 +725,10 @@
     /* Payment details nested card */
     .payment-details {
       width: 100%;
-      background: rgba(245,175,4,0.05);
-      border: 1px solid rgba(245,175,4,0.12);
-      border-radius: 4px;
-      padding: 20px 24px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -1044,7 +743,7 @@
 
     .pd-label { font-size: 12px; color: #64748B; }
     .pd-value { font-size: 12px; color: #273240; font-weight: 500; font-variant-numeric: tabular-nums; }
-    .pd-value.green { color: #34D399; font-weight: 700; }
+    .pd-value.green { font-size: 14px; color: #273240; font-weight: 700; }
 
     /* Receipt section */
     .receipt-section {
@@ -1209,62 +908,6 @@
     .btn-modal-close:hover { background: #F8FAFC; }
     .btn-modal-close:active { transform: scale(0.97); }
 
-    /* ─── VERSION SWITCHER ─── */
-    .version-switcher {
-      position: fixed;
-      left: 20px;
-      bottom: 28px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      background: rgba(255,255,255,0.92);
-      border: 1px solid rgba(245,175,4,0.15);
-      border-radius: 4px;
-      padding: 10px 7px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    .version-switcher:hover { opacity: 1; }
-
-    .vs-label {
-      font-family: 'Open Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 600;
-      color: rgba(0,0,0,0.32);
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      margin-bottom: 4px;
-    }
-
-    .vs-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Open Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      text-decoration: none;
-      color: rgba(0,0,0,0.44);
-      transition: background 0.14s, color 0.14s, transform 0.1s;
-    }
-
-    .vs-btn:hover { background: rgba(245,175,4,0.09); color: #F5AF04; }
-    .vs-btn:active { transform: scale(0.96); }
-
-    .vs-divider {
-      width: 20px;
-      height: 1px;
-      background: rgba(0,0,0,0.08);
-      margin: 2px 0;
-    }
-
     /* ─── RESPONSIVE ─── */
 
     /* Tablet: reduz padding lateral */
@@ -1334,19 +977,6 @@
         flex-direction: column;
         gap: 12px;
       }
-
-      .btn-row {
-        flex-direction: column-reverse;
-        gap: 10px;
-      }
-
-      .btn-row .btn-secondary,
-      .btn-row .btn-primary {
-        width: 100%;
-        padding: 0 16px;
-      }
-
-      .combo-field { height: 48px; }
     }
 
     /* Telas muito pequenas */
@@ -1354,14 +984,7 @@
       .panel-left, .panel-right { padding: 20px 16px; }
     }
 
-    /* State: CEP loading */
-    .cep-loading input { opacity: 0.7; }
-    .cep-loading .input-addon-right { animation: pulse 0.8s ease-in-out infinite; }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.4; }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -1474,393 +1097,140 @@
 
       <!-- Security badges -->
       <div class="badges-wrap">
-      <div class="badges-label">Este link é protegido por:</div>
-      <div class="badges">
-        <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <rect x="1" y="1" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M4 7l2 2 4-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          LGPD
-        </span>
-        <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <rect x="2" y="3" width="10" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M5 3V2.5a2 2 0 014 0V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-          PCI DSS
-        </span>
-        <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <path d="M7 1l4 2v4c0 2.5-2 4.5-4 5.5C5 11.5 3 9.5 3 7V3l4-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-          </svg>
-          SSL 256-bit
-        </span>
+        <div class="badges-label">Este link é protegido por:</div>
+        <div class="badges">
+          <span class="badge">
+            <svg viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="1" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M4 7l2 2 4-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            LGPD
+          </span>
+          <span class="badge">
+            <svg viewBox="0 0 14 14" fill="none">
+              <rect x="2" y="3" width="10" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M5 3V2.5a2 2 0 014 0V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            PCI DSS
+          </span>
+          <span class="badge">
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M7 1l4 2v4c0 2.5-2 4.5-4 5.5C5 11.5 3 9.5 3 7V3l4-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+            </svg>
+            SSL 256-bit
+          </span>
+        </div>
       </div>
-      </div><!-- /badges-wrap -->
     </div>
     <!-- /LEFT PANEL -->
 
     <!-- ── RIGHT PANEL ── -->
     <div class="panel-right glass-card">
 
-      <!-- Step indicator -->
-      <div class="step-indicator" id="step-indicator">
-        <!-- Step 1 -->
-        <div class="step-item active" id="si-1">
-          <div class="step-circle active" id="sc-1">1</div>
-          <div class="step-label">Dados</div>
-        </div>
-        <!-- Line 1-2 -->
-        <div class="step-line pending" id="sl-1">
-          <div class="step-line-bg"></div>
-          <div class="step-line-fill"></div>
-        </div>
-        <!-- Step 2 -->
-        <div class="step-item pending" id="si-2">
-          <div class="step-circle pending" id="sc-2">2</div>
-          <div class="step-label">Endereço</div>
-        </div>
-        <!-- Line 2-3 -->
-        <div class="step-line pending" id="sl-2">
-          <div class="step-line-bg"></div>
-          <div class="step-line-fill"></div>
-        </div>
-        <!-- Step 3 -->
-        <div class="step-item pending" id="si-3">
-          <div class="step-circle pending" id="sc-3">3</div>
-          <div class="step-label">Pagamento</div>
+      <!-- Payment title (replaces step indicator) -->
+      <div>
+        <div class="payment-title">Dados do Cartão</div>
+        <div class="payment-subtitle">Pagamento seguro e criptografado</div>
+      </div>
+
+      <!-- Card number -->
+      <div class="field-group">
+        <label class="field-label">Número do cartão</label>
+        <div class="input-wrap">
+          <input type="text" id="f-cardnum" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" autocomplete="new-password"
+            oninput="handleCardNumber(this)" style="padding-right: 48px;" />
+          <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
+            <div class="card-generic-icon">
+              <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/>
+                <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- ───── STEP 1: Dados Pessoais ───── -->
-      <div class="form-step active" id="step-1">
-        <div>
-          <div class="step-title">Dados Pessoais</div>
-          <div class="step-subtitle">Preencha seus dados de identificação</div>
-        </div>
-
+      <!-- Expiry + CVV -->
+      <div class="field-row">
         <div class="field-group">
-          <label class="field-label">Nome completo</label>
-          <input type="text" id="f-nome" placeholder="Alberto Roberto" autocomplete="name" value="Alberto Roberto" />
+          <label class="field-label">Validade</label>
+          <input type="text" id="f-expiry" placeholder="MM/AA" maxlength="5" inputmode="numeric" autocomplete="new-password"
+            oninput="handleExpiry(this)" />
         </div>
-
         <div class="field-group">
-          <label class="field-label">E-mail</label>
-          <input type="email" id="f-email" placeholder="seu@email.com" autocomplete="email" />
-        </div>
-
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">Data de nascimento</label>
-            <input type="text" id="f-dob" placeholder="DD/MM/AAAA" maxlength="10" inputmode="numeric" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">País</label>
-            <div class="combo-field flag-select-field" id="combo-pais">
-              <button type="button" class="combo-trigger" id="combo-pais-trigger" onclick="toggleCombo('combo-pais')">
-                <span class="fi fi-br" id="combo-pais-flag"></span>
-                <span id="combo-pais-label">Brasil</span>
-              </button>
-              <input type="hidden" id="f-pais" value="BR">
-              <div class="combo-dropdown" id="combo-pais-dd">
-                <div class="combo-option selected" data-value="BR" onclick="selectComboItem('combo-pais','BR','br','f-pais','Brasil')"><span class="fi fi-br"></span> Brasil</div>
-                <div class="combo-option" data-value="AR" onclick="selectComboItem('combo-pais','AR','ar','f-pais','Argentina')"><span class="fi fi-ar"></span> Argentina</div>
-                <div class="combo-option" data-value="BO" onclick="selectComboItem('combo-pais','BO','bo','f-pais','Bolívia')"><span class="fi fi-bo"></span> Bolívia</div>
-                <div class="combo-option" data-value="CL" onclick="selectComboItem('combo-pais','CL','cl','f-pais','Chile')"><span class="fi fi-cl"></span> Chile</div>
-                <div class="combo-option" data-value="CO" onclick="selectComboItem('combo-pais','CO','co','f-pais','Colômbia')"><span class="fi fi-co"></span> Colômbia</div>
-                <div class="combo-option" data-value="EC" onclick="selectComboItem('combo-pais','EC','ec','f-pais','Equador')"><span class="fi fi-ec"></span> Equador</div>
-                <div class="combo-option" data-value="MX" onclick="selectComboItem('combo-pais','MX','mx','f-pais','México')"><span class="fi fi-mx"></span> México</div>
-                <div class="combo-option" data-value="PY" onclick="selectComboItem('combo-pais','PY','py','f-pais','Paraguai')"><span class="fi fi-py"></span> Paraguai</div>
-                <div class="combo-option" data-value="PE" onclick="selectComboItem('combo-pais','PE','pe','f-pais','Peru')"><span class="fi fi-pe"></span> Peru</div>
-                <div class="combo-option" data-value="UY" onclick="selectComboItem('combo-pais','UY','uy','f-pais','Uruguai')"><span class="fi fi-uy"></span> Uruguai</div>
-                <div class="combo-option" data-value="VE" onclick="selectComboItem('combo-pais','VE','ve','f-pais','Venezuela')"><span class="fi fi-ve"></span> Venezuela</div>
-                <div class="combo-option" data-value="US" onclick="selectComboItem('combo-pais','US','us','f-pais','Estados Unidos')"><span class="fi fi-us"></span> Estados Unidos</div>
-                <div class="combo-option" data-value="PT" onclick="selectComboItem('combo-pais','PT','pt','f-pais','Portugal')"><span class="fi fi-pt"></span> Portugal</div>
-                <div class="combo-option" data-value="ES" onclick="selectComboItem('combo-pais','ES','es','f-pais','Espanha')"><span class="fi fi-es"></span> Espanha</div>
-                <div class="combo-option" data-value="DE" onclick="selectComboItem('combo-pais','DE','de','f-pais','Alemanha')"><span class="fi fi-de"></span> Alemanha</div>
-                <div class="combo-option" data-value="FR" onclick="selectComboItem('combo-pais','FR','fr','f-pais','França')"><span class="fi fi-fr"></span> França</div>
-                <div class="combo-option" data-value="IT" onclick="selectComboItem('combo-pais','IT','it','f-pais','Itália')"><span class="fi fi-it"></span> Itália</div>
-                <div class="combo-option" data-value="GB" onclick="selectComboItem('combo-pais','GB','gb','f-pais','Reino Unido')"><span class="fi fi-gb"></span> Reino Unido</div>
-                <div class="combo-option" data-value="JP" onclick="selectComboItem('combo-pais','JP','jp','f-pais','Japão')"><span class="fi fi-jp"></span> Japão</div>
-                <div class="combo-option" data-value="CN" onclick="selectComboItem('combo-pais','CN','cn','f-pais','China')"><span class="fi fi-cn"></span> China</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Telefone</label>
-          <div class="combo-field" id="combo-ddi">
-            <button type="button" class="combo-trigger" id="combo-ddi-trigger" onclick="toggleCombo('combo-ddi')">
-              <span class="fi fi-br" id="combo-ddi-flag"></span>
-              <span id="combo-ddi-label">+55</span>
-            </button>
-            <input type="hidden" id="f-ddi" value="+55">
-            <div class="combo-sep"></div>
-            <input type="tel" class="combo-input" id="f-tel" placeholder="(11) 99999-9999" inputmode="numeric" maxlength="15">
-            <div class="combo-dropdown" id="combo-ddi-dd">
-              <div class="combo-option selected" data-value="+55" onclick="selectDDI('+55','br','+55')"><span class="fi fi-br"></span> +55 Brasil</div>
-              <div class="combo-option" data-value="+54" onclick="selectDDI('+54','ar','+54')"><span class="fi fi-ar"></span> +54 Argentina</div>
-              <div class="combo-option" data-value="+591" onclick="selectDDI('+591','bo','+591')"><span class="fi fi-bo"></span> +591 Bolívia</div>
-              <div class="combo-option" data-value="+56" onclick="selectDDI('+56','cl','+56')"><span class="fi fi-cl"></span> +56 Chile</div>
-              <div class="combo-option" data-value="+57" onclick="selectDDI('+57','co','+57')"><span class="fi fi-co"></span> +57 Colômbia</div>
-              <div class="combo-option" data-value="+593" onclick="selectDDI('+593','ec','+593')"><span class="fi fi-ec"></span> +593 Equador</div>
-              <div class="combo-option" data-value="+52" onclick="selectDDI('+52','mx','+52')"><span class="fi fi-mx"></span> +52 México</div>
-              <div class="combo-option" data-value="+595" onclick="selectDDI('+595','py','+595')"><span class="fi fi-py"></span> +595 Paraguai</div>
-              <div class="combo-option" data-value="+51" onclick="selectDDI('+51','pe','+51')"><span class="fi fi-pe"></span> +51 Peru</div>
-              <div class="combo-option" data-value="+598" onclick="selectDDI('+598','uy','+598')"><span class="fi fi-uy"></span> +598 Uruguai</div>
-              <div class="combo-option" data-value="+58" onclick="selectDDI('+58','ve','+58')"><span class="fi fi-ve"></span> +58 Venezuela</div>
-              <div class="combo-option" data-value="+1" onclick="selectDDI('+1','us','+1')"><span class="fi fi-us"></span> +1 EUA</div>
-              <div class="combo-option" data-value="+351" onclick="selectDDI('+351','pt','+351')"><span class="fi fi-pt"></span> +351 Portugal</div>
-              <div class="combo-option" data-value="+34" onclick="selectDDI('+34','es','+34')"><span class="fi fi-es"></span> +34 Espanha</div>
-              <div class="combo-option" data-value="+44" onclick="selectDDI('+44','gb','+44')"><span class="fi fi-gb"></span> +44 Reino Unido</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">Documento</label>
-          <div class="combo-field" id="combo-doc">
-            <button type="button" class="combo-trigger" id="combo-doc-trigger" onclick="toggleCombo('combo-doc')">
-              <span id="combo-doc-label">CPF</span>
-            </button>
-            <input type="hidden" id="f-doctype" value="CPF">
-            <div class="combo-sep"></div>
-            <input type="text" class="combo-input" id="f-docnum" placeholder="000.000.000-00" maxlength="18" inputmode="numeric">
-            <div class="combo-dropdown" id="combo-doc-dd">
-              <div class="combo-option selected" data-value="CPF" onclick="selectDoctype('CPF')">CPF</div>
-              <div class="combo-option" data-value="RG" onclick="selectDoctype('RG')">RG</div>
-              <div class="combo-option" data-value="Passaporte" onclick="selectDoctype('Passaporte')">Passaporte</div>
-              <div class="combo-option" data-value="CNH" onclick="selectDoctype('CNH')">CNH</div>
-            </div>
-          </div>
-        </div>
-        </div><!-- /field-row telefone+documento -->
-
-        <button class="btn-primary" onclick="goToStep(2)">
-          Próximo
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-            <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- ───── STEP 2: Endereço ───── -->
-      <div class="form-step" id="step-2">
-        <div>
-          <div class="step-title">Endereço de Cobrança</div>
-          <div class="step-subtitle">Informe o endereço vinculado ao seu cartão</div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">CEP</label>
-          <div class="input-wrap" id="cep-wrap">
-            <input type="text" id="f-cep" placeholder="00000-000" maxlength="9" inputmode="numeric" />
-            <span class="input-addon-right" onclick="lookupCEP()">
+          <label class="field-label">CVV</label>
+          <div class="cvv-wrap">
+            <input type="text" id="f-cvv" placeholder="123" maxlength="4" inputmode="numeric" autocomplete="new-password" style="padding-right: 36px;" />
+            <span class="cvv-info" id="cvv-info-icon" tabindex="0" aria-label="O que é o CVV?">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M8 7v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="4.5" r="0.75" fill="currentColor"/>
               </svg>
             </span>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-group" style="flex:1;">
-            <label class="field-label">Logradouro</label>
-            <input type="text" id="f-logradouro" placeholder="Rua, Avenida, Travessa..." autocomplete="street-address" />
-          </div>
-          <div class="field-group" style="flex:0 0 120px;">
-            <label class="field-label">Número</label>
-            <input type="text" id="f-numero" placeholder="123" />
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-group" style="flex:1;">
-            <label class="field-label">Complemento</label>
-            <input type="text" id="f-complemento" placeholder="Apto, Bloco..." />
-          </div>
-          <div class="field-group" style="flex:1;">
-            <label class="field-label">Bairro</label>
-            <input type="text" id="f-bairro" placeholder="Nome do bairro" />
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">Estado</label>
-            <div class="combo-field estado-combo" id="estado-combo" style="height:48px;">
-              <button type="button" class="combo-trigger" id="estado-trigger"
-                style="flex:1; border-radius:4px; justify-content:space-between; padding-right:12px;"
-                onclick="toggleEstado()">
-                <span id="estado-label" style="color:#9C9C9C;">Selecione</span>
-              </button>
-              <div class="combo-dropdown" id="estado-dropdown" style="width:100%; min-width:unset;">
-                <div class="combo-option" data-value="" style="color:#9C9C9C;" onclick="selectEstado(this)">Selecione</div>
-                <div class="combo-option" data-value="AC" onclick="selectEstado(this)">AC</div>
-                <div class="combo-option" data-value="AL" onclick="selectEstado(this)">AL</div>
-                <div class="combo-option" data-value="AM" onclick="selectEstado(this)">AM</div>
-                <div class="combo-option" data-value="AP" onclick="selectEstado(this)">AP</div>
-                <div class="combo-option" data-value="BA" onclick="selectEstado(this)">BA</div>
-                <div class="combo-option" data-value="CE" onclick="selectEstado(this)">CE</div>
-                <div class="combo-option" data-value="DF" onclick="selectEstado(this)">DF</div>
-                <div class="combo-option" data-value="ES" onclick="selectEstado(this)">ES</div>
-                <div class="combo-option" data-value="GO" onclick="selectEstado(this)">GO</div>
-                <div class="combo-option" data-value="MA" onclick="selectEstado(this)">MA</div>
-                <div class="combo-option" data-value="MG" onclick="selectEstado(this)">MG</div>
-                <div class="combo-option" data-value="MS" onclick="selectEstado(this)">MS</div>
-                <div class="combo-option" data-value="MT" onclick="selectEstado(this)">MT</div>
-                <div class="combo-option" data-value="PA" onclick="selectEstado(this)">PA</div>
-                <div class="combo-option" data-value="PB" onclick="selectEstado(this)">PB</div>
-                <div class="combo-option" data-value="PE" onclick="selectEstado(this)">PE</div>
-                <div class="combo-option" data-value="PI" onclick="selectEstado(this)">PI</div>
-                <div class="combo-option" data-value="PR" onclick="selectEstado(this)">PR</div>
-                <div class="combo-option" data-value="RJ" onclick="selectEstado(this)">RJ</div>
-                <div class="combo-option" data-value="RN" onclick="selectEstado(this)">RN</div>
-                <div class="combo-option" data-value="RO" onclick="selectEstado(this)">RO</div>
-                <div class="combo-option" data-value="RR" onclick="selectEstado(this)">RR</div>
-                <div class="combo-option" data-value="RS" onclick="selectEstado(this)">RS</div>
-                <div class="combo-option" data-value="SC" onclick="selectEstado(this)">SC</div>
-                <div class="combo-option" data-value="SE" onclick="selectEstado(this)">SE</div>
-                <div class="combo-option selected" data-value="SP" onclick="selectEstado(this)">SP</div>
-                <div class="combo-option" data-value="TO" onclick="selectEstado(this)">TO</div>
-              </div>
-            </div>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Cidade</label>
-            <input type="text" id="f-cidade" placeholder="São Paulo" />
-          </div>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn-secondary" onclick="goToStep(1, true)">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Voltar
-</button>
-          <button class="btn-primary" onclick="goToStep(3)">
-            Próximo
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- ───── STEP 3: Pagamento ───── -->
-      <div class="form-step" id="step-3">
-        <div>
-          <div class="step-title">Dados do Cartão</div>
-          <div class="step-subtitle">Pagamento seguro e criptografado</div>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label">Número do cartão</label>
-          <div class="input-wrap">
-            <input type="text" id="f-cardnum" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" autocomplete="new-password"
-              oninput="handleCardNumber(this)" style="padding-right: 48px;" />
-            <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
-              <div class="card-generic-icon">
-                <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/>
-                  <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-group">
-            <label class="field-label">Validade</label>
-            <input type="text" id="f-expiry" placeholder="MM/AA" maxlength="5" inputmode="numeric" autocomplete="new-password"
-              oninput="handleExpiry(this)" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">CVV</label>
-            <div class="cvv-wrap">
-              <input type="text" id="f-cvv" placeholder="123" maxlength="4" inputmode="numeric" autocomplete="new-password" style="padding-right: 36px;" />
-              <span class="cvv-info" id="cvv-info-icon" tabindex="0" aria-label="O que é o CVV?">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
-                  <path d="M8 7v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle cx="8" cy="4.5" r="0.75" fill="currentColor"/>
-                </svg>
-              </span>
-              <!-- Tooltip CVV -->
-              <div class="cvv-tooltip" id="cvv-tooltip">
-                <div class="cvv-tip-section">
-                  <p>Para American Express, digite os <strong>4 dígitos</strong> na parte da frente do seu cartão:</p>
-                  <div class="cvv-card-img cvv-card-amex-img">
-                    <span class="cvv-card-logo-amex">AMEX</span>
-                    <span class="cvv-card-nums">1234 &nbsp;123456 &nbsp;12345</span>
-                    <span class="cvv-card-code-badge">1234</span>
-                  </div>
+            <!-- Tooltip CVV -->
+            <div class="cvv-tooltip" id="cvv-tooltip">
+              <div class="cvv-tip-section">
+                <p>Para American Express, digite os <strong>4 dígitos</strong> na parte da frente do seu cartão:</p>
+                <div class="cvv-card-img cvv-card-amex-img">
+                  <span class="cvv-card-logo-amex">AMEX</span>
+                  <span class="cvv-card-nums">1234 &nbsp;123456 &nbsp;12345</span>
+                  <span class="cvv-card-code-badge">1234</span>
                 </div>
-                <div class="cvv-tip-divider"></div>
-                <div class="cvv-tip-section">
-                  <p>Para outros cartões, digite os <strong>3 dígitos</strong> na parte de trás do seu cartão:</p>
-                  <div class="cvv-card-img cvv-card-other-img">
-                    <div class="cvv-card-stripe"></div>
-                    <div class="cvv-card-sig">
-                      <span class="cvv-card-code-badge">123</span>
-                    </div>
+              </div>
+              <div class="cvv-tip-divider"></div>
+              <div class="cvv-tip-section">
+                <p>Para outros cartões, digite os <strong>3 dígitos</strong> na parte de trás do seu cartão:</p>
+                <div class="cvv-card-img cvv-card-other-img">
+                  <div class="cvv-card-stripe"></div>
+                  <div class="cvv-card-sig">
+                    <span class="cvv-card-code-badge">123</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="field-group">
-          <label class="field-label">Nome no cartão</label>
-          <input type="text" id="f-cardname" placeholder="ALBERTO ROBERTO" autocomplete="new-password"
-            oninput="this.value = this.value.toUpperCase()" />
-        </div>
+      <!-- Card holder name -->
+      <div class="field-group">
+        <label class="field-label">Nome no cartão</label>
+        <input type="text" id="f-cardname" placeholder="ALBERTO ROBERTO" autocomplete="new-password"
+          oninput="this.value = this.value.toUpperCase()" />
+      </div>
 
-        <div class="field-group">
-          <label class="field-label">Parcelamento</label>
-          <div class="installment-wrap" id="parc-wrap">
-            <button type="button" class="parc-trigger" id="parc-trigger" aria-haspopup="listbox" aria-expanded="false">
-              <span id="parc-label">1× de R$ 5.120,00 (sem juros)</span>
-              <span class="parc-arrow"></span>
-            </button>
-            <div class="parc-dropdown" id="parc-dropdown" role="listbox">
-              <div class="parc-option selected" data-value="1" role="option">1× de R$ 5.120,00 (sem juros)</div>
-              <div class="parc-option" data-value="2" role="option">2× de R$ 2.560,00 (sem juros)</div>
-              <div class="parc-option" data-value="3" role="option">3× de R$ 1.706,67 (sem juros)</div>
-              <div class="parc-option" data-value="4" role="option">4× de R$ 1.337,20 (1,99% a.m.)</div>
-              <div class="parc-option" data-value="5" role="option">5× de R$ 1.081,25 (1,99% a.m.)</div>
-              <div class="parc-option" data-value="6" role="option">6× de R$ 909,87 (1,99% a.m.)</div>
-              <div class="parc-option" data-value="10" role="option">10× de R$ 563,50 (2,49% a.m.)</div>
-              <div class="parc-option" data-value="12" role="option">12× de R$ 476,22 (2,49% a.m.)</div>
-            </div>
+      <!-- Installments -->
+      <div class="field-group">
+        <label class="field-label">Parcelamento</label>
+        <div class="installment-wrap" id="parc-wrap">
+          <button type="button" class="parc-trigger" id="parc-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span id="parc-label">1× de R$ 5.120,00 (sem juros)</span>
+            <span class="parc-arrow"></span>
+          </button>
+          <div class="parc-dropdown" id="parc-dropdown" role="listbox">
+            <div class="parc-option selected" data-value="1" role="option">1× de R$ 5.120,00 (sem juros)</div>
+            <div class="parc-option" data-value="2" role="option">2× de R$ 2.560,00 (sem juros)</div>
+            <div class="parc-option" data-value="3" role="option">3× de R$ 1.706,67 (sem juros)</div>
+            <div class="parc-option" data-value="4" role="option">4× de R$ 1.337,20 (1,99% a.m.)</div>
+            <div class="parc-option" data-value="5" role="option">5× de R$ 1.081,25 (1,99% a.m.)</div>
+            <div class="parc-option" data-value="6" role="option">6× de R$ 909,87 (1,99% a.m.)</div>
+            <div class="parc-option" data-value="10" role="option">10× de R$ 563,50 (2,49% a.m.)</div>
+            <div class="parc-option" data-value="12" role="option">12× de R$ 476,22 (2,49% a.m.)</div>
           </div>
         </div>
-
-        <div class="btn-row" style="margin-top:4px;">
-          <button class="btn-secondary" onclick="goToStep(2, true)">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Voltar
-</button>
-          <button class="btn-primary btn-pay" onclick="processPay(this)">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
-              <rect x="2" y="6" width="12" height="8" rx="2" stroke="#273240" stroke-width="1.6"/>
-              <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#273240" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-            Pagar R$ 5.120,00
-          </button>
-        </div>
-
-        <p class="security-note">🔒 Seus dados são protegidos com criptografia de ponta-a-ponta</p>
       </div>
+
+      <!-- Pay button -->
+      <button class="btn-primary btn-pay" onclick="processPay(this)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+          <rect x="2" y="6" width="12" height="8" rx="2" stroke="#273240" stroke-width="1.6"/>
+          <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#273240" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Pagar R$ 5.120,00
+      </button>
+
+      <p class="security-note">🔒 Seus dados são protegidos com criptografia de ponta-a-ponta</p>
 
     </div>
     <!-- /RIGHT PANEL -->
@@ -1987,140 +1357,9 @@
 </div>
 
 <!-- ══════════════════════════════════════════
-     VERSION SWITCHER
-══════════════════════════════════════════ -->
-<nav class="version-switcher" aria-label="Versões do protótipo">
-  <div class="vs-label">Completo</div>
-  <a href="index.html" class="vs-btn" title="V1 — Fluxo completo">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2.html" class="vs-btn vs-active" title="V2 — Fluxo completo" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#273240;">V2</a>
-  <div class="vs-divider" style="margin-top:6px;"></div>
-  <div class="vs-label">Pagar</div>
-  <a href="v1-pay.html" class="vs-btn" title="V1 — Somente Pagamento">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2-pay.html" class="vs-btn" title="V2 — Somente Pagamento">V2</a>
-</nav>
-
-<!-- ══════════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════════ -->
 <script>
-  // ─── STEP MANAGEMENT ────────────────────────────────────────────
-  let currentStep = 1;
-
-  function goToStep(n, goingBack = false) {
-    const prev = document.getElementById('step-' + currentStep);
-    const next = document.getElementById('step-' + n);
-
-    prev.classList.remove('active');
-
-    if (goingBack) {
-      next.classList.add('going-back');
-    } else {
-      next.classList.remove('going-back');
-    }
-
-    // Force reflow so animation re-triggers
-    void next.offsetWidth;
-    next.classList.add('active');
-
-    // Remove going-back after animation
-    if (goingBack) {
-      setTimeout(() => next.classList.remove('going-back'), 400);
-    }
-
-    currentStep = n;
-    updateStepIndicator(n);
-
-    // Reabilita o botão de pagamento ao entrar no step 3
-    if (n === 3) {
-      const payBtn = document.querySelector('.btn-pay');
-      if (payBtn) payBtn.disabled = false;
-    }
-  }
-
-  function updateStepIndicator(active) {
-    for (let i = 1; i <= 3; i++) {
-      const item   = document.getElementById('si-' + i);
-      const circle = document.getElementById('sc-' + i);
-
-      item.className   = 'step-item';
-      circle.className = 'step-circle';
-
-      if (i < active) {
-        item.classList.add('done');
-        circle.classList.add('done');
-        circle.innerHTML = checkSVG();
-      } else if (i === active) {
-        item.classList.add('active');
-        circle.classList.add('active');
-        circle.textContent = i;
-      } else {
-        item.classList.add('pending');
-        circle.classList.add('pending');
-        circle.textContent = i;
-      }
-    }
-
-    // Lines
-    for (let l = 1; l <= 2; l++) {
-      const line = document.getElementById('sl-' + l);
-      line.className = 'step-line ' + (l < active ? 'done' : 'pending');
-    }
-  }
-
-  function checkSVG() {
-    return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M3 7L5.8 10L11 4.5" stroke="#273240" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`;
-  }
-
-  // ─── INPUT MASKS ─────────────────────────────────────────────────
-
-  // Date of birth: DD/MM/AAAA
-  document.getElementById('f-dob').addEventListener('input', function() {
-    let v = this.value.replace(/\D/g, '');
-    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
-    if (v.length > 5) v = v.slice(0,5) + '/' + v.slice(5);
-    this.value = v.slice(0, 10);
-  });
-
-  // CEP: 00000-000
-  document.getElementById('f-cep').addEventListener('input', function() {
-    let v = this.value.replace(/\D/g, '');
-    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
-    this.value = v.slice(0, 9);
-  });
-
-  document.getElementById('f-cep').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') lookupCEP();
-  });
-
-  // Phone: (XX) XXXXX-XXXX
-  document.getElementById('f-tel').addEventListener('input', function() {
-    let v = this.value.replace(/\D/g, '');
-    if (v.length > 0) v = '(' + v;
-    if (v.length > 3) v = v.slice(0,3) + ') ' + v.slice(3);
-    if (v.length > 10) v = v.slice(0,10) + '-' + v.slice(10);
-    this.value = v.slice(0, 15);
-  });
-
-  // CPF / doc formatting
-  document.getElementById('f-docnum').addEventListener('input', function() {
-    const type = document.getElementById('f-doctype').value;
-    let v = this.value.replace(/\D/g, '');
-    if (type === 'CPF') {
-      if (v.length > 3) v = v.slice(0,3) + '.' + v.slice(3);
-      if (v.length > 7) v = v.slice(0,7) + '.' + v.slice(7);
-      if (v.length > 11) v = v.slice(0,11) + '-' + v.slice(11);
-      this.value = v.slice(0, 14);
-    } else {
-      this.value = this.value.slice(0, 18);
-    }
-  });
-
-  // f-doctype is now a hidden input; placeholder updates handled by selectDoctype()
-
   // ─── PARCELAS CUSTOM DROPDOWN ────────────────────────────────────
   (function initParcelas() {
     const wrap     = document.getElementById('parc-wrap');
@@ -2262,7 +1501,6 @@
     if (!icon || !tooltip) return;
 
     function show() {
-      // Move para body para escapar do stacking context do form-step (que tem transform)
       if (tooltip.parentElement !== document.body) document.body.appendChild(tooltip);
       tooltip.classList.add('visible');
       const r    = icon.getBoundingClientRect();
@@ -2292,35 +1530,6 @@
     input.value = v;
   }
 
-  // ─── VIA CEP LOOKUP ──────────────────────────────────────────────
-  async function lookupCEP() {
-    const cep = document.getElementById('f-cep').value.replace(/\D/g, '');
-    if (cep.length !== 8) return;
-
-    const wrap = document.getElementById('cep-wrap');
-    wrap.classList.add('cep-loading');
-    const btn = wrap.querySelector('.input-addon-right');
-    const origText = btn.textContent;
-    btn.textContent = '…';
-
-    try {
-      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await res.json();
-      if (!data.erro) {
-        document.getElementById('f-logradouro').value = data.logradouro || '';
-        document.getElementById('f-bairro').value     = data.bairro     || '';
-        document.getElementById('f-cidade').value     = data.localidade  || '';
-        if (data.uf) setEstado(data.uf);
-        document.getElementById('f-numero').focus();
-      }
-    } catch(e) {
-      // silent fail
-    } finally {
-      wrap.classList.remove('cep-loading');
-      btn.textContent = origText;
-    }
-  }
-
   // ─── PAYMENT PROCESSING ──────────────────────────────────────────
   function processPay(btn) {
     btn.disabled = true;
@@ -2333,48 +1542,12 @@
       document.getElementById('success-parcelas').textContent = match[1] + '× de ' + match[2].trim();
     }
 
-    // Bandeira
-    const brandNames = {
-      visa: 'Visa', mc: 'Mastercard', amex: 'American Express',
-      elo: 'Elo', hipercard: 'Hipercard', discover: 'Discover',
-      diners: 'Diners Club', jcb: 'JCB', unionpay: 'UnionPay',
-      maestro: 'Maestro', aura: 'Aura'
-    };
-    const badgeEl = document.getElementById('card-brand-badge');
-    let detectedBrand = null;
-    if (badgeEl) {
-      badgeEl.classList.forEach(cls => {
-        if (cls.startsWith('brand-') && cls !== 'brand-generic') {
-          detectedBrand = cls.replace('brand-', '');
-        }
-      });
-    }
-    const sucBrand = document.getElementById('suc-brand');
-    if (sucBrand) sucBrand.textContent =
-      detectedBrand ? (brandNames[detectedBrand] || detectedBrand) : 'Cartão';
-
-    // Número do cartão — **** **** **** XXXX
-    const rawCard = (document.getElementById('f-cardnum').value || '').replace(/\s/g, '');
-    const sucCard = document.getElementById('suc-card');
-    if (sucCard && rawCard.length >= 4) {
-      sucCard.textContent = '**** **** **** ' + rawCard.slice(-4);
-    }
-
-    // Nome do titular
-    const holderName = (document.getElementById('f-cardname').value || '').trim();
-    const sucName = document.getElementById('suc-name');
-    if (sucName) sucName.textContent = holderName || '—';
-
-    // Pre-fill receipt email
-    const email = document.getElementById('f-email').value;
-    if (email) document.getElementById('receipt-email').value = email;
-
-    // Mostra overlay (success page ainda não aparece)
+    // Mostra overlay
     const overlay = document.getElementById('processing-overlay');
     overlay.style.display = 'flex';
     overlay.style.opacity = '1';
 
-    // Após 2.4s: fade out overlay → só então revela a tela de sucesso
+    // Após 2.4s: fade out overlay → revela tela de sucesso
     setTimeout(() => {
       overlay.classList.add('fade-out');
       setTimeout(() => {
@@ -2416,42 +1589,9 @@
     if (e.target === this) closeModal();
   });
 
-  // ─── ESTADO CUSTOM DROPDOWN ─────────────────────────────────────
-  function toggleEstado() {
-    const combo = document.getElementById('estado-combo');
-    combo.classList.toggle('combo-open');
-  }
-
-  function selectEstado(opt) {
-    const combo    = document.getElementById('estado-combo');
-    const labelEl  = document.getElementById('estado-label');
-    const options  = combo.querySelectorAll('.combo-option');
-    options.forEach(o => o.classList.remove('selected'));
-    opt.classList.add('selected');
-    const val = opt.dataset.value;
-    labelEl.textContent  = val || 'Selecione';
-    labelEl.style.color  = val ? '#273240' : '#9C9C9C';
-    combo.dataset.value  = val;
-    combo.classList.remove('combo-open');
-  }
-
-  function setEstado(uf) {
-    const combo   = document.getElementById('estado-combo');
-    const options = combo.querySelectorAll('.combo-option');
-    options.forEach(opt => {
-      opt.classList.remove('selected');
-      if (opt.dataset.value === uf) selectEstado(opt);
-    });
-  }
-
-  document.addEventListener('click', e => {
-    const combo = document.getElementById('estado-combo');
-    if (combo && !combo.contains(e.target)) combo.classList.remove('combo-open');
-  });
-
   // ─── HOTEL INFO COLLAPSE (mobile only) ──────────────────────────
   function toggleHotelInfo() {
-    if (window.innerWidth > 768) return; // só colapsa em mobile
+    if (window.innerWidth > 768) return;
     document.getElementById('hotel-section').classList.toggle('open');
   }
 
@@ -2479,80 +1619,73 @@
       document.getElementById('lang-selector').classList.remove('open');
     }
   });
-
-  // ─── SPIN ANIMATION (for processing state) ───────────────────────
-  const spinStyle = document.createElement('style');
-  spinStyle.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
-  document.head.appendChild(spinStyle);
-
-  // ─── COMBO FIELD LOGIC ───────────────────────────────────────────
-  function toggleCombo(id) {
-    const el = document.getElementById(id);
-    const wasOpen = el.classList.contains('combo-open');
-    document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
-    if (!wasOpen) el.classList.add('combo-open');
-  }
-
-  // Mapa país → DDI (código + iso da bandeira)
-  const COUNTRY_DDI = {
-    BR: { ddi: '+55',  iso: 'br' }, AR: { ddi: '+54',  iso: 'ar' },
-    BO: { ddi: '+591', iso: 'bo' }, CL: { ddi: '+56',  iso: 'cl' },
-    CO: { ddi: '+57',  iso: 'co' }, EC: { ddi: '+593', iso: 'ec' },
-    MX: { ddi: '+52',  iso: 'mx' }, PY: { ddi: '+595', iso: 'py' },
-    PE: { ddi: '+51',  iso: 'pe' }, UY: { ddi: '+598', iso: 'uy' },
-    VE: { ddi: '+58',  iso: 've' }, US: { ddi: '+1',   iso: 'us' },
-    PT: { ddi: '+351', iso: 'pt' }, ES: { ddi: '+34',  iso: 'es' },
-    DE: { ddi: '+49',  iso: 'de' }, FR: { ddi: '+33',  iso: 'fr' },
-    IT: { ddi: '+39',  iso: 'it' }, GB: { ddi: '+44',  iso: 'gb' },
-    JP: { ddi: '+81',  iso: 'jp' }, CN: { ddi: '+86',  iso: 'cn' },
-  };
-
-  function selectComboItem(comboId, value, flag, inputId, label) {
-    const flagEl  = document.getElementById(comboId + '-flag');
-    const labelEl = document.getElementById(comboId + '-label');
-    if (flagEl)  flagEl.className = 'fi fi-' + flag;
-    if (labelEl) labelEl.textContent = label;
-    document.getElementById(inputId).value = value;
-    document.querySelectorAll('#' + comboId + '-dd .combo-option').forEach(o => {
-      o.classList.toggle('selected', o.dataset.value === value);
-    });
-    document.getElementById(comboId).classList.remove('combo-open');
-
-    // Ao mudar o país, sincroniza o DDI do telefone
-    if (comboId === 'combo-pais' && COUNTRY_DDI[value]) {
-      const { ddi, iso } = COUNTRY_DDI[value];
-      selectDDI(ddi, iso, ddi);
-    }
-  }
-
-  function selectDDI(value, flag, label) {
-    document.getElementById('combo-ddi-flag').className = 'fi fi-' + flag;
-    document.getElementById('combo-ddi-label').textContent = label;
-    document.getElementById('f-ddi').value = value;
-    document.querySelectorAll('#combo-ddi-dd .combo-option').forEach(o => {
-      o.classList.toggle('selected', o.dataset.value === value);
-    });
-    document.getElementById('combo-ddi').classList.remove('combo-open');
-  }
-
-  function selectDoctype(value) {
-    document.getElementById('combo-doc-label').textContent = value;
-    document.getElementById('f-doctype').value = value;
-    document.querySelectorAll('#combo-doc-dd .combo-option').forEach(o => {
-      o.classList.toggle('selected', o.dataset.value === value);
-    });
-    document.getElementById('combo-doc').classList.remove('combo-open');
-    const placeholders = { CPF: '000.000.000-00', RG: '00.000.000-0', Passaporte: 'AB123456', CNH: '00000000000' };
-    document.getElementById('f-docnum').placeholder = placeholders[value] || '';
-    document.getElementById('f-docnum').value = '';
-  }
-
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.combo-field')) {
-      document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
-    }
-  });
 </script>
+
+<!-- ── VERSION SWITCHER ── -->
+<style>
+  .version-switcher {
+    position: fixed;
+    left: 20px;
+    bottom: 28px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(245,175,4,0.15);
+    border-radius: 4px;
+    padding: 10px 7px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .version-switcher:hover { opacity: 1; }
+  .vs-label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.32);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: 4px;
+  }
+  .vs-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    color: rgba(0,0,0,0.44);
+    transition: background 0.14s, color 0.14s, transform 0.1s;
+  }
+  .vs-btn:hover { background: rgba(245,175,4,0.09); color: #F5AF04; }
+  .vs-btn:active { transform: scale(0.96); }
+  .vs-btn.vs-active { background: linear-gradient(135deg,#F5AF04,#FFC107); color: #273240; }
+  .vs-divider {
+    width: 20px;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    margin: 2px 0;
+  }
+</style>
+<nav class="version-switcher" aria-label="Versões do protótipo">
+  <div class="vs-label">Completo</div>
+  <a href="index.html" class="vs-btn" title="V1 — Fluxo completo">V1</a>
+  <div class="vs-divider"></div>
+  <a href="v2.html" class="vs-btn" title="V2 — Fluxo completo">V2</a>
+  <div class="vs-divider" style="margin-top:6px;"></div>
+  <div class="vs-label">Pagar</div>
+  <a href="v1-pay.html" class="vs-btn" title="V1 — Somente Pagamento">V1</a>
+  <div class="vs-divider"></div>
+  <a href="v2-pay.html" class="vs-btn vs-active" title="V2 — Somente Pagamento">V2</a>
+</nav>
 
 </body>
 </html>

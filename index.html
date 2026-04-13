@@ -28,7 +28,7 @@
 
       /* Surface */
       --md-sys-color-surface:            #ffffff;
-      --md-sys-color-on-surface:         #242424;
+      --md-sys-color-on-surface:         #273240;
       --md-sys-color-on-surface-variant: #757575;
       --md-sys-color-surface-container-low: #F5F5F5;
 
@@ -38,7 +38,7 @@
 
       /* Secondary */
       --md-sys-color-secondary:          #f5af04;
-      --md-sys-color-on-secondary:       #242424;
+      --md-sys-color-on-secondary:       #273240;
     }
 
     /* Ícone: forçar Material Symbols Outlined */
@@ -61,20 +61,21 @@
       min-height: 48px;
       height: 48px;
       /* estado padrão */
-      --md-outlined-text-field-outline-color:          #D3D3D3;
-      --md-outlined-text-field-label-text-color:       #A6A6A6;
-      --md-outlined-text-field-input-text-color:       #242424;
+      --md-outlined-text-field-outline-color:          #C5C5C5;
+      --md-outlined-text-field-label-text-color:       #9C9C9C;
+      --md-outlined-text-field-input-text-color:       #273240;
       /* hover */
-      --md-outlined-text-field-hover-outline-color:    #A6A6A6;
-      --md-outlined-text-field-hover-label-text-color: #A6A6A6;
-      /* foco: cinza 1px */
-      --md-outlined-text-field-focus-outline-color:    #9c9c9c;
+      --md-outlined-text-field-hover-outline-color:    #4E4076;
+      --md-outlined-text-field-hover-label-text-color: #9C9C9C;
+      /* foco: filled */
+      --md-outlined-text-field-focus-outline-color:    #C5C5C5;
       --md-outlined-text-field-focus-outline-width:    1px;
       --md-outlined-text-field-focus-label-text-color: #9c9c9c;
-      --md-outlined-text-field-caret-color:            #242424;
+      --md-outlined-text-field-caret-color:            #273240;
     }
     /* Campo pequeno: nascimento (180px) */
     md-outlined-text-field.field-sm { max-width: 180px; width: 180px; }
+    #f-nasc { text-align: center; }
 
     /* Selects */
     md-outlined-select {
@@ -90,14 +91,14 @@
       min-height: 48px;
       height: 48px;
       /* estado padrão */
-      --md-outlined-select-text-field-outline-color:          #D3D3D3;
-      --md-outlined-select-text-field-label-text-color:       #A6A6A6;
-      --md-outlined-select-text-field-input-text-color:       #242424;
+      --md-outlined-select-text-field-outline-color:          #C5C5C5;
+      --md-outlined-select-text-field-label-text-color:       #9C9C9C;
+      --md-outlined-select-text-field-input-text-color:       #273240;
       /* hover */
-      --md-outlined-select-text-field-hover-outline-color:    #A6A6A6;
-      --md-outlined-select-text-field-hover-label-text-color: #A6A6A6;
-      /* foco: cinza + 1px */
-      --md-outlined-select-text-field-focus-outline-color:    #9c9c9c;
+      --md-outlined-select-text-field-hover-outline-color:    #4E4076;
+      --md-outlined-select-text-field-hover-label-text-color: #9C9C9C;
+      /* foco: filled */
+      --md-outlined-select-text-field-focus-outline-color:    #C5C5C5;
       --md-outlined-select-text-field-focus-outline-width:    1px;
       --md-outlined-select-text-field-focus-label-text-color: #9c9c9c;
     }
@@ -115,7 +116,7 @@
       transform: translateY(-50%);
       font-size: 11px;
       font-family: 'Inter', sans-serif;
-      color: #A6A6A6;
+      color: #9C9C9C;
       background: #fff;
       padding: 0 4px;
       z-index: 1;
@@ -127,7 +128,7 @@
       align-items: center;
       height: 48px;
       min-height: 48px;
-      border: 1px solid #D3D3D3;
+      border: 1px solid #C5C5C5;
       border-radius: 4px;
       background: #fff;
       overflow: visible;
@@ -135,7 +136,8 @@
       padding: 0;
       gap: 0;
     }
-    .cfield-inner:focus-within { border-color: #9c9c9c; }
+    .cfield-inner:hover { border-color: #4E4076; }
+    .cfield-inner:focus-within { border-color: #C5C5C5; }
     .cfield-select {
       flex-shrink: 0;
       border: none;
@@ -145,7 +147,7 @@
       background: transparent;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
@@ -169,33 +171,33 @@
       padding: 0 12px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       height: 100%;
       background: transparent;
     }
-    .cfield-input::placeholder { color: #A6A6A6; }
+    .cfield-input::placeholder { color: #9C9C9C; }
     md-select-option {
       font-family: 'Inter', sans-serif;
       font-size: 13px;
     }
 
-    /* Botão primário — amarelo Bee2Pay, 48px, texto e ícone #242424 */
+    /* Botão primário — amarelo Bee2Pay, 48px, texto e ícone #273240 */
     .btn-yellow {
       --md-filled-button-container-color:                  #fec437;
       --md-filled-button-hover-container-color:            #f5b800;
       --md-filled-button-pressed-container-color:          #e8ad00;
       --md-filled-button-container-height:                 48px;
       /* Texto */
-      --md-filled-button-label-text-color:                 #242424;
-      --md-filled-button-hover-label-text-color:           #242424;
-      --md-filled-button-pressed-label-text-color:         #242424;
-      --md-filled-button-focus-label-text-color:           #242424;
-      /* Ícone — todos os estados fixos em #242424 */
-      --md-filled-button-icon-color:                       #242424;
-      --md-filled-button-hover-icon-color:                 #242424;
-      --md-filled-button-pressed-icon-color:               #242424;
-      --md-filled-button-focus-icon-color:                 #242424;
-      --md-filled-button-with-icon-icon-color:             #242424;
+      --md-filled-button-label-text-color:                 #273240;
+      --md-filled-button-hover-label-text-color:           #273240;
+      --md-filled-button-pressed-label-text-color:         #273240;
+      --md-filled-button-focus-label-text-color:           #273240;
+      /* Ícone — todos os estados fixos em #273240 */
+      --md-filled-button-icon-color:                       #273240;
+      --md-filled-button-hover-icon-color:                 #273240;
+      --md-filled-button-pressed-icon-color:               #273240;
+      --md-filled-button-focus-icon-color:                 #273240;
+      --md-filled-button-with-icon-icon-color:             #273240;
       /* State layer translúcido (sem sujar a cor do ícone/texto) */
       --md-filled-button-hover-state-layer-color:          #000000;
       --md-filled-button-hover-state-layer-opacity:        0.06;
@@ -217,15 +219,15 @@
     md-outlined-button {
       --md-outlined-button-outline-color:              #D3D3D3;
       --md-outlined-button-container-height:           48px;
-      --md-outlined-button-label-text-color:           #242424;
-      --md-outlined-button-hover-label-text-color:     #242424;
-      --md-outlined-button-focus-label-text-color:     #242424;
-      --md-outlined-button-pressed-label-text-color:   #242424;
-      --md-outlined-button-icon-color:                 #242424;
-      --md-outlined-button-hover-icon-color:           #242424;
-      --md-outlined-button-pressed-icon-color:         #242424;
-      --md-outlined-button-focus-icon-color:           #242424;
-      --md-outlined-button-with-icon-icon-color:       #242424;
+      --md-outlined-button-label-text-color:           #273240;
+      --md-outlined-button-hover-label-text-color:     #273240;
+      --md-outlined-button-focus-label-text-color:     #273240;
+      --md-outlined-button-pressed-label-text-color:   #273240;
+      --md-outlined-button-icon-color:                 #273240;
+      --md-outlined-button-hover-icon-color:           #273240;
+      --md-outlined-button-pressed-icon-color:         #273240;
+      --md-outlined-button-focus-icon-color:           #273240;
+      --md-outlined-button-with-icon-icon-color:       #273240;
       --md-outlined-button-hover-state-layer-color:    #000000;
       --md-outlined-button-hover-state-layer-opacity:  0.06;
       --md-outlined-button-label-text-font:            'Inter', sans-serif;
@@ -268,7 +270,7 @@
     body {
       font-family: 'Inter', sans-serif;
       font-size: 12px;
-      color: #242424;
+      color: #273240;
       /* Split bg: esquerda #FCFCFC, direita #fff — alinha com o divider central */
       background: linear-gradient(to right, #FCFCFC 50%, #ffffff 50%);
       height: 100vh;
@@ -395,8 +397,8 @@
       margin-top: 3px;
       transition: transform 0.25s ease;
     }
-    .hc-name        { font-size: 14px; font-weight: 700; color: #242424; line-height: 1.4; }
-    .hc-room        { font-size: 13px; font-weight: 400; color: #242424; }
+    .hc-name        { font-size: 14px; font-weight: 700; color: #273240; line-height: 1.4; }
+    .hc-room        { font-size: 13px; font-weight: 400; color: #273240; }
     .hc-cancel      { font-size: 12px; font-weight: 400; color: #409644; }
 
     /* Seção 2: tabela de dados da reserva */
@@ -463,7 +465,7 @@
     }
     .security-note {
       font-size: 11px;
-      color: #A6A6A6;
+      color: #9C9C9C;
       margin-top: 8px;
       line-height: 1.4;
     }
@@ -589,7 +591,7 @@
       transform: translateY(-50%);
       font-size: 11px;
       font-family: 'Inter', sans-serif;
-      color: #A6A6A6;
+      color: #9C9C9C;
       background: #fff;
       padding: 0 4px;
       pointer-events: none;
@@ -601,16 +603,16 @@
       outline: none;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       background: transparent;
       min-width: 0;
       cursor: text;
     }
-    .cs-input::placeholder { color: #A6A6A6; }
+    .cs-input::placeholder { color: #9C9C9C; }
     .cs-arrow {
       font-family: 'Material Symbols Outlined';
       font-size: 20px;
-      color: #A6A6A6;
+      color: #9C9C9C;
       transition: transform 0.2s;
       flex-shrink: 0;
       line-height: 1;
@@ -652,7 +654,7 @@
       padding: 0 12px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       cursor: pointer;
       transition: background 0.12s;
     }
@@ -692,7 +694,7 @@
       cursor: pointer;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       white-space: nowrap;
       box-sizing: border-box;
       flex: 1;
@@ -702,7 +704,7 @@
       background-position: right 4px center;
       background-size: 18px;
     }
-    .ddi-code { font-size: 13px; color: #242424; }
+    .ddi-code { font-size: 13px; color: #273240; }
     .ddi-dropdown {
       display: none;
       position: absolute;
@@ -725,7 +727,7 @@
       padding: 0 12px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       cursor: pointer;
       transition: background 0.1s;
     }
@@ -752,7 +754,7 @@
       cursor: pointer;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       white-space: nowrap;
       box-sizing: border-box;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239c9c9c' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
@@ -781,7 +783,7 @@
       padding: 0 16px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       cursor: pointer;
       transition: background 0.1s;
     }
@@ -818,12 +820,12 @@
       line-height: 1;
       flex-shrink: 0;
     }
-    .v1-step-circle.done    { background: #F5AF04; border: none; color: #1B2532; }
-    .v1-step-circle.active  { background: #F5AF04; border: none; color: #1B2532; }
+    .v1-step-circle.done    { background: #F5AF04; border: none; color: #273240; }
+    .v1-step-circle.active  { background: #F5AF04; border: none; color: #273240; }
     .v1-step-circle.pending { background: transparent; border: 2px solid #D1D5DB; color: #CBD5E1; }
     .v1-step-label { font-size: 11px; font-weight: 600; white-space: nowrap; transition: color 0.3s; color: #94A3B8; }
     .v1-step-item.done    .v1-step-label { color: #F5AF04; }
-    .v1-step-item.active  .v1-step-label { color: #1E293B; }
+    .v1-step-item.active  .v1-step-label { color: #273240; }
     .v1-step-item.pending .v1-step-label { color: #94A3B8; }
     .v1-step-line {
       flex: 1;
@@ -1150,7 +1152,7 @@
       transform: translateY(-50%);
       font-size: 11px;
       font-family: 'Inter', sans-serif;
-      color: #A6A6A6;
+      color: #9C9C9C;
       background: #fff;
       padding: 0 4px;
       line-height: 1;
@@ -1175,12 +1177,12 @@
       outline: none;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
       background: transparent;
       height: 100%;
       padding: 0;
     }
-    .cep-input::placeholder { color: #A6A6A6; }
+    .cep-input::placeholder { color: #9C9C9C; }
     .cep-input::-webkit-outer-spin-button,
     .cep-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     .cep-icon {
@@ -1206,7 +1208,7 @@
     .cep-suggestion-item {
       padding: 8px 12px;
       font-size: 12px;
-      color: #242424;
+      color: #273240;
       cursor: pointer;
       border-bottom: 1px solid #EBEBEB;
       transition: background 0.12s;
@@ -1339,7 +1341,7 @@
     .confirmation-title {
       font-size: 18px;
       font-weight: 700;
-      color: #242424;
+      color: #273240;
       margin-bottom: 6px;
       text-wrap: balance;
     }
@@ -1373,7 +1375,7 @@
       align-items: center;
       padding: 6px 0;
       font-size: 13px;
-      color: #242424;
+      color: #273240;
     }
     .conf-label {
       color: #757575;
@@ -1402,7 +1404,7 @@
     .total-value {
       font-size: 28px;
       font-weight: 700;
-      color: #242424;
+      color: #273240;
       font-variant-numeric: tabular-nums;
     }
 
@@ -1455,7 +1457,7 @@
       cursor: pointer;
       font-family: 'Inter', sans-serif;
       font-size: 12px;
-      color: #242424;
+      color: #273240;
       padding: 6px 8px;
       border-radius: 6px;
     }
@@ -1489,7 +1491,7 @@
       padding: 0 12px;
       font-family: 'Inter', sans-serif;
       font-size: 12px;
-      color: #242424;
+      color: #273240;
       cursor: pointer;
       transition: background 0.1s;
     }
@@ -1685,7 +1687,7 @@
     .suc-email-input:focus { border-color: #BDBDBD; box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
     .suc-receipt-hint {
       font-size: 11px;
-      color: #A6A6A6;
+      color: #9C9C9C;
       margin-bottom: 16px;
     }
     .suc-send-btn {
@@ -2848,7 +2850,7 @@
       if (isDone) {
         si.className = 'v1-step-item done';
         sc.className = 'v1-step-circle done';
-        sc.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L5.8 10L11 4.5" stroke="#1B2532" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        sc.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L5.8 10L11 4.5" stroke="#273240" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       } else if (isActive) {
         si.className = 'v1-step-item active';
         sc.className = 'v1-step-circle active';
@@ -3191,7 +3193,7 @@
           opt.classList.add('selected');
           const val = opt.dataset.value;
           labelEl.textContent = val || 'Selecione';
-          labelEl.style.color = val ? '#242424' : '#9c9c9c';
+          labelEl.style.color = val ? '#273240' : '#9c9c9c';
           // Expõe valor para o viaCEP autocomplete
           trigger.dataset.value = val;
           close();
@@ -3209,7 +3211,7 @@
           if (o.dataset.value === uf) {
             o.classList.add('selected');
             labelEl.textContent = uf || 'Selecione';
-            labelEl.style.color = uf ? '#242424' : '#9c9c9c';
+            labelEl.style.color = uf ? '#273240' : '#9c9c9c';
             trigger.dataset.value = uf;
           }
         });
@@ -3461,7 +3463,7 @@
   }
   .vs-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
   .vs-btn:active { transform: scale(0.96); }
-  .vs-btn.vs-active { background: #FEC437; color: #1B2532; }
+  .vs-btn.vs-active { background: #FEC437; color: #273240; }
   .vs-divider {
     width: 20px;
     height: 1px;
@@ -3470,10 +3472,15 @@
   }
 </style>
 <nav class="version-switcher" aria-label="Versões do protótipo">
-  <div class="vs-label">Layout</div>
-  <a href="index.html" class="vs-btn vs-active" title="V1 — Bee2Pay atual">V1</a>
+  <div class="vs-label">Completo</div>
+  <a href="index.html" class="vs-btn vs-active" title="V1 — Fluxo completo">V1</a>
   <div class="vs-divider"></div>
-  <a href="v2.html" class="vs-btn" title="V2 — Bee2Pay Yellow">V2</a>
+  <a href="v2.html" class="vs-btn" title="V2 — Fluxo completo">V2</a>
+  <div class="vs-divider" style="margin-top:6px;"></div>
+  <div class="vs-label">Pagar</div>
+  <a href="v1-pay.html" class="vs-btn" title="V1 — Somente Pagamento">V1</a>
+  <div class="vs-divider"></div>
+  <a href="v2-pay.html" class="vs-btn" title="V2 — Somente Pagamento">V2</a>
 </nav>
 
 </body>

@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento — Blue Tree Premium Congonhas</title>
+
+  <!-- Inter (Bee2Pay brand) + Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <!-- Flag Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.3/css/flag-icons.min.css">
+
+  <!-- @material/web 2.4.1 via esm.sh -->
+  <script type="module" src="https://esm.sh/@material/web@2.4.1/all.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       TOKENS GLOBAIS MD3 — cores Bee2Pay
+    ═══════════════════════════════════════════ */
+    :root {
+      --md-sys-color-primary:            #4e4076;
+      --md-sys-color-on-primary:         #ffffff;
+      --md-sys-color-primary-container:  #f0eaff;
+      --md-sys-color-on-primary-container: #1e0f40;
+      --md-sys-color-surface:            #ffffff;
+      --md-sys-color-on-surface:         #273240;
+      --md-sys-color-on-surface-variant: #757575;
+      --md-sys-color-surface-container-low: #F5F5F5;
+      --md-sys-color-outline:            #D3D3D3;
+      --md-sys-color-outline-variant:    #EBEBEB;
+      --md-sys-color-secondary:          #f5af04;
+      --md-sys-color-on-secondary:       #273240;
+    }
+
+    /* Ícone: forçar Material Symbols Outlined */
+    md-icon { font-family: 'Material Symbols Outlined', sans-serif; }
+
+    /* Campos de texto — fonte Bee2Pay + tamanhos */
+    md-outlined-text-field, md-filled-text-field {
+      width: 100%;
+      max-width: 380px;
+      --md-outlined-text-field-input-text-font:        'Inter', sans-serif;
+      --md-outlined-text-field-label-text-font:        'Inter', sans-serif;
+      --md-outlined-text-field-input-text-size:        13px;
+      --md-outlined-text-field-label-text-size:        13px;
+      --md-outlined-text-field-container-shape:        4px;
+      --md-outlined-text-field-container-height:       48px;
+      --md-outlined-text-field-top-space:              8px;
+      --md-outlined-text-field-bottom-space:           8px;
+      min-height: 48px;
+      height: 48px;
+      --md-outlined-text-field-outline-color:          #C5C5C5;
+      --md-outlined-text-field-label-text-color:       #9C9C9C;
+      --md-outlined-text-field-input-text-color:       #273240;
+      --md-outlined-text-field-hover-outline-color:    #4E4076;
+      --md-outlined-text-field-hover-label-text-color: #9C9C9C;
+      --md-outlined-text-field-focus-outline-color:    #C5C5C5;
+      --md-outlined-text-field-focus-outline-width:    1px;
+      --md-outlined-text-field-focus-label-text-color: #9c9c9c;
+      --md-outlined-text-field-caret-color:            #273240;
+    }
+
+    /* Selects */
+    md-outlined-select {
+      width: 100%;
+      max-width: 380px;
+      --md-outlined-select-text-field-input-text-font:        'Inter', sans-serif;
+      --md-outlined-select-text-field-label-text-font:        'Inter', sans-serif;
+      --md-outlined-select-text-field-input-text-size:        13px;
+      --md-outlined-select-text-field-label-text-size:        13px;
+      --md-outlined-select-text-field-container-shape:        4px;
+      --md-outlined-select-text-field-container-height:       48px;
+      min-height: 48px;
+      height: 48px;
+      --md-outlined-select-text-field-outline-color:          #C5C5C5;
+      --md-outlined-select-text-field-label-text-color:       #9C9C9C;
+      --md-outlined-select-text-field-input-text-color:       #273240;
+      --md-outlined-select-text-field-hover-outline-color:    #4E4076;
+      --md-outlined-select-text-field-hover-label-text-color: #9C9C9C;
+      --md-outlined-select-text-field-focus-outline-color:    #C5C5C5;
+      --md-outlined-select-text-field-focus-outline-width:    1px;
+      --md-outlined-select-text-field-focus-label-text-color: #9c9c9c;
+    }
+
+    /* Botão primário — amarelo Bee2Pay, 48px */
+    .btn-yellow {
+      --md-filled-button-container-color:                  #fec437;
+      --md-filled-button-hover-container-color:            #f5b800;
+      --md-filled-button-pressed-container-color:          #e8ad00;
+      --md-filled-button-container-height:                 48px;
+      --md-filled-button-label-text-color:                 #273240;
+      --md-filled-button-hover-label-text-color:           #273240;
+      --md-filled-button-pressed-label-text-color:         #273240;
+      --md-filled-button-focus-label-text-color:           #273240;
+      --md-filled-button-icon-color:                       #273240;
+      --md-filled-button-hover-icon-color:                 #273240;
+      --md-filled-button-pressed-icon-color:               #273240;
+      --md-filled-button-focus-icon-color:                 #273240;
+      --md-filled-button-with-icon-icon-color:             #273240;
+      --md-filled-button-hover-state-layer-color:          #000000;
+      --md-filled-button-hover-state-layer-opacity:        0.06;
+      --md-filled-button-pressed-state-layer-color:        #000000;
+      --md-filled-button-pressed-state-layer-opacity:      0.10;
+      --md-filled-button-container-shadow-color:           transparent;
+      --md-filled-button-container-elevation:              0;
+      --md-filled-button-hover-container-elevation:        0;
+      --md-filled-button-focus-container-elevation:        0;
+      --md-filled-button-pressed-container-elevation:      0;
+      --md-filled-button-label-text-font:                  'Inter', sans-serif;
+      --md-filled-button-label-text-weight:                700;
+      --md-filled-button-label-text-size:                  13px;
+      --md-filled-button-container-shape:                  4px;
+    }
+
+    /* Compliance badges */
+    .compliance-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      background: #fff;
+      border: 1px solid #c8e7ca;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4baf4f;
+      white-space: nowrap;
+    }
+
+    /* Divider */
+    md-divider { --md-divider-color: #e8e8e8; }
+
+    .sec-divider {
+      width: 100%;
+      max-width: 380px;
+      height: 1px;
+      background: #E6E6E6;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #273240;
+      background: linear-gradient(to right, #FCFCFC 50%, #ffffff 50%);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════ */
+    .page { display: flex; height: 100vh; }
+
+    .main-page {
+      flex-direction: column;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      flex-shrink: 0;
+    }
+    .page-header-left {
+      width: 50%;
+      min-width: 50%;
+      padding: 20px 0;
+      background: transparent;
+      border-right: 1px solid #EDEDED;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .header-inner {
+      width: 100%;
+      max-width: 480px;
+      margin-right: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header-right {
+      flex: 1;
+      background: transparent;
+    }
+
+    /* Content area */
+    .page-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ══ LEFT PANEL ══ */
+    .left-panel {
+      width: 50%;
+      min-width: 50%;
+      background: transparent;
+      border-right: 1px solid #EDEDED;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      overflow-y: auto;
+    }
+    .left-inner {
+      width: 100%;
+      max-width: 480px;
+      padding: 28px 0 24px;
+      margin-right: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+    }
+    .left-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo img { height: 40px; width: auto; display: block; }
+
+    /* Hotel card */
+    .hotel-card {
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 0;
+    }
+
+    .hc-info {
+      padding: 0 0 30px;
+      border-bottom: 1px solid #E6E6E6;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .hc-info-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .hc-chevron {
+      display: none;
+      flex-shrink: 0;
+      color: #9c9c9c;
+      margin-top: 3px;
+      transition: transform 0.25s ease;
+    }
+    .hc-name        { font-size: 14px; font-weight: 700; color: #273240; line-height: 1.4; }
+    .hc-room        { font-size: 13px; font-weight: 400; color: #273240; }
+    .hc-cancel      { font-size: 12px; font-weight: 400; color: #409644; }
+
+    .hc-table {
+      border-bottom: 1px solid #E6E6E6;
+      padding: 30px 0;
+      display: flex;
+      gap: 30px;
+    }
+    .hc-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 121px;
+    }
+    .hc-values {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+    .hc-label-cell  { font-size: 12px; font-weight: 400; color: #273240; line-height: 20px; }
+    .hc-value-cell  { font-size: 12px; font-weight: 600; color: #273240; line-height: 20px; }
+    .hc-value-cell.bold { font-weight: 700; }
+
+    .hc-total {
+      padding: 30px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hc-total-label { font-size: 14px; font-weight: 700; color: #273240; }
+    .hc-total-value { font-size: 24px; font-weight: 700; color: #273240; text-align: right; }
+
+    /* Security */
+    .security { margin-top: auto; padding-top: 24px; border-top: 1px solid #EBEBEB; text-align: center; }
+    .security-footer { display: none; }
+    .security-label { font-size: 10px; color: #273240; margin-bottom: 16px; }
+    .security-badges {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .security-note {
+      font-size: 11px;
+      color: #9C9C9C;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ══ RIGHT PANEL ══ */
+    .right-panel {
+      width: 50%;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
+    .right-inner {
+      width: 100%;
+      max-width: 480px;
+      padding: 28px 0 24px;
+      margin-left: 100px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Panel heading */
+    .panel-heading {
+      margin-bottom: 20px;
+      max-width: 380px;
+    }
+    .panel-heading-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #273240;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .panel-heading-subtitle {
+      font-size: 12px;
+      line-height: 20px;
+      color: #273240;
+    }
+
+    /* ── Section fields layout ── */
+    .section-fields { padding: 0; display: flex; flex-direction: column; gap: 20px; }
+
+    .row-2        { display: flex; gap: 20px; max-width: 380px; }
+    .row-2 > *    { flex: 1 1 0; min-width: 0; }
+    .row-2 > md-outlined-text-field,
+    .row-2 > md-outlined-select { max-width: none; width: auto; }
+    .row-2 > .cfield { max-width: none; margin-top: 0; }
+
+    /* Wrapper card número */
+    .card-number-wrap { position: relative; max-width: 380px; }
+    .card-number-wrap md-outlined-text-field { width: 100%; max-width: none; }
+
+    /* CVV wrap */
+    .cvv-wrap {
+      flex: 1 1 0;
+      min-width: 0;
+      position: relative;
+    }
+    .cvv-wrap md-outlined-text-field {
+      width: 100%;
+      max-width: none;
+    }
+    .cvv-info {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      --md-icon-size: 16px;
+      font-size: 16px;
+      color: #9c9c9c;
+      cursor: help;
+      pointer-events: auto;
+      font-family: 'Material Symbols Outlined';
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* ── CVV Tooltip ── */
+    .cvv-tooltip {
+      display: none;
+      position: absolute;
+      right: -8px;
+      bottom: calc(100% + 14px);
+      width: 300px;
+      background: #1B2B3A;
+      color: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      z-index: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+    .cvv-tooltip.visible { display: block; }
+    .cvv-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: 16px;
+      width: 0; height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #1B2B3A;
+    }
+    .cvv-tip-section { margin-bottom: 12px; }
+    .cvv-tip-section:last-child { margin-bottom: 0; }
+    .cvv-tip-section p { margin: 0 0 8px; }
+    .cvv-tip-section strong { font-weight: 700; }
+    .cvv-tip-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 12px 0; }
+    .cvv-card-img {
+      border-radius: 6px;
+      height: 56px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .cvv-card-amex-img {
+      background: linear-gradient(135deg, #2E7D9E 0%, #1A5276 100%);
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    .cvv-card-other-img {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0;
+    }
+    .cvv-card-chip {
+      width: 20px; height: 14px;
+      background: #D4AC0D;
+      border-radius: 3px;
+      position: absolute;
+      left: 10px; top: 10px;
+    }
+    .cvv-card-logo-amex {
+      font-size: 9px; font-weight: 900;
+      color: #fff; letter-spacing: 0.5px;
+      position: absolute; top: 8px; left: 10px;
+    }
+    .cvv-card-nums {
+      position: absolute; bottom: 8px; left: 10px;
+      font-size: 7px; color: rgba(255,255,255,0.7);
+      letter-spacing: 1px;
+    }
+    .cvv-card-code-badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      position: absolute;
+    }
+    .cvv-card-amex-img .cvv-card-code-badge { right: 12px; top: 50%; transform: translateY(-50%); }
+    .cvv-card-stripe {
+      width: 100%; height: 16px;
+      background: #111;
+      position: absolute;
+      top: 12px; left: 0;
+    }
+    .cvv-card-sig {
+      width: calc(100% - 20px); height: 18px;
+      background: repeating-linear-gradient(90deg, #ddd 0, #ddd 4px, #bbb 4px, #bbb 8px);
+      position: absolute;
+      bottom: 10px; left: 10px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .cvv-card-sig .cvv-card-code-badge {
+      position: relative; right: auto; top: auto;
+      transform: none;
+      background: #fff; color: #333;
+      border-color: #ccc;
+      margin-right: -1px;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* Badge de bandeira */
+    .card-brand-badge {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 16px;
+      border-radius: 2px;
+      border: 1px solid #D9D9D9;
+      background: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .card-brand-badge.visible { display: flex; }
+    .card-brand-badge.brand-generic {
+      background: transparent;
+      border: none;
+      overflow: visible;
+    }
+    .card-generic-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-brand-badge.brand-visa {
+      background: #1A1F71;
+      font-size: 8px;
+      font-weight: 900;
+      font-style: italic;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+    .card-brand-badge.brand-mc  { background: #fff; }
+    .mc-circles {
+      position: relative;
+      width: 17px;
+      height: 11px;
+      display: flex;
+      align-items: center;
+    }
+    .mc-left  { position: absolute; left: 0;   width: 11px; height: 11px; border-radius: 50%; background: #EB001B; }
+    .mc-right { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #F9A000; opacity: 0.9; }
+    .card-brand-badge.brand-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 6px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.2px;
+      text-align: center;
+      line-height: 1;
+    }
+    .card-brand-badge.brand-amex {
+      background: #007BC1;
+      font-size: 7px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+    .card-brand-badge.brand-discover { background: linear-gradient(135deg, #f60 0%, #e65c00 100%); }
+    .card-brand-badge.brand-diners { background: #004A97; }
+    .card-brand-badge.brand-jcb {
+      background: linear-gradient(135deg, #003087 33%, #CC0000 33%, #CC0000 66%, #009900 66%);
+    }
+    .card-brand-badge.brand-unionpay { background: linear-gradient(135deg, #D0021B 0%, #8B0000 100%); }
+    .card-brand-badge.brand-elo { background: #000; color: #FFD100 !important; }
+    .card-brand-badge.brand-hipercard { background: #B0060C; }
+    .card-brand-badge.brand-maestro { background: #fff; }
+    .maestro-circles {
+      position: relative; width: 17px; height: 11px; display: flex; align-items: center;
+    }
+    .maestro-left  { position: absolute; left: 0;   width: 11px; height: 11px; border-radius: 50%; background: #CC0000; }
+    .maestro-right { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #0057A8; opacity: 0.9; }
+    .card-brand-badge.brand-aura { background: #008000; }
+
+    /* Submit row */
+    .submit-row { display: flex; gap: 20px; padding-top: 4px; max-width: 380px; }
+    .submit-row md-outlined-button { flex: 1; }
+    .submit-row .btn-yellow        { flex: 1; }
+
+    /* ── Green payment button ── */
+    .btn-green {
+      --md-filled-button-container-color:                  #409644;
+      --md-filled-button-hover-container-color:            #388E3C;
+      --md-filled-button-pressed-container-color:          #2E7D32;
+      --md-filled-button-container-height:                 48px;
+      --md-filled-button-label-text-color:                 #ffffff;
+      --md-filled-button-hover-label-text-color:           #ffffff;
+      --md-filled-button-pressed-label-text-color:         #ffffff;
+      --md-filled-button-focus-label-text-color:           #ffffff;
+      --md-filled-button-icon-color:                       #ffffff;
+      --md-filled-button-hover-icon-color:                 #ffffff;
+      --md-filled-button-pressed-icon-color:               #ffffff;
+      --md-filled-button-focus-icon-color:                 #ffffff;
+      --md-filled-button-hover-state-layer-color:          #000000;
+      --md-filled-button-hover-state-layer-opacity:        0.06;
+      --md-filled-button-pressed-state-layer-color:        #000000;
+      --md-filled-button-pressed-state-layer-opacity:      0.10;
+      --md-filled-button-container-shadow-color:           transparent;
+      --md-filled-button-container-elevation:              0;
+      --md-filled-button-hover-container-elevation:        0;
+      --md-filled-button-focus-container-elevation:        0;
+      --md-filled-button-pressed-container-elevation:      0;
+      --md-filled-button-label-text-font:                  'Inter', sans-serif;
+      --md-filled-button-label-text-weight:                700;
+      --md-filled-button-label-text-size:                  13px;
+      --md-filled-button-container-shape:                  8px;
+    }
+
+    /* ── Secure note below pay button ── */
+    .secure-note {
+      font-size: 11px;
+      color: #9c9c9c;
+      text-align: center;
+      margin-top: 10px;
+      max-width: 380px;
+    }
+
+    /* ── Processing overlay ── */
+    #processing-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    #processing-overlay.fade-out { opacity: 0; pointer-events: none; }
+    .proc-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .proc-spinner { animation: spin 0.9s linear infinite; }
+    .proc-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+    }
+    .proc-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      margin: -8px 0 0;
+    }
+
+    /* ── Success page ── */
+    .success-page {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 2000;
+      background: linear-gradient(135deg, #fffdf5 0%, #fffff8 40%, #f5faff 100%);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .suc-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      flex-shrink: 0;
+    }
+
+    .suc-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 40px;
+    }
+
+    .suc-block {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(245,175,4,0.12);
+      border-radius: 20px;
+      padding: 40px 44px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+      box-sizing: border-box;
+    }
+
+    .suc-receipt {
+      border-top: 1px solid #EDEDED;
+      padding-top: 28px;
+      margin-top: 28px;
+    }
+    .suc-receipt-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #273240;
+      margin-bottom: 6px;
+    }
+    .suc-receipt-sub {
+      font-size: 13px;
+      color: #6B7280;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .suc-email-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      border: 1.5px solid #EDEDED;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: #273240;
+      background: #fff;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 6px;
+    }
+    .suc-email-input:focus { border-color: #BDBDBD; box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
+    .suc-receipt-hint {
+      font-size: 11px;
+      color: #9C9C9C;
+      margin-bottom: 16px;
+    }
+    .suc-send-btn {
+      width: 100%;
+      height: 50px;
+      background: #F5AF04;
+      color: #273240;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .suc-send-btn:hover { background: #E09E00; }
+
+    .success-card {
+      background: #F5F5F5;
+      border-radius: 4px;
+      padding: 50px 50px 50px;
+      width: 100%;
+      max-width: 578px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    @keyframes iconBounceIn {
+      0%   { transform: scale(0);    opacity: 0; }
+      55%  { transform: scale(1.18); opacity: 1; }
+      75%  { transform: scale(0.93); }
+      90%  { transform: scale(1.05); }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+    @keyframes checkDraw {
+      from { stroke-dashoffset: 42; }
+      to   { stroke-dashoffset: 0;  }
+    }
+    @keyframes iconPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(75,175,79,0.45); }
+      60%  { box-shadow: 0 0 0 16px rgba(75,175,79,0); }
+      100% { box-shadow: 0 0 0 0   rgba(75,175,79,0); }
+    }
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.88) translateY(14px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .success-icon {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .success-icon svg {
+      animation: iconBounceIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .success-icon svg circle {
+      animation: iconPulse 1s ease-out 0.55s both;
+    }
+    .success-icon svg path {
+      stroke-dasharray: 42;
+      stroke-dashoffset: 42;
+      animation: checkDraw 0.35s ease-out 0.45s forwards;
+    }
+    .success-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #273240;
+      margin-bottom: 35px;
+      text-align: center;
+    }
+    .success-details {
+      text-align: left;
+      border-top: 1px solid #E6E6E6;
+      padding-top: 35px;
+      margin-bottom: 0;
+    }
+    .success-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #273240;
+      margin-bottom: 40px;
+    }
+    .success-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 30px;
+      font-size: 12px;
+    }
+    .success-label { color: #273240; font-weight: 400; }
+    .success-value { color: #273240; font-weight: 600; }
+    .success-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #E6E6E6;
+      padding-top: 20px;
+      margin-top: 0;
+    }
+    .success-total-label { font-size: 14px; font-weight: 700; color: #273240; }
+    .success-total-value { font-size: 24px; font-weight: 700; color: #273240; font-variant-numeric: tabular-nums; }
+
+    /* ── Modal: comprovante enviado ── */
+    .email-sent-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(39,50,64,0.75);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+    }
+    .email-sent-overlay.visible { display: flex; }
+    .email-sent-modal {
+      animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+      background: #fff;
+      border-radius: 4px;
+      width: 538px;
+      max-width: 90vw;
+      padding: 40px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+    .email-sent-icon {
+      flex-shrink: 0;
+      animation: iconBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+    }
+    .email-sent-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #273240;
+    }
+    .email-sent-msg {
+      font-size: 14px;
+      font-weight: 400;
+      color: #273240;
+      line-height: 1.5;
+      max-width: 380px;
+    }
+
+    /* ── Lang selector ── */
+    .lang-selector { position: relative; }
+    .lang-trigger {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #273240;
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+    .lang-trigger:hover { background: #f0f0f0; }
+    .lang-text { font-size: 12px; }
+    .lang-arrow {
+      font-family: 'Material Symbols Outlined';
+      font-size: 18px;
+      color: #9c9c9c;
+      line-height: 1;
+    }
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      min-width: 160px;
+      background: #fff;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      z-index: 200;
+      overflow: hidden;
+    }
+    .lang-dropdown.open { display: block; }
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      padding: 0 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #273240;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .lang-option:hover { background: #F5F5F5; }
+    .lang-option.selected { background: #F5F5F5; font-weight: 600; }
+
+    /* ── Parcelamento dropdown ── (reuses cfield style from index.html) */
+    .cfield {
+      position: relative;
+      max-width: 380px;
+      margin-top: 0;
+    }
+    .cfield-label {
+      position: absolute;
+      top: 0;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      color: #9C9C9C;
+      background: #fff;
+      padding: 0 4px;
+      z-index: 1;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .cfield-inner {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      min-height: 48px;
+      border: 1px solid #C5C5C5;
+      border-radius: 4px;
+      background: #fff;
+      overflow: visible;
+      box-sizing: border-box;
+      padding: 0;
+      gap: 0;
+    }
+    .cfield-inner:hover { border-color: #4E4076; }
+    .cfield-inner:focus-within { border-color: #C5C5C5; }
+
+    .doctype-trigger {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
+      padding: 0 26px 0 12px;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #273240;
+      white-space: nowrap;
+      box-sizing: border-box;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239c9c9c' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      background-size: 18px;
+    }
+    .doctype-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: -10px;
+      min-width: 140px;
+      background: #fff;
+      border: 1px solid #D3D3D3;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      z-index: 300;
+      overflow: hidden;
+    }
+    .doctype-dropdown.open { display: block; }
+    .doctype-option {
+      display: flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #273240;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .doctype-option:hover,
+    .doctype-option.selected { background: #F5F5F5; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .hc-total-value { font-variant-numeric: tabular-nums; }
+
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVO
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1200px) {
+      .left-inner  { margin-right: 60px; }
+      .right-inner { margin-left:  60px; }
+      .header-inner { margin-right: 60px; }
+    }
+
+    @media (max-width: 1024px) {
+      body {
+        height: auto;
+        overflow: auto;
+        background: #FCFCFC;
+      }
+      .page { flex-direction: column; height: auto; overflow: visible; }
+      .main-page { max-width: 100%; }
+      .page-header { flex-direction: row; }
+      .page-header-left {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
+        border-bottom: 1px solid #EDEDED;
+        justify-content: center;
+      }
+      .header-inner {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 0 44px;
+        max-width: 560px;
+      }
+      .page-header-right { display: none; }
+      .page-content { flex-direction: column; overflow: visible; }
+      .left-panel, .right-panel {
+        width: 100%;
+        min-width: 100%;
+        overflow-y: visible;
+        align-items: center;
+        background: transparent;
+      }
+      .left-panel {
+        border-right: none;
+        border-bottom: 1px solid #EDEDED;
+      }
+      .left-inner, .right-inner {
+        margin-right: 0;
+        margin-left: 0;
+        padding: 28px 44px 24px;
+        max-width: 560px;
+        min-height: auto;
+      }
+      md-outlined-text-field, md-filled-text-field, md-outlined-select, .cfield { max-width: 100%; }
+      .row-2 { max-width: 100%; }
+    }
+
+    @media (max-width: 640px) {
+      .left-inner,
+      .right-inner {
+        padding: 20px;
+        max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+      }
+      .page-header-left { padding: 16px 20px; }
+
+      .hc-table {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .hc-labels { display: none; }
+      .hc-values {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .hc-value-cell::before {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+        color: #757575;
+        margin-bottom: 2px;
+      }
+      .hc-value-cell:nth-child(1)::before { content: "Nº da Reserva"; }
+      .hc-value-cell:nth-child(2)::before { content: "Hóspede"; }
+      .hc-value-cell:nth-child(3)::before { content: "Check-in | Check-out"; }
+      .hc-value-cell:nth-child(4)::before { content: "Valor"; }
+      .hc-value-cell:nth-child(5)::before { content: "Taxas e impostos"; }
+      .hc-value-cell:nth-child(6)::before { content: "Parcelamento"; }
+
+      .hc-total-value { font-size: 20px; }
+      .security-badges {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .left-inner .security { display: none; }
+      .security-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 20px 20px 28px;
+        background: #FCFCFC;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        border-top: 1px solid #EDEDED;
+      }
+
+      .hc-info { cursor: pointer; user-select: none; }
+      .hc-chevron { display: block; }
+      .hotel-card:not(.open) .hc-table { display: none !important; }
+      .hotel-card:not(.open) .hc-info { border-bottom: none; padding-bottom: 0; }
+      .hotel-card.open .hc-table { display: flex; }
+      .hotel-card.open .hc-chevron { transform: rotate(180deg); }
+
+      .header-inner { padding: 0 20px; max-width: 100%; }
+
+      .right-inner { padding-bottom: 84px; }
+
+      .panel-heading { display: none; }
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="page main-page">
+
+  <!-- ══ HEADER ══ -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="header-inner">
+        <a class="logo" href="#">
+          <img src="assets/bee2pay-logo.png" height="40" alt="Bee2Pay">
+        </a>
+        <div class="lang-selector" id="lang-selector">
+          <button class="lang-trigger" id="lang-trigger" type="button">
+            <span class="fi fi-br"></span>
+            <span class="lang-text">Português (BR)</span>
+            <span class="lang-arrow">expand_more</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <div class="lang-option selected" data-lang="pt-BR" data-iso="br" onclick="setLang(this)">
+              <span class="fi fi-br"></span> Português (BR)
+            </div>
+            <div class="lang-option" data-lang="pt-PT" data-iso="pt" onclick="setLang(this)">
+              <span class="fi fi-pt"></span> Português (PT)
+            </div>
+            <div class="lang-option" data-lang="en" data-iso="us" onclick="setLang(this)">
+              <span class="fi fi-us"></span> English
+            </div>
+            <div class="lang-option" data-lang="es" data-iso="es" onclick="setLang(this)">
+              <span class="fi fi-es"></span> Español
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-header-right"></div>
+  </div>
+
+  <!-- ══ CONTEÚDO ══ -->
+  <div class="page-content">
+
+  <!-- ══════════════════════ PAINEL ESQUERDO ══════════════════════ -->
+  <div class="left-panel">
+  <div class="left-inner">
+
+    <!-- Hotel card -->
+    <div class="hotel-card">
+
+      <!-- Seção 1: info básica -->
+      <div class="hc-info" onclick="toggleHcTable()">
+        <div class="hc-info-header">
+          <div class="hc-name">Blue Tree Premium Congonhas Airport</div>
+          <svg class="hc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 5.5L8 10.5L13 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="hc-room">Quarto Superior Duplo</div>
+        <div class="hc-cancel">Cancelamento grátis antes de 6 de junho de 2024</div>
+      </div>
+
+      <!-- Seção 2: tabela de dados -->
+      <div class="hc-table">
+        <div class="hc-labels">
+          <span class="hc-label-cell">Nº da Reserva</span>
+          <span class="hc-label-cell">Hóspede</span>
+          <span class="hc-label-cell">Check-in | Check-out</span>
+          <span class="hc-label-cell">Valor</span>
+          <span class="hc-label-cell">Taxas e impostos</span>
+          <span class="hc-label-cell">Parcelamento</span>
+        </div>
+        <div class="hc-values">
+          <span class="hc-value-cell">RES024562-12648</span>
+          <span class="hc-value-cell">Alberto Roberto</span>
+          <span class="hc-value-cell">08/06/2024 — 10/06/2024 <span style="color:#9c9c9c;font-weight:400">(2 noites)</span></span>
+          <span class="hc-value-cell bold tabular-nums">R$ 5.000,00</span>
+          <span class="hc-value-cell bold tabular-nums">R$ 120,00</span>
+          <span class="hc-value-cell bold">Em 1× de R$ 5.120,00 sem juros</span>
+        </div>
+      </div>
+
+      <!-- Seção 3: total -->
+      <div class="hc-total">
+        <span class="hc-total-label">Total a Pagar</span>
+        <span class="hc-total-value tabular-nums">R$ 5.120,00</span>
+      </div>
+
+    </div><!-- /hotel-card -->
+
+    <!-- Selos de segurança -->
+    <div class="security">
+      <div class="security-label">Este link é protegido por:</div>
+      <div class="security-badges">
+        <span class="compliance-badge">LGPD</span>
+        <span class="compliance-badge">PCI Compliant</span>
+        <span class="compliance-badge">SSL Secure</span>
+        <span class="compliance-badge">256-bit Encryption</span>
+      </div>
+      <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
+    </div>
+
+  </div><!-- /left-inner -->
+  </div><!-- /left-panel -->
+
+  <!-- ══════════════════════ PAINEL DIREITO ══════════════════════ -->
+  <div class="right-panel">
+  <div class="right-inner">
+
+    <!-- Cabeçalho -->
+    <div class="panel-heading">
+      <div class="panel-heading-title">Pagamento</div>
+      <div class="panel-heading-subtitle">Preencha os dados do seu cartão para concluir o pagamento.</div>
+    </div>
+
+    <!-- ── Dados de Pagamento ── -->
+    <div class="section-fields">
+
+      <!-- Número do cartão -->
+      <div class="card-number-wrap">
+        <md-outlined-text-field id="f-card-num" label="Número do cartão" type="text" inputmode="numeric" autocomplete="new-password"></md-outlined-text-field>
+        <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
+          <div class="card-generic-icon">
+            <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/>
+              <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <md-outlined-text-field id="f-card-name" label="Nome do titular do cartão" type="text" autocomplete="new-password"></md-outlined-text-field>
+
+      <!-- Validade + CVV -->
+      <div class="row-2">
+        <md-outlined-text-field id="f-expiry" label="Validade" type="text" placeholder="MM/AA" autocomplete="new-password"></md-outlined-text-field>
+        <div class="cvv-wrap">
+          <md-outlined-text-field id="f-cvv" label="CVV" type="text" inputmode="numeric" autocomplete="new-password"></md-outlined-text-field>
+          <span class="cvv-info" id="cvv-info-icon">info</span>
+          <div class="cvv-tooltip" id="cvv-tooltip">
+            <div class="cvv-tip-section">
+              <p>Para American Express, digite os <strong>4 dígitos</strong> na parte da frente do seu cartão:</p>
+              <div class="cvv-card-img cvv-card-amex-img">
+                <span class="cvv-card-logo-amex">AMEX</span>
+                <span class="cvv-card-nums">1234 &nbsp;123456 &nbsp;12345</span>
+                <span class="cvv-card-code-badge">1234</span>
+              </div>
+            </div>
+            <div class="cvv-tip-divider"></div>
+            <div class="cvv-tip-section">
+              <p>Para outros cartões, digite os <strong>3 dígitos</strong> na parte detrás do seu cartão:</p>
+              <div class="cvv-card-img cvv-card-other-img">
+                <div class="cvv-card-stripe"></div>
+                <div class="cvv-card-sig">
+                  <span class="cvv-card-code-badge">123</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parcelamento -->
+      <div class="cfield" style="max-width:380px;">
+        <span class="cfield-label">Parcelamento</span>
+        <div class="cfield-inner" style="width:100%;">
+          <div class="doctype-wrap" id="parcelas-wrap" style="width:100%;">
+            <button type="button" class="doctype-trigger" id="parcelas-trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%;">
+              <span id="parcelas-label">À vista — R$ 5.120,00</span>
+            </button>
+            <div class="doctype-dropdown" id="parcelas-dropdown" role="listbox" style="width:100%; left:0; box-sizing:border-box;">
+              <div class="doctype-option selected" data-value="1" role="option">À vista — R$ 5.120,00</div>
+              <div class="doctype-option" data-value="2" role="option">Em 2x de R$ 2.560,00 sem juros</div>
+              <div class="doctype-option" data-value="3" role="option">Em 3x de R$ 1.706,66 sem juros</div>
+              <div class="doctype-option" data-value="4" role="option">Em 4x de R$ 1.280,00 sem juros</div>
+              <div class="doctype-option" data-value="5" role="option">Em 5x de R$ 1.024,00 sem juros</div>
+              <div class="doctype-option" data-value="6" role="option">Em 6x de R$ 853,33 sem juros</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão Pagar -->
+      <div style="max-width:380px;">
+        <md-filled-button class="btn-green" id="btn-pagar" onclick="submitPayment()" style="width:100%;">
+          Pagar com segurança
+        </md-filled-button>
+        <p class="secure-note">🔒 Pagamento seguro com criptografia SSL</p>
+      </div>
+
+    </div>
+
+  </div><!-- /right-inner -->
+  </div><!-- /right-panel -->
+
+  </div><!-- /page-content -->
+
+  <!-- Selos mobile -->
+  <div class="security-footer">
+    <div class="security-label">Este link é protegido por:</div>
+    <div class="security-badges">
+      <span class="compliance-badge">LGPD</span>
+      <span class="compliance-badge">PCI Compliant</span>
+      <span class="compliance-badge">SSL Secure</span>
+      <span class="compliance-badge">256-bit Encryption</span>
+    </div>
+    <div class="security-note">Seus dados estão protegidos e nunca são compartilhados.</div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ═══ TELA DE SUCESSO ═══ -->
+<div class="success-page" id="success-page" style="display:none;">
+
+  <!-- Header: logo + lang -->
+  <div class="suc-topbar">
+    <a class="logo" href="#">
+      <img src="assets/bee2pay-logo.png" height="36" alt="Bee2Pay">
+    </a>
+    <div class="lang-selector" id="suc-lang-selector">
+      <button class="lang-trigger" id="suc-lang-trigger" type="button">
+        <span class="fi fi-br" id="suc-lang-flag"></span>
+        <span class="lang-text" id="suc-lang-text">Português (BR)</span>
+        <span class="lang-arrow">expand_more</span>
+      </button>
+      <div class="lang-dropdown" id="suc-lang-dropdown">
+        <div class="lang-option selected" data-lang="pt-BR" data-iso="br" onclick="setSucLang(this)"><span class="fi fi-br"></span> Português (BR)</div>
+        <div class="lang-option" data-lang="pt-PT" data-iso="pt" onclick="setSucLang(this)"><span class="fi fi-pt"></span> Português (PT)</div>
+        <div class="lang-option" data-lang="en" data-iso="us" onclick="setSucLang(this)"><span class="fi fi-us"></span> English</div>
+        <div class="lang-option" data-lang="es" data-iso="es" onclick="setSucLang(this)"><span class="fi fi-es"></span> Español</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Single centered card -->
+  <div class="suc-center">
+    <div class="suc-block">
+
+      <!-- Ícone + título -->
+      <div class="success-icon">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="32" fill="#4BAF4F"/>
+          <path d="M19 33L28 42L45 24" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-title">Pagamento realizado com sucesso!</div>
+
+      <!-- Dados do pagamento -->
+      <div class="success-details">
+        <div class="success-section-title">Dados do Pagamento</div>
+        <div class="success-row">
+          <span class="success-label">Bandeira</span>
+          <span class="success-value" id="suc-brand">Cartão</span>
+        </div>
+        <div class="success-row">
+          <span class="success-label">Número do Cartão</span>
+          <span class="success-value" id="suc-card">**** **** **** ____</span>
+        </div>
+        <div class="success-row">
+          <span class="success-label">Nome do Titular</span>
+          <span class="success-value" id="suc-name">—</span>
+        </div>
+      </div>
+      <div class="success-total">
+        <span class="success-total-label">Valor da reserva</span>
+        <span class="success-total-value">R$ 5.120,00</span>
+      </div>
+
+      <!-- Comprovante -->
+      <div class="suc-receipt">
+        <div class="suc-receipt-title">Comprovante do pagamento</div>
+        <div class="suc-receipt-sub">Caso deseje, você pode enviar o comprovante por e-mail.</div>
+        <input type="email" id="f-receipt-email" placeholder="E-mail" autocomplete="off" class="suc-email-input" />
+        <div class="suc-receipt-hint">Para mais de um e-mail, separe-os por vírgula.</div>
+        <button class="suc-send-btn" onclick="sendReceipt()">Enviar</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ OVERLAY: PROCESSANDO PAGAMENTO ═══ -->
+<div id="processing-overlay" style="display:none;">
+  <div class="proc-box">
+    <svg class="proc-spinner" width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <circle cx="26" cy="26" r="21" stroke="rgba(255,255,255,0.18)" stroke-width="4"/>
+      <path d="M26 5a21 21 0 0121 21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <p class="proc-title">Processando pagamento...</p>
+    <p class="proc-sub">Não feche esta janela</p>
+  </div>
+</div>
+
+<!-- ═══ MODAL: COMPROVANTE ENVIADO ═══ -->
+<div class="email-sent-overlay" id="email-sent-overlay" onclick="closeEmailSent(event)">
+  <div class="email-sent-modal">
+    <div class="email-sent-icon">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="32" fill="#4BAF4F"/>
+        <rect x="16" y="22" width="32" height="22" rx="2" fill="none" stroke="#fff" stroke-width="2.2"/>
+        <path d="M16 24l16 12 16-12" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="email-sent-title">Comprovante enviado</div>
+    <div class="email-sent-msg">Em instantes o comprovante já estará disponível em sua caixa de entrada.</div>
+  </div>
+</div>
+
+<script>
+  /* ── Input masks ── */
+  function applyMask(el, handler) {
+    el.addEventListener('input', () => handler(el));
+  }
+
+  /* ── Parcelamento dropdown ── */
+  (function initParcelas() {
+    const wrap     = document.getElementById('parcelas-wrap');
+    const trigger  = document.getElementById('parcelas-trigger');
+    const dropdown = document.getElementById('parcelas-dropdown');
+    const labelEl  = document.getElementById('parcelas-label');
+    if (!wrap || !trigger || !dropdown) return;
+    const options  = dropdown.querySelectorAll('.doctype-option');
+
+    function open()  { trigger.setAttribute('aria-expanded','true');  dropdown.classList.add('open'); }
+    function close() { trigger.setAttribute('aria-expanded','false'); dropdown.classList.remove('open'); }
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.contains('open') ? close() : open();
+    });
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        labelEl.textContent = opt.textContent.trim();
+        close();
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!wrap.contains(e.target)) close();
+    });
+  })();
+
+  /* SVG do ícone genérico de cartão */
+  const GENERIC_CARD_SVG = '<div class="card-generic-icon"><svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/><rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/></svg></div>';
+
+  /* ── Detecção de bandeira do cartão ── */
+  function detectCardBrand(digits) {
+    const badge = document.getElementById('card-brand-badge');
+    if (!badge) return;
+
+    badge.className = 'card-brand-badge';
+    badge.innerHTML = '';
+
+    if (!digits || digits.length === 0) {
+      badge.classList.add('visible', 'brand-generic');
+      badge.innerHTML = GENERIC_CARD_SVG;
+      return;
+    }
+
+    const d      = digits;
+    const n      = parseInt(d.slice(0, 6).padEnd(6, '0'), 10);
+    const first  = d[0];
+    const first2 = parseInt(d.slice(0, 2) || '0', 10);
+    const first4 = parseInt(d.slice(0, 4).padEnd(4, '0'), 10);
+    const first6 = n;
+
+    let brand = null;
+
+    const eloBins4 = [4011,4312,4389,4514,4576,4011];
+    const eloBins6 = [401178,401179,431274,438935,451416,457393,457631,457632,
+                      504175,627780,636297,636368,650031,650032,650033,650035,
+                      650036,650037,650038,650039,650040,650041,650042,650043,
+                      650044,650045,650046,650047,650048,650049,650050,650051,
+                      650405,650406,650407,650408,650409,650410,650411,650412,
+                      650413,650414,650415,650416,650417,650418,650419,650420,
+                      650421,650422,650423,650424,650425,650426,650427,650428,
+                      650429,650430,650431,650432,650433,650434,650435,650436,
+                      650437,650438,650439,650440,650441,650442,650443,650444,
+                      650445,650446,650447,650448,650449,650450,650451,650452,
+                      650453,650454,650455,650456,650457,650458,650459,650460,
+                      650461,650462,650463,650464,650465,650466,650467,650468,
+                      650469,650470,650471,650472,650473,650474,650475,650476,
+                      650477,650478,650479,650480,650481,650482,650483,650484,
+                      650485,650486,650487,650488,650489,650490,650491,650492,
+                      650493,650494,650495,650496,650497,650498,650499,650500,
+                      650501,650502,650503,650504,650505,650506,650507,650508,
+                      650509,650510,650511,650512,650513,650514,650515,650516,
+                      650517,650518,650519,650520,650521,650522,650523,650524,
+                      650525,650526,650527,650528,650529,650530,650531,650532,
+                      650533,650534,650535,650536,650537,650538,650539,650540,
+                      650541,650542,650543,650544,650545,650546,650547,650548,
+                      650549,650550,650551,650552,650553,650554,650555,650556,
+                      650557,650558,650559,650560,650561,650562,650563,650564,
+                      650565,650566,650567,650568,650569,650570,650571,650572,
+                      650573,650574,650575,650576,650577,650578,650579,650580,
+                      506699,506700,506701,506702,506703,506704,506705,506706,
+                      506707,506708,506709,506710,506711,506712,506713,506714,
+                      506715,506716,506717,506718,506719,506720,506721,506722,
+                      506723,506724,506725,506726,506727,506728,506729,506730,
+                      509000,509001,509002,509003,509004,509005,509006,509007,
+                      627780,636297,636368];
+    if (eloBins6.includes(first6) || eloBins4.includes(first4)) brand = 'elo';
+
+    if (!brand && (first6 === 606282 || first4 === 3841)) brand = 'hipercard';
+    if (!brand && first2 === 50) brand = 'aura';
+    if (!brand && first === '3' && (d[1] === '4' || d[1] === '7')) brand = 'amex';
+    if (!brand && first === '3') {
+      if ((first2 >= 30 && first2 <= 35) || first2 === 36 || first2 === 38) brand = 'diners';
+    }
+    if (!brand && first4 >= 3528 && first4 <= 3589) brand = 'jcb';
+    if (!brand && first2 === 62) brand = 'unionpay';
+    if (!brand) {
+      if (first4 === 6011 || (first6 >= 622126 && first6 <= 622925) ||
+          (first2 >= 64 && first2 <= 65)) brand = 'discover';
+    }
+    if (!brand) {
+      const maestroBins = [6304,6759,6761,6762,6763];
+      if (maestroBins.includes(first4)) brand = 'maestro';
+    }
+    if (!brand) {
+      if ((first2 >= 51 && first2 <= 55) || (first4 >= 2221 && first4 <= 2720)) brand = 'mc';
+    }
+    if (!brand && first === '4') brand = 'visa';
+
+    badge.classList.add('visible', 'brand-' + (brand || 'generic'));
+
+    const renders = {
+      visa:      () => { badge.classList.add('brand-text'); badge.textContent = 'VISA'; },
+      mc:        () => { badge.innerHTML = '<div class="mc-circles"><div class="mc-left"></div><div class="mc-right"></div></div>'; },
+      amex:      () => { badge.classList.add('brand-text'); badge.textContent = 'AMEX'; },
+      discover:  () => { badge.classList.add('brand-text'); badge.textContent = 'DISC'; },
+      diners:    () => { badge.classList.add('brand-text'); badge.textContent = 'DINERS'; },
+      jcb:       () => { badge.classList.add('brand-text'); badge.textContent = 'JCB'; },
+      unionpay:  () => { badge.classList.add('brand-text'); badge.textContent = 'UP'; },
+      elo:       () => { badge.classList.add('brand-text'); badge.textContent = 'ELO'; },
+      hipercard: () => { badge.classList.add('brand-text'); badge.textContent = 'HIPER'; },
+      maestro:   () => { badge.innerHTML = '<div class="maestro-circles"><div class="maestro-left"></div><div class="maestro-right"></div></div>'; },
+      aura:      () => { badge.classList.add('brand-text'); badge.textContent = 'AURA'; },
+    };
+
+    if (!brand) {
+      badge.classList.add('brand-generic'); badge.innerHTML = GENERIC_CARD_SVG;
+      return;
+    }
+    if (renders[brand]) renders[brand]();
+  }
+
+  /* ── CVV Tooltip ── */
+  (function initCVVTooltip() {
+    const icon    = document.getElementById('cvv-info-icon');
+    const tooltip = document.getElementById('cvv-tooltip');
+    if (!icon || !tooltip) return;
+
+    icon.addEventListener('mouseenter', () => tooltip.classList.add('visible'));
+    icon.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+    icon.addEventListener('focus',      () => tooltip.classList.add('visible'));
+    icon.addEventListener('blur',       () => tooltip.classList.remove('visible'));
+  })();
+
+  /* ── Comprovante por email ── */
+  function sendReceipt() {
+    document.getElementById('email-sent-overlay').classList.add('visible');
+  }
+  function closeEmailSent(e) {
+    if (e.target === document.getElementById('email-sent-overlay')) {
+      document.getElementById('email-sent-overlay').classList.remove('visible');
+    }
+  }
+
+  /* ── Submit Payment ── */
+  function submitPayment() {
+    const btn = document.getElementById('btn-pagar');
+    if (btn) btn.setAttribute('disabled', '');
+
+    const cardNum  = document.getElementById('f-card-num')?.value || '';
+    const rawDigits = cardNum.replace(/\s/g,'');
+    const last4 = rawDigits.slice(-4);
+    document.getElementById('suc-card').textContent = '**** **** **** ' + (last4 || '____');
+    document.getElementById('suc-name').textContent = document.getElementById('f-card-name')?.value?.trim() || '—';
+
+    // Detecção de bandeira
+    const brandNames = { visa:'Visa', mc:'Mastercard', amex:'American Express',
+      elo:'Elo', hipercard:'Hipercard', discover:'Discover', diners:'Diners Club',
+      jcb:'JCB', unionpay:'UnionPay', maestro:'Maestro', aura:'Aura' };
+    const d = rawDigits;
+    const f2 = parseInt(d.slice(0,2)||'0',10);
+    const f4 = parseInt(d.slice(0,4).padEnd(4,'0'),10);
+    const f6 = parseInt(d.slice(0,6).padEnd(6,'0'),10);
+    let detectedBrand = null;
+    const eloBins6=[401178,401179,431274,438935,451416,457393,457631,457632,504175,627780,636297,636368,506699,506700,506701,506702,506703,506704,509000];
+    if(eloBins6.includes(f6)||[4011,4312,4389,4514,4576].includes(f4)) detectedBrand='elo';
+    if(!detectedBrand&&(f6===606282||f4===3841)) detectedBrand='hipercard';
+    if(!detectedBrand&&f2===50) detectedBrand='aura';
+    if(!detectedBrand&&d[0]==='3'&&(d[1]==='4'||d[1]==='7')) detectedBrand='amex';
+    if(!detectedBrand&&d[0]==='3'&&(f2>=30&&f2<=38)) detectedBrand='diners';
+    if(!detectedBrand&&f4>=3528&&f4<=3589) detectedBrand='jcb';
+    if(!detectedBrand&&f2===62) detectedBrand='unionpay';
+    if(!detectedBrand&&(f4===6011||(f6>=622126&&f6<=622925)||(f2>=64&&f2<=65))) detectedBrand='discover';
+    if(!detectedBrand&&[6304,6759,6761,6762,6763].includes(f4)) detectedBrand='maestro';
+    if(!detectedBrand&&((f2>=51&&f2<=55)||(f4>=2221&&f4<=2720))) detectedBrand='mc';
+    if(!detectedBrand&&d[0]==='4') detectedBrand='visa';
+    document.getElementById('suc-brand').textContent = detectedBrand ? (brandNames[detectedBrand]||detectedBrand) : 'Cartão';
+
+    document.querySelector('.page').style.display = 'none';
+
+    const overlay = document.getElementById('processing-overlay');
+    overlay.style.display = 'flex';
+    overlay.style.opacity = '1';
+
+    setTimeout(() => {
+      overlay.classList.add('fade-out');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('fade-out');
+        document.getElementById('success-page').style.display = 'block';
+      }, 500);
+    }, 2400);
+  }
+
+  /* Language selector — cabeçalho principal */
+  (function() {
+    const trigger = document.getElementById('lang-trigger');
+    const dropdown = document.getElementById('lang-dropdown');
+    if (!trigger || !dropdown) return;
+    trigger.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+  })();
+
+  function setLang(opt) {
+    const iso = opt.dataset.iso;
+    const text = opt.textContent.trim();
+    document.querySelector('#lang-trigger .fi').className = 'fi fi-' + iso;
+    document.querySelector('#lang-trigger .lang-text').textContent = text;
+    document.querySelectorAll('#lang-dropdown .lang-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    document.getElementById('lang-dropdown').classList.remove('open');
+  }
+
+  /* Language selector — tela de sucesso */
+  (function() {
+    const trigger = document.getElementById('suc-lang-trigger');
+    const dropdown = document.getElementById('suc-lang-dropdown');
+    if (!trigger || !dropdown) return;
+    trigger.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+  })();
+
+  function setSucLang(opt) {
+    const iso = opt.dataset.iso;
+    const text = opt.textContent.trim();
+    document.getElementById('suc-lang-flag').className = 'fi fi-' + iso;
+    document.getElementById('suc-lang-text').textContent = text;
+    document.querySelectorAll('#suc-lang-dropdown .lang-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    document.getElementById('suc-lang-dropdown').classList.remove('open');
+  }
+
+  /* Colapso do hc-table no mobile */
+  function toggleHcTable() {
+    if (window.innerWidth > 640) return;
+    document.querySelector('.hotel-card').classList.toggle('open');
+  }
+
+  /* DOMContentLoaded: masks + card brand listener */
+  window.addEventListener('DOMContentLoaded', () => {
+    const cardNum = document.getElementById('f-card-num');
+    const expiry  = document.getElementById('f-expiry');
+    const cvv     = document.getElementById('f-cvv');
+    const cardName = document.getElementById('f-card-name');
+
+    if (cardNum) applyMask(cardNum, el => {
+      const raw = el.value.replace(/\D/g, '').slice(0, 16);
+      el.value = raw.replace(/(.{4})/g, '$1 ').trim();
+      detectCardBrand(raw);
+    });
+
+    if (expiry) applyMask(expiry, el => {
+      let v = el.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
+      el.value = v;
+    });
+
+    if (cvv) applyMask(cvv, el => {
+      el.value = el.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    if (cardName) {
+      cardName.addEventListener('input', function() {
+        cardName.value = cardName.value.toUpperCase();
+      });
+    }
+  });
+</script>
+
+<!-- ── VERSION SWITCHER ── -->
+<style>
+  .version-switcher {
+    position: fixed;
+    left: 20px;
+    bottom: 28px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: rgba(27,34,45,0.94);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 14px;
+    padding: 10px 7px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22), 0 1.5px 0 rgba(255,255,255,0.04) inset;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .version-switcher:hover { opacity: 1; }
+  .vs-label {
+    font-size: 8px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.32);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: 4px;
+  }
+  .vs-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    color: rgba(255,255,255,0.44);
+    transition: background 0.14s, color 0.14s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .vs-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
+  .vs-btn:active { transform: scale(0.96); }
+  .vs-btn.vs-active { background: #FEC437; color: #273240; }
+  .vs-divider {
+    width: 20px;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 2px 0;
+  }
+</style>
+<nav class="version-switcher" aria-label="Versões do protótipo">
+  <div class="vs-label">Completo</div>
+  <a href="index.html" class="vs-btn" title="V1 — Fluxo completo">V1</a>
+  <div class="vs-divider"></div>
+  <a href="v2.html" class="vs-btn" title="V2 — Fluxo completo">V2</a>
+  <div class="vs-divider" style="margin-top:6px;"></div>
+  <div class="vs-label">Pagar</div>
+  <a href="v1-pay.html" class="vs-btn vs-active" title="V1 — Somente Pagamento">V1</a>
+  <div class="vs-divider"></div>
+  <a href="v2-pay.html" class="vs-btn" title="V2 — Somente Pagamento">V2</a>
+</nav>
+
+</body>
+</html>
