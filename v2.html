@@ -464,15 +464,15 @@
       box-shadow: none;
     }
 
-    input:hover, select:hover {
+    input:not(.combo-search-input):hover, select:hover {
       border-color: #4E4076;
     }
 
     input::placeholder { color: #9C9C9C; }
 
-    input:focus, select:focus {
-      border-color: #C5C5C5;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+    input:not(.combo-search-input):focus, select:focus {
+      border-color: #4E4076;
+      box-shadow: none;
       background: #fff;
     }
 
@@ -715,8 +715,8 @@
     .combo-field:hover:not(.combo-open) { border-color: #4E4076; }
     .combo-field:focus-within,
     .combo-field.combo-open {
-      border-color: #C5C5C5;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+      border-color: #4E4076;
+      box-shadow: none;
       background: #fff;
     }
     .combo-trigger {
@@ -741,6 +741,22 @@
       background-size: 16px;
     }
     .combo-trigger:hover { background-color: #F8F8F8; }
+    .combo-search-input {
+      flex: 1;
+      min-width: 0;
+      width: 0;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      color: #273240;
+      cursor: pointer;
+      padding: 0;
+    }
+    .combo-search-input::placeholder { color: #9C9C9C; }
+    .combo-search-input:focus { cursor: text; }
     .flag-select-field .combo-trigger { flex: 1; border-radius: 4px; }
     .combo-sep {
       width: 1px;
@@ -766,6 +782,7 @@
       position: absolute;
       top: calc(100% + 6px);
       left: 0;
+      width: 100%;
       min-width: 180px;
       max-height: 240px;
       overflow-y: auto;
@@ -888,7 +905,7 @@
       transition: border-color 0.15s;
     }
     .parc-trigger:hover { border-color: #4E4076; }
-    .parc-trigger.open  { border-color: #C5C5C5; }
+    .parc-trigger.open  { border-color: #4E4076; }
 
     .parc-trigger .parc-arrow {
       width: 18px;
@@ -1081,7 +1098,7 @@
     }
     .receipt-row input:focus {
       border-color: #4E4076;
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+      box-shadow: none;
       outline: none;
     }
 
@@ -1295,9 +1312,15 @@
     @media (max-width: 768px) {
       body { background: #f4f6fa; }
 
+      .page {
+        padding: 0;
+        align-items: flex-start;
+      }
+
       .checkout-wrapper {
         flex-direction: column;
-        max-width: 520px;
+        max-width: 100%;
+        width: 100%;
         gap: 0;
         padding: 0;
         border-radius: 0;
@@ -1342,9 +1365,11 @@
 
       .panel-right {
         width: 100%;
+        flex: 1;
         border-radius: 0;
         padding: 24px 20px;
         background: #fff;
+        min-height: calc(100vh - 180px);
       }
 
       .field-row {
@@ -1361,6 +1386,8 @@
       .btn-row .btn-primary {
         width: 100%;
         padding: 0 16px;
+        height: 52px;
+        min-height: 52px;
       }
 
       .combo-field { height: 48px; }
@@ -1575,10 +1602,13 @@
           <div class="field-group">
             <label class="field-label">País</label>
             <div class="combo-field flag-select-field" id="combo-pais">
-              <button type="button" class="combo-trigger" id="combo-pais-trigger" onclick="toggleCombo('combo-pais')">
+              <div class="combo-trigger" id="combo-pais-trigger" onclick="openComboSearch('combo-pais')">
                 <span class="fi fi-br" id="combo-pais-flag"></span>
-                <span id="combo-pais-label">Brasil</span>
-              </button>
+                <input type="text" class="combo-search-input" id="combo-pais-search"
+                       autocomplete="off" placeholder="País" value="Brasil"
+                       oninput="filterCombo('combo-pais', this.value)"
+                       onfocus="openComboSearch('combo-pais')" />
+              </div>
               <input type="hidden" id="f-pais" value="BR">
               <div class="combo-dropdown" id="combo-pais-dd">
                 <div class="combo-option selected" data-value="BR" onclick="selectComboItem('combo-pais','BR','br','f-pais','Brasil')"><span class="fi fi-br"></span> Brasil</div>
@@ -2511,6 +2541,30 @@
     if (!wasOpen) el.classList.add('combo-open');
   }
 
+  function openComboSearch(id) {
+    const el = document.getElementById(id);
+    const searchInput = document.getElementById(id + '-search');
+    document.querySelectorAll('.combo-field.combo-open').forEach(c => {
+      if (c.id !== id) c.classList.remove('combo-open');
+    });
+    el.classList.add('combo-open');
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.focus();
+      filterCombo(id, '');
+    }
+  }
+
+  function filterCombo(id, query) {
+    const dd = document.getElementById(id + '-dd');
+    if (!dd) return;
+    const q = query.trim().toLowerCase();
+    dd.querySelectorAll('.combo-option').forEach(opt => {
+      const text = opt.textContent.trim().toLowerCase();
+      opt.style.display = text.startsWith(q) || q === '' ? '' : 'none';
+    });
+  }
+
   // Mapa país → DDI (código + iso da bandeira)
   const COUNTRY_DDI = {
     BR: { ddi: '+55',  iso: 'br' }, AR: { ddi: '+54',  iso: 'ar' },
@@ -2526,10 +2580,12 @@
   };
 
   function selectComboItem(comboId, value, flag, inputId, label) {
-    const flagEl  = document.getElementById(comboId + '-flag');
-    const labelEl = document.getElementById(comboId + '-label');
+    const flagEl    = document.getElementById(comboId + '-flag');
+    const labelEl   = document.getElementById(comboId + '-label');
+    const searchEl  = document.getElementById(comboId + '-search');
     if (flagEl)  flagEl.className = 'fi fi-' + flag;
     if (labelEl) labelEl.textContent = label;
+    if (searchEl) { searchEl.value = label; filterCombo(comboId, ''); }
     document.getElementById(inputId).value = value;
     document.querySelectorAll('#' + comboId + '-dd .combo-option').forEach(o => {
       o.classList.toggle('selected', o.dataset.value === value);
