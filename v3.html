@@ -268,24 +268,26 @@
     .badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 12px;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      background: rgba(245,175,4,0.06);
-      border: 1px solid rgba(245,175,4,0.15);
-      border-radius: 999px;
-      padding: 5px 12px;
-      font-size: 11px;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #C8E7CA;
+      border-radius: 1000px;
+      padding: 4px 8px;
+      font-size: 12px;
       font-weight: 600;
-      color: #64748B;
-      letter-spacing: 0.04em;
+      color: #4BAF4F;
+      letter-spacing: 0;
+      line-height: 16px;
+      white-space: nowrap;
     }
 
-    .badge svg { width: 12px; height: 12px; opacity: 0.7; }
+    .badge svg { width: 14px; height: 14px; flex-shrink: 0; }
 
     /* ─── RIGHT PANEL ─── */
     .panel-right {
@@ -1568,24 +1570,26 @@
       <div class="badges-label">Este link é protegido por:</div>
       <div class="badges">
         <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <rect x="1" y="1" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M4 7l2 2 4-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M6 8.5L7.5 10L10.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 4.5A1.5 1.5 0 014.5 3h7A1.5 1.5 0 0113 4.5v7A1.5 1.5 0 0111.5 13h-7A1.5 1.5 0 013 11.5v-7z" stroke="currentColor" stroke-width="1.5"/>
           </svg>
           LGPD
         </span>
         <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <rect x="2" y="3" width="10" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M5 3V2.5a2 2 0 014 0V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <rect x="3" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5.5 6V4.5a2.5 2.5 0 015 0V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="10" r="1" fill="currentColor"/>
           </svg>
-          PCI DSS
+          PCI Compliant
         </span>
         <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <path d="M7 1l4 2v4c0 2.5-2 4.5-4 5.5C5 11.5 3 9.5 3 7V3l4-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M8 1.5L13 4v4c0 3-2.5 5.5-5 6.5C5.5 13.5 3 11 3 8V4L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M6 8l1.5 1.5L10 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          SSL 256-bit
+          SSL Secure
         </span>
       </div>
       </div><!-- /badges-wrap -->
@@ -1993,24 +1997,26 @@
       <div class="badges-label">Este link é protegido por:</div>
       <div class="badges">
         <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <rect x="1" y="1" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M4 7l2 2 4-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M6 8.5L7.5 10L10.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 4.5A1.5 1.5 0 014.5 3h7A1.5 1.5 0 0113 4.5v7A1.5 1.5 0 0111.5 13h-7A1.5 1.5 0 013 11.5v-7z" stroke="currentColor" stroke-width="1.5"/>
           </svg>
           LGPD
         </span>
         <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <rect x="2" y="3" width="10" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M5 3V2.5a2 2 0 014 0V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <rect x="3" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5.5 6V4.5a2.5 2.5 0 015 0V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="10" r="1" fill="currentColor"/>
           </svg>
-          PCI DSS
+          PCI Compliant
         </span>
         <span class="badge">
-          <svg viewBox="0 0 14 14" fill="none">
-            <path d="M7 1l4 2v4c0 2.5-2 4.5-4 5.5C5 11.5 3 9.5 3 7V3l4-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M8 1.5L13 4v4c0 3-2.5 5.5-5 6.5C5.5 13.5 3 11 3 8V4L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M6 8l1.5 1.5L10 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          SSL 256-bit
+          SSL Secure
         </span>
       </div>
     </div>
