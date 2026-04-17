@@ -154,6 +154,62 @@ OLD_CSS_BLOCK = """    .field-label {
     /* CEP: input deixa espaço para o botão pill */
     #cep-wrap input { padding-right: 108px; }"""
 
+# v2-pay.html has a slightly different CSS block (no combo-search-input selectors, no cep-wrap)
+OLD_CSS_BLOCK_PAY = """    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #273240;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .field-row .field-group { flex: 1; }
+
+    input, select {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #C5C5C5;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      color: #273240;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+      box-shadow: none;
+    }
+
+    input:hover, select:hover {
+      border-color: #4E4076;
+    }
+
+    input::placeholder { color: #9C9C9C; }
+
+    input:focus, select:focus {
+      border-color: #C5C5C5;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+      background: #fff;
+    }
+
+    select option { background: #fff; color: #273240; }
+
+    /* Wrapper for inputs with icons/addons */
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap input { padding-right: 14px; }"""
+
 
 def transform_v3(src_file, dst_file, is_pay=False):
     with open(src_file, 'r', encoding='utf-8') as f:
@@ -166,7 +222,11 @@ def transform_v3(src_file, dst_file, is_pay=False):
         h = h.replace('Pagamento — V2 Bee2Pay Yellow', 'Pagamento — V3 Bee2Pay Material Design')
 
     # CSS swap
-    h = h.replace(OLD_CSS_BLOCK, M3_CSS)
+    css_block = OLD_CSS_BLOCK_PAY if is_pay else OLD_CSS_BLOCK
+    replaced = h.replace(css_block, M3_CSS)
+    if replaced == h:
+        print(f'WARNING: CSS block not found in {src_file}!')
+    h = replaced
 
     # cep-loading fix
     h = h.replace('.cep-loading input { opacity: 0.7; }', '.cep-loading .m3-input { opacity: 0.7; }')
