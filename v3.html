@@ -511,7 +511,24 @@
     .m3-field.error .m3-input { border-color: #B3261E !important; }
     .m3-field.error .m3-label,
     .m3-field.error .m3-label--float { color: #B3261E !important; }
-    .m3-field.error .m3-combo-input { border-color: #B3261E !important; }
+    .m3-field.error .m3-combo-input,
+    .m3-field.error .combo-field { border-color: #B3261E !important; }
+    .m3-helper {
+      display: none;
+      font-size: 11px;
+      color: #B3261E;
+      margin-top: 4px;
+      padding-left: 4px;
+      line-height: 1.4;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+    .btn-shake { animation: shake 0.35s ease; }
 
     /* Wrapper for inputs with icons/addons (kept for compat) */
     .input-wrap {
@@ -2123,9 +2140,231 @@
   // ─── STEP MANAGEMENT ────────────────────────────────────────────
   let currentStep = 1;
 
+/* ── VALIDATION HELPERS ── */
+  function fieldError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.add('error');
+    let helper = m3.parentElement.querySelector('.m3-helper');
+    if (!helper) {
+      helper = document.createElement('span');
+      helper.className = 'm3-helper';
+      m3.after(helper);
+    }
+    helper.textContent = msg;
+    helper.style.display = 'block';
+  }
+
+  function fieldOk(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.remove('error');
+    const helper = m3.parentElement.querySelector('.m3-helper');
+    if (helper) helper.style.display = 'none';
+  }
+
+  function comboError(comboId, msg) {
+    const el = document.getElementById(comboId);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.add('error');
+    let helper = m3.parentElement.querySelector('.m3-helper');
+    if (!helper) {
+      helper = document.createElement('span');
+      helper.className = 'm3-helper';
+      m3.after(helper);
+    }
+    helper.textContent = msg;
+    helper.style.display = 'block';
+  }
+
+  function comboOk(comboId) {
+    const el = document.getElementById(comboId);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.remove('error');
+    const helper = m3.parentElement.querySelector('.m3-helper');
+    if (helper) helper.style.display = 'none';
+  }
+
+  function validateStep1() {
+    let first = null; // returns first invalid element, or null if all ok
+
+    // Nome completo
+    const nomeEl = document.getElementById('f-nome');
+    const nome = (nomeEl.value || '').trim();
+    if (!nome) { fieldError('f-nome', 'Nome obrigatório'); first = first || nomeEl; }
+    else if (nome.split(/\s+/).filter(Boolean).length < 2) { fieldError('f-nome', 'Informe nome e sobrenome'); first = first || nomeEl; }
+    else fieldOk('f-nome');
+
+    // E-mail
+    const emailEl = document.getElementById('f-email');
+    const email = (emailEl.value || '').trim();
+    if (!email) { fieldError('f-email', 'E-mail obrigatório'); first = first || emailEl; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('f-email', 'E-mail inválido'); first = first || emailEl; }
+    else fieldOk('f-email');
+
+    // Data de nascimento
+    const dobEl = document.getElementById('f-dob');
+    const dob = (dobEl.value || '').trim();
+    if (!dob) { fieldError('f-dob', 'Data obrigatória'); first = first || dobEl; }
+    else {
+      const parts = dob.split('/');
+      const d = parseInt(parts[0],10), m = parseInt(parts[1],10), y = parseInt(parts[2],10);
+      const date = new Date(y, m-1, d);
+      const valid = parts.length===3 && date.getDate()===d && date.getMonth()===m-1
+                    && date.getFullYear()===y && y>=1900 && date < new Date();
+      if (!valid) { fieldError('f-dob', 'Data inválida'); first = first || dobEl; }
+      else fieldOk('f-dob');
+    }
+
+    // Telefone
+    const telEl = document.getElementById('f-tel');
+    const tel = (telEl ? telEl.value : '').replace(/\D/g, '');
+    if (!tel || tel.length < 10) { comboError('combo-ddi', 'Telefone inválido'); first = first || telEl; }
+    else comboOk('combo-ddi');
+
+    // Documento
+    const docnumEl = document.getElementById('f-docnum');
+    const docnum = (docnumEl ? docnumEl.value : '').replace(/\D/g, '');
+    const doctype = document.getElementById('f-doctype') ? document.getElementById('f-doctype').value : 'CPF';
+    if (!docnum) { comboError('combo-doc', 'Documento obrigatório'); first = first || docnumEl; }
+    else if (doctype==='CPF' && docnum.length!==11) { comboError('combo-doc', 'CPF deve ter 11 dígitos'); first = first || docnumEl; }
+    else if (doctype==='CNPJ' && docnum.length!==14) { comboError('combo-doc', 'CNPJ deve ter 14 dígitos'); first = first || docnumEl; }
+    else comboOk('combo-doc');
+
+    return first; // null = tudo ok
+  }
+
+  function validateStep2() {
+    let first = null;
+
+    // CEP
+    const cepEl = document.getElementById('f-cep');
+    if ((cepEl.value||'').replace(/\D/g,'').length !== 8) { fieldError('f-cep', 'CEP inválido'); first = first || cepEl; }
+    else fieldOk('f-cep');
+
+    // Logradouro
+    const logEl = document.getElementById('f-logradouro');
+    if (!(logEl.value||'').trim()) { fieldError('f-logradouro', 'Logradouro obrigatório'); first = first || logEl; }
+    else fieldOk('f-logradouro');
+
+    // Número
+    const numEl = document.getElementById('f-numero');
+    if (!(numEl.value||'').trim()) { fieldError('f-numero', 'Número obrigatório'); first = first || numEl; }
+    else fieldOk('f-numero');
+
+    // Bairro
+    const bairroEl = document.getElementById('f-bairro');
+    if (!(bairroEl.value||'').trim()) { fieldError('f-bairro', 'Bairro obrigatório'); first = first || bairroEl; }
+    else fieldOk('f-bairro');
+
+    // Cidade
+    const cidadeEl = document.getElementById('f-cidade');
+    if (!(cidadeEl.value||'').trim()) { fieldError('f-cidade', 'Cidade obrigatória'); first = first || cidadeEl; }
+    else fieldOk('f-cidade');
+
+    // Estado
+    const estadoCombo = document.getElementById('estado-combo');
+    const estadoVal = estadoCombo ? estadoCombo.dataset.value : '';
+    if (!estadoVal) { comboError('estado-combo', 'Estado obrigatório'); first = first || estadoCombo; }
+    else comboOk('estado-combo');
+
+    return first; // null = tudo ok
+  }
+
+  /* ── CLEAR ERRORS ON INPUT ── */
+  function bindClearErrors() {
+    // Limpa erro ao digitar (feedback imediato)
+    const clearOnInput = ['f-nome','f-email','f-dob','f-cep','f-logradouro','f-numero','f-bairro','f-cidade'];
+    clearOnInput.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => fieldOk(id));
+    });
+    const tel = document.getElementById('f-tel');
+    if (tel) tel.addEventListener('input', () => comboOk('combo-ddi'));
+    const docnum = document.getElementById('f-docnum');
+    if (docnum) docnum.addEventListener('input', () => comboOk('combo-doc'));
+
+    // Valida ao sair do campo (blur) — feedback antecipado sem ser intrusivo
+    const blurRules = [
+      { id: 'f-nome', fn: () => {
+          const v = (document.getElementById('f-nome').value||'').trim();
+          if (!v) fieldError('f-nome','Nome obrigatório');
+          else if (v.split(/\s+/).filter(Boolean).length < 2) fieldError('f-nome','Informe nome e sobrenome');
+          else fieldOk('f-nome');
+      }},
+      { id: 'f-email', fn: () => {
+          const v = (document.getElementById('f-email').value||'').trim();
+          if (!v) fieldError('f-email','E-mail obrigatório');
+          else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) fieldError('f-email','E-mail inválido');
+          else fieldOk('f-email');
+      }},
+      { id: 'f-dob', fn: () => {
+          const v = (document.getElementById('f-dob').value||'').trim();
+          if (!v) return; // só valida se preencheu algo
+          const parts = v.split('/');
+          const d=parseInt(parts[0],10), m=parseInt(parts[1],10), y=parseInt(parts[2],10);
+          const date = new Date(y,m-1,d);
+          const valid = parts.length===3 && date.getDate()===d && date.getMonth()===m-1
+                        && date.getFullYear()===y && y>=1900 && date<new Date();
+          if (!valid) fieldError('f-dob','Data inválida'); else fieldOk('f-dob');
+      }},
+      { id: 'f-tel', fn: () => {
+          const v = (document.getElementById('f-tel').value||'').replace(/\D/g,'');
+          if (v && v.length < 10) comboError('combo-ddi','Telefone inválido');
+          else if (v.length >= 10) comboOk('combo-ddi');
+      }},
+      { id: 'f-docnum', fn: () => {
+          const v = (document.getElementById('f-docnum').value||'').replace(/\D/g,'');
+          const dt = document.getElementById('f-doctype') ? document.getElementById('f-doctype').value : 'CPF';
+          if (!v) return;
+          if (dt==='CPF' && v.length!==11) comboError('combo-doc','CPF deve ter 11 dígitos');
+          else if (dt==='CNPJ' && v.length!==14) comboError('combo-doc','CNPJ deve ter 14 dígitos');
+          else comboOk('combo-doc');
+      }},
+      { id: 'f-cep', fn: () => {
+          const v = (document.getElementById('f-cep').value||'').replace(/\D/g,'');
+          if (v && v.length !== 8) fieldError('f-cep','CEP inválido');
+          else if (v.length === 8) fieldOk('f-cep');
+      }},
+    ];
+    blurRules.forEach(({ id, fn }) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('blur', fn);
+    });
+  }
+
   function goToStep(n, goingBack = false) {
     const prev = document.getElementById('step-' + currentStep);
     const next = document.getElementById('step-' + n);
+
+    // Validate before advancing
+    if (!goingBack) {
+      let firstInvalid = null;
+      if (currentStep === 1) firstInvalid = validateStep1();
+      if (currentStep === 2) firstInvalid = validateStep2();
+      if (firstInvalid !== null) {
+        // Shake the button
+        const btn = prev.querySelector('.btn-primary');
+        if (btn) {
+          btn.classList.remove('btn-shake');
+          void btn.offsetWidth;
+          btn.classList.add('btn-shake');
+          btn.addEventListener('animationend', () => btn.classList.remove('btn-shake'), { once: true });
+        }
+        // Scroll to first invalid field and focus it
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { try { firstInvalid.focus(); } catch(e) {} }, 350);
+        return;
+      }
+    }
 
     prev.classList.remove('active');
 
@@ -2693,6 +2932,8 @@
       document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
     }
   });
+
+  bindClearErrors();
 </script>
 
 </body>
