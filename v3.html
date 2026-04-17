@@ -548,6 +548,8 @@
       height: 32px;
       display: inline-flex;
       align-items: center;
+      padding: 0;
+      font: inherit;
       justify-content: center;
       padding: 8px;
       background: #ffffff;
@@ -826,39 +828,49 @@
       color: #273240;
     }
     .combo-input::placeholder { color: #9C9C9C; }
-    .combo-dropdown {
+    /* ─── MD3 Menu (shared by combo-dropdown & parc-dropdown) ─── */
+    .combo-dropdown,
+    .parc-dropdown {
       display: none;
-      position: absolute;
-      top: calc(100% + 6px);
+      position: fixed;
+      top: 0;
       left: 0;
-      width: 100%;
-      min-width: 180px;
-      max-height: 240px;
-      overflow-y: auto;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(245,175,4,0.18);
+      width: 200px;
+      background: #fff;
+      border: none;
       border-radius: 4px;
-      box-shadow: 0 8px 32px rgba(245,175,4,0.12), 0 2px 8px rgba(0,0,0,0.06);
-      z-index: 500;
-      padding: 4px;
+      /* MD3 elevation-2 */
+      box-shadow: 0 1px 2px rgba(0,0,0,0.30), 0 2px 6px 2px rgba(0,0,0,0.15);
+      z-index: 9999;
+      max-height: 320px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
+      padding: 8px 0;
     }
-    .combo-field.combo-open .combo-dropdown { display: block; }
-    .combo-option {
+    .combo-dropdown.combo-dd-open,
+    .parc-dropdown.open { display: block; }
+
+    .combo-option,
+    .parc-option {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
+      height: 48px;
+      padding: 0 12px;
       font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 13px;
+      font-size: 14px;
       color: #273240;
       cursor: pointer;
       transition: background 0.1s;
-      border-radius: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .combo-option:hover { background: #F5F5F5; }
-    .combo-option.selected { background: #F5F5F5; font-weight: 600; }
+    .combo-option:hover,
+    .parc-option:hover { background: #F5F5F5; }
+    .combo-option.selected { background: #FFF8E1; font-weight: 600; }
+    .parc-option.selected  { background: #FFF8E1; font-weight: 600; }
 
     /* ─── BUTTONS ─── */
     .btn-primary {
@@ -887,7 +899,6 @@
     .form-step .btn-row {
       margin-top: 20px;
     }
-    /* Stripe-style back — above the title, outside the action flow */
     .btn-back {
       display: inline-flex;
       align-items: center;
@@ -895,7 +906,6 @@
       background: none;
       border: none;
       padding: 0;
-      margin-bottom: 16px;
       font-family: 'Open Sans', -apple-system, sans-serif;
       font-size: 13px;
       font-weight: 400;
@@ -904,6 +914,9 @@
       transition: color 0.15s;
       line-height: 1;
       text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      align-self: center;
     }
     .btn-back:hover { text-decoration: underline; }
     .btn-back:hover svg { transform: translateX(-2px); }
@@ -913,7 +926,11 @@
       border-radius: 4px;
       height: 52px;
       font-size: 14px;
+      background: #4BAF4F;
+      color: #FFFFFF;
     }
+    .btn-pay:hover  { background: #409644; }
+    .btn-pay:active { background: #409644; }
 
 
     .btn-secondary:hover { background: #E6E6E6; border-color: #D1D5DB; color: #273240; }
@@ -947,20 +964,19 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      height: 48px;
+      height: 46px;
       padding: 0 14px;
-      background: #fff;
-      border: 1px solid #C5C5C5;
+      background: transparent;
+      border: none;
       border-radius: 4px;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
       font-size: 14px;
       color: #273240;
       box-sizing: border-box;
-      transition: border-color 0.15s;
     }
-    .parc-trigger:hover { border-color: #4E4076; }
-    .parc-trigger.open  { border-color: #4E4076; }
+    .m3-combo-input.open,
+    .m3-combo-input:has(.parc-trigger.open) { border-color: #4E4076; }
 
     .parc-trigger .parc-arrow {
       width: 18px;
@@ -974,36 +990,7 @@
     }
     .parc-trigger.open .parc-arrow { transform: rotate(180deg); }
 
-    .parc-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      width: 100%;
-      background: #fff;
-      border: 1px solid #D3D3D3;
-      border-radius: 4px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-      z-index: 300;
-      overflow: hidden;
-      box-sizing: border-box;
-    }
-    .parc-dropdown.open { display: block; }
-
-    .parc-option {
-      display: flex;
-      align-items: center;
-      height: 40px;
-      padding: 0 16px;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: #273240;
-      cursor: pointer;
-      transition: background 0.1s;
-    }
-    .parc-option:hover,
-    .parc-option.selected { background: #F5F5F5; }
-    .parc-option.selected { font-weight: 600; }
+    /* parc-dropdown styles merged into .combo-dropdown / .parc-dropdown block above */
 
     /* ─── SUCCESS PAGE ─── */
     #success-page {
@@ -1765,12 +1752,6 @@
 
       <!-- ───── STEP 2: Endereço ───── -->
       <div class="form-step" id="step-2">
-        <button class="btn-back" onclick="goToStep(1, true)">
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-            <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Voltar
-        </button>
         <div>
           <div class="step-title">Endereço de Cobrança</div>
           <div class="step-subtitle">Informe o endereço vinculado ao seu cartão</div>
@@ -1780,12 +1761,12 @@
           <div class="m3-field" id="cep-wrap">
             <input type="text" id="f-cep" class="m3-input" placeholder=" " maxlength="9" inputmode="numeric" style="padding-right:52px;" />
             <label class="m3-label" for="f-cep">CEP</label>
-            <span class="m3-trailing input-addon-right" onclick="lookupCEP()" title="Buscar CEP">
+            <button type="button" class="m3-trailing input-addon-right" onclick="lookupCEP()" aria-label="Buscar CEP" title="Buscar CEP">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="display:block;">
                 <circle cx="6.5" cy="6.5" r="4.5" stroke="#273240" stroke-width="1.5"/>
                 <path d="M11 11l3 3" stroke="#273240" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
-            </span>
+            </button>
           </div>
         </div>
 
@@ -1871,6 +1852,12 @@
         </div>
 
         <div class="btn-row">
+          <button class="btn-back" onclick="goToStep(1, true)">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Voltar
+          </button>
           <button class="btn-primary" onclick="goToStep(3)">
             Próximo
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -1882,12 +1869,6 @@
 
       <!-- ───── STEP 3: Pagamento ───── -->
       <div class="form-step" id="step-3">
-        <button class="btn-back" onclick="goToStep(2, true)">
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-            <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Voltar
-        </button>
         <div>
           <div class="step-title">Dados do Cartão</div>
           <div class="step-subtitle">Pagamento seguro e criptografado</div>
@@ -1905,6 +1886,7 @@
                   <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
                 </svg>
               </div>
+            </div>
           </div>
         </div>
 
@@ -1983,10 +1965,16 @@
         </div>
 
         <div class="btn-row" style="margin-top:4px;">
+          <button class="btn-back" onclick="goToStep(2, true)">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Voltar
+          </button>
           <button class="btn-primary btn-pay" onclick="processPay(this)">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
-              <rect x="2" y="6" width="12" height="8" rx="2" stroke="#273240" stroke-width="1.6"/>
-              <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#273240" stroke-width="1.6" stroke-linecap="round"/>
+              <rect x="2" y="6" width="12" height="8" rx="2" stroke="#FFFFFF" stroke-width="1.6"/>
+              <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
             </svg>
             Pagar R$ 5.120,00
           </button>
@@ -2546,19 +2534,48 @@
     const dropdown = document.getElementById('parc-dropdown');
     const labelEl  = document.getElementById('parc-label');
     if (!wrap || !trigger || !dropdown) return;
-    const options  = dropdown.querySelectorAll('.parc-option');
 
-    function open()  { trigger.setAttribute('aria-expanded','true');  trigger.classList.add('open');  dropdown.classList.add('open'); }
-    function close() { trigger.setAttribute('aria-expanded','false'); trigger.classList.remove('open'); dropdown.classList.remove('open'); }
+    // Move dropdown to body to escape backdrop-filter stacking context
+    document.body.appendChild(dropdown);
+
+    function positionParcDropdown() {
+      const rect = wrap.getBoundingClientRect();
+      dropdown.style.width = rect.width + 'px';
+      dropdown.style.left  = rect.left + 'px';
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (spaceBelow >= 160) {
+        dropdown.style.top    = (rect.bottom + 4) + 'px';
+        dropdown.style.bottom = 'auto';
+      } else {
+        const ddH = Math.min(dropdown.scrollHeight, 320);
+        dropdown.style.top    = (rect.top - ddH - 4) + 'px';
+        dropdown.style.bottom = 'auto';
+      }
+    }
+
+    function open() {
+      trigger.setAttribute('aria-expanded', 'true');
+      trigger.classList.add('open');
+      wrap.classList.add('open');
+      positionParcDropdown();
+      dropdown.classList.add('open');
+    }
+
+    function close() {
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.classList.remove('open');
+      wrap.classList.remove('open');
+      dropdown.classList.remove('open');
+    }
 
     trigger.addEventListener('click', e => {
       e.stopPropagation();
       dropdown.classList.contains('open') ? close() : open();
     });
 
-    options.forEach(opt => {
+    dropdown.querySelectorAll('.parc-option').forEach(opt => {
       opt.addEventListener('click', () => {
-        options.forEach(o => o.classList.remove('selected'));
+        dropdown.querySelectorAll('.parc-option').forEach(o => o.classList.remove('selected'));
         opt.classList.add('selected');
         labelEl.textContent = opt.textContent.trim();
         close();
@@ -2566,7 +2583,7 @@
     });
 
     document.addEventListener('click', e => {
-      if (!wrap.contains(e.target)) close();
+      if (!wrap.contains(e.target) && !dropdown.contains(e.target)) close();
     });
   })();
 
@@ -2717,9 +2734,6 @@
 
     const wrap = document.getElementById('cep-wrap');
     wrap.classList.add('cep-loading');
-    const btn = wrap.querySelector('.input-addon-right');
-    const origText = btn.textContent;
-    btn.textContent = '…';
 
     try {
       const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
@@ -2735,7 +2749,6 @@
       // silent fail
     } finally {
       wrap.classList.remove('cep-loading');
-      btn.textContent = origText;
     }
   }
 
@@ -2837,34 +2850,42 @@
   // ─── ESTADO CUSTOM DROPDOWN ─────────────────────────────────────
   function toggleEstado() {
     const combo = document.getElementById('estado-combo');
-    combo.classList.toggle('combo-open');
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="estado-combo"]');
+    const wasOpen = combo.classList.contains('combo-open');
+    closeAllCombos();
+    if (!wasOpen) {
+      combo.classList.add('combo-open');
+      if (dd) { positionComboDropdown(combo, dd); dd.classList.add('combo-dd-open'); }
+    }
   }
 
   function selectEstado(opt) {
-    const combo    = document.getElementById('estado-combo');
-    const labelEl  = document.getElementById('estado-label');
-    const options  = combo.querySelectorAll('.combo-option');
-    options.forEach(o => o.classList.remove('selected'));
+    const combo   = document.getElementById('estado-combo');
+    const labelEl = document.getElementById('estado-label');
+    const dd      = document.querySelector('.combo-dropdown[data-combo-owner="estado-combo"]');
+    // clear all selections in the body-level dropdown
+    if (dd) dd.querySelectorAll('.combo-option').forEach(o => o.classList.remove('selected'));
     opt.classList.add('selected');
     const val = opt.dataset.value;
-    labelEl.textContent  = val || 'Selecione';
-    labelEl.style.color  = val ? '#273240' : '#9C9C9C';
-    combo.dataset.value  = val;
-    combo.classList.remove('combo-open');
+    labelEl.textContent = val || 'Selecione';
+    labelEl.style.color = val ? '#273240' : '#9C9C9C';
+    combo.dataset.value = val;
+    closeAllCombos();
   }
 
   function setEstado(uf) {
-    const combo   = document.getElementById('estado-combo');
-    const options = combo.querySelectorAll('.combo-option');
-    options.forEach(opt => {
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="estado-combo"]');
+    if (!dd) return;
+    dd.querySelectorAll('.combo-option').forEach(opt => {
       opt.classList.remove('selected');
       if (opt.dataset.value === uf) selectEstado(opt);
     });
   }
 
   document.addEventListener('click', e => {
-    const combo = document.getElementById('estado-combo');
-    if (combo && !combo.contains(e.target)) combo.classList.remove('combo-open');
+    if (!e.target.closest('.combo-field') && !e.target.closest('.combo-dropdown')) {
+      closeAllCombos();
+    }
   });
 
   // ─── HOTEL INFO COLLAPSE (mobile only) ──────────────────────────
@@ -2904,20 +2925,53 @@
   document.head.appendChild(spinStyle);
 
   // ─── COMBO FIELD LOGIC ───────────────────────────────────────────
+
+  // Move all combo dropdowns to <body> to escape backdrop-filter stacking context
+  document.querySelectorAll('.combo-field .combo-dropdown').forEach(dd => {
+    dd.dataset.comboOwner = dd.closest('.combo-field') ? dd.closest('.combo-field').id : '';
+    document.body.appendChild(dd);
+  });
+
+  // Positions a body-level fixed dropdown under its anchor
+  function positionComboDropdown(anchorEl, ddEl) {
+    if (!anchorEl || !ddEl) return;
+    const rect = anchorEl.getBoundingClientRect();
+    ddEl.style.left  = rect.left + 'px';
+    ddEl.style.width = rect.width + 'px';
+    const spaceBelow = window.innerHeight - rect.bottom;
+    if (spaceBelow >= 140) {
+      ddEl.style.top    = (rect.bottom + 4) + 'px';
+      ddEl.style.bottom = 'auto';
+    } else {
+      const ddH = Math.min(ddEl.scrollHeight, 240);
+      ddEl.style.top    = (rect.top - ddH - 4) + 'px';
+      ddEl.style.bottom = 'auto';
+    }
+  }
+
+  function closeAllCombos() {
+    document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
+    document.querySelectorAll('.combo-dropdown.combo-dd-open').forEach(d => d.classList.remove('combo-dd-open'));
+  }
+
   function toggleCombo(id) {
     const el = document.getElementById(id);
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="' + id + '"]');
     const wasOpen = el.classList.contains('combo-open');
-    document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
-    if (!wasOpen) el.classList.add('combo-open');
+    closeAllCombos();
+    if (!wasOpen) {
+      el.classList.add('combo-open');
+      if (dd) { positionComboDropdown(el, dd); dd.classList.add('combo-dd-open'); }
+    }
   }
 
   function openComboSearch(id) {
     const el = document.getElementById(id);
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="' + id + '"]');
     const searchInput = document.getElementById(id + '-search');
-    document.querySelectorAll('.combo-field.combo-open').forEach(c => {
-      if (c.id !== id) c.classList.remove('combo-open');
-    });
+    closeAllCombos();
     el.classList.add('combo-open');
+    if (dd) { positionComboDropdown(el, dd); dd.classList.add('combo-dd-open'); }
     if (searchInput) {
       searchInput.value = '';
       searchInput.focus();
@@ -2957,10 +3011,10 @@
     if (labelEl) labelEl.textContent = label;
     if (searchEl) { searchEl.value = label; filterCombo(comboId, ''); }
     document.getElementById(inputId).value = value;
-    document.querySelectorAll('#' + comboId + '-dd .combo-option').forEach(o => {
+    document.querySelectorAll('[data-combo-owner="' + comboId + '"] .combo-option, #' + comboId + '-dd .combo-option').forEach(o => {
       o.classList.toggle('selected', o.dataset.value === value);
     });
-    document.getElementById(comboId).classList.remove('combo-open');
+    closeAllCombos();
 
     // Ao mudar o país, sincroniza o DDI do telefone
     if (comboId === 'combo-pais' && COUNTRY_DDI[value]) {
@@ -2991,11 +3045,7 @@
     document.getElementById('f-docnum').value = '';
   }
 
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.combo-field')) {
-      document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
-    }
-  });
+  // click-outside handled by the unified listener above
 
   bindClearErrors();
 </script>
