@@ -884,31 +884,36 @@
 
     .btn-primary:active { background: #F5AF04; transform: scale(0.97); }
     .form-step > .btn-primary,
-    .form-step .btn-row { margin-top: 20px; }
+    .form-step .btn-row {
+      margin-top: 20px;
+    }
+    /* Stripe-style back — above the title, outside the action flow */
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-bottom: 16px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #9C9C9C;
+      cursor: pointer;
+      transition: color 0.15s;
+      line-height: 1;
+    }
+    .btn-back:hover { color: #273240; }
+    .btn-back:hover svg { transform: translateX(-2px); }
+    .btn-back svg { transition: transform 0.15s; }
 
     .btn-pay {
       border-radius: 4px;
-      height: 56px;
-      font-size: 16px;
+      height: 52px;
+      font-size: 14px;
     }
 
-    .btn-secondary {
-      width: 100%;
-      height: 52px;
-      border-radius: 4px;
-      background: transparent;
-      border: 1px solid #D1D5DB;
-      color: #273240;
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s, transform 0.12s;
-    }
 
     .btn-secondary:hover { background: #E6E6E6; border-color: #D1D5DB; color: #273240; }
     .btn-secondary:active { background: #E6E6E6; color: #273240; transform: scale(0.97); }
@@ -1759,6 +1764,12 @@
 
       <!-- ───── STEP 2: Endereço ───── -->
       <div class="form-step" id="step-2">
+        <button class="btn-back" onclick="goToStep(1, true)">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+            <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Voltar
+        </button>
         <div>
           <div class="step-title">Endereço de Cobrança</div>
           <div class="step-subtitle">Informe o endereço vinculado ao seu cartão</div>
@@ -1768,10 +1779,10 @@
           <div class="m3-field" id="cep-wrap">
             <input type="text" id="f-cep" class="m3-input" placeholder=" " maxlength="9" inputmode="numeric" style="padding-right:52px;" />
             <label class="m3-label" for="f-cep">CEP</label>
-            <span class="m3-trailing input-addon-right" onclick="lookupCEP()">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <span class="m3-trailing input-addon-right" onclick="lookupCEP()" title="Buscar CEP">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="display:block;">
+                <circle cx="6.5" cy="6.5" r="4.5" stroke="#273240" stroke-width="1.5"/>
+                <path d="M11 11l3 3" stroke="#273240" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </span>
           </div>
@@ -1810,7 +1821,7 @@
         <div class="field-row">
           <div class="field-group">
             <div class="m3-field m3-field--combo">
-              <div class="combo-field estado-combo m3-combo-input" id="estado-combo" style="min-height:56px;">
+              <div class="combo-field estado-combo m3-combo-input" id="estado-combo" style="min-height:48px;">
               <button type="button" class="combo-trigger" id="estado-trigger"
                 style="flex:1; border-radius:4px; justify-content:space-between; padding-right:12px;"
                 onclick="toggleEstado()">
@@ -1859,12 +1870,6 @@
         </div>
 
         <div class="btn-row">
-          <button class="btn-secondary" onclick="goToStep(1, true)">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Voltar
-</button>
           <button class="btn-primary" onclick="goToStep(3)">
             Próximo
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -1876,6 +1881,12 @@
 
       <!-- ───── STEP 3: Pagamento ───── -->
       <div class="form-step" id="step-3">
+        <button class="btn-back" onclick="goToStep(2, true)">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+            <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Voltar
+        </button>
         <div>
           <div class="step-title">Dados do Cartão</div>
           <div class="step-subtitle">Pagamento seguro e criptografado</div>
@@ -1971,12 +1982,6 @@
         </div>
 
         <div class="btn-row" style="margin-top:4px;">
-          <button class="btn-secondary" onclick="goToStep(2, true)">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Voltar
-</button>
           <button class="btn-primary btn-pay" onclick="processPay(this)">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
               <rect x="2" y="6" width="12" height="8" rx="2" stroke="#273240" stroke-width="1.6"/>
