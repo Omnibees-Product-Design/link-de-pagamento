@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(145deg, #F0F4FF 0%, #FFFBEA 50%, #F5F3FF 100%);
+      background: linear-gradient(145deg, #FFFFFF 29%, #F8F5FB 70%);
       min-height: 100vh;
       color: #273240;
       -webkit-font-smoothing: antialiased;
@@ -1003,7 +1003,7 @@
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: linear-gradient(145deg, #F0F4FF 0%, #FFFBEA 50%, #F5F3FF 100%);
+      background: linear-gradient(145deg, #FFFFFF 29%, #F8F5FB 70%);
       align-items: center;
       justify-content: center;
       padding: 24px;
@@ -2217,7 +2217,7 @@
     else {
       const parts = dob.split('/');
       const d = parseInt(parts[0],10), m = parseInt(parts[1],10), y = parseInt(parts[2],10);
-      const date = new Date(y, m-1, d);
+      const date = new Date(0); date.setFullYear(y, m-1, d);
       const valid = parts.length===3 && date.getDate()===d && date.getMonth()===m-1
                     && date.getFullYear()===y && y>=1900 && date < new Date();
       if (!valid) { fieldError('f-dob', 'Data inválida'); first = first || dobEl; }
@@ -2281,16 +2281,68 @@
 
   /* ── CLEAR ERRORS ON INPUT ── */
   function bindClearErrors() {
-    // Limpa erro ao digitar (feedback imediato)
-    const clearOnInput = ['f-nome','f-email','f-dob','f-cep','f-logradouro','f-numero','f-bairro','f-cidade'];
-    clearOnInput.forEach(id => {
+    // Limpa erro simples ao digitar (campos de texto livre)
+    ['f-nome','f-logradouro','f-numero','f-bairro','f-cidade'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.addEventListener('input', () => fieldOk(id));
+      if (el) el.addEventListener('input', () => { if ((el.value||'').trim()) fieldOk(id); });
     });
-    const tel = document.getElementById('f-tel');
-    if (tel) tel.addEventListener('input', () => comboOk('combo-ddi'));
+
+    // E-mail: valida em tempo real se já tem @ (usuário claramente tentou escrever)
+    const emailEl = document.getElementById('f-email');
+    if (emailEl) emailEl.addEventListener('input', () => {
+      const v = emailEl.value.trim();
+      if (!v) { fieldOk('f-email'); return; }
+      if (v.includes('@')) {
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) fieldOk('f-email');
+        else fieldError('f-email', 'E-mail inválido');
+      } else {
+        fieldOk('f-email'); // ainda digitando, sem julgamento
+      }
+    });
+
+    // Data: valida em tempo real quando atingir 10 chars (DD/MM/YYYY completo)
+    const dobEl = document.getElementById('f-dob');
+    if (dobEl) {
+      // Máscara automática de data enquanto digita
+      dobEl.addEventListener('input', () => {
+        let v = dobEl.value.replace(/\D/g, '');
+        if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+        if (v.length > 5) v = v.slice(0,5) + '/' + v.slice(5,9);
+        dobEl.value = v;
+        // Valida quando data está completa (10 chars: DD/MM/YYYY)
+        if (dobEl.value.length === 10) {
+          const parts = dobEl.value.split('/');
+          const d=parseInt(parts[0],10), m=parseInt(parts[1],10), y=parseInt(parts[2],10);
+          const date = new Date(0); date.setFullYear(y, m-1, d);
+          const valid = date.getDate()===d && date.getMonth()===m-1
+                        && date.getFullYear()===y && y>=1900 && date<new Date();
+          if (!valid) fieldError('f-dob','Data inválida'); else fieldOk('f-dob');
+        } else if (dobEl.value.length < 10) {
+          fieldOk('f-dob'); // campo incompleto, não julgar ainda
+        }
+      });
+    }
+
+    // CEP: valida quando atingir 8 dígitos
+    const cepEl = document.getElementById('f-cep');
+    if (cepEl) cepEl.addEventListener('input', () => {
+      const v = (cepEl.value||'').replace(/\D/g,'');
+      if (v.length === 8) fieldOk('f-cep');
+      else if (v.length > 0 && v.length < 8) { /* ainda digitando */ }
+      else fieldOk('f-cep');
+    });
+
+    const telEl = document.getElementById('f-tel');
+    if (telEl) telEl.addEventListener('input', () => {
+      const v = (telEl.value||'').replace(/\D/g,'');
+      if (v.length >= 10) comboOk('combo-ddi');
+    });
     const docnum = document.getElementById('f-docnum');
-    if (docnum) docnum.addEventListener('input', () => comboOk('combo-doc'));
+    if (docnum) docnum.addEventListener('input', () => {
+      const v = (docnum.value||'').replace(/\D/g,'');
+      const dt = document.getElementById('f-doctype') ? document.getElementById('f-doctype').value : 'CPF';
+      if ((dt==='CPF' && v.length===11) || (dt==='CNPJ' && v.length===14)) comboOk('combo-doc');
+    });
 
     // Valida ao sair do campo (blur) — feedback antecipado sem ser intrusivo
     const blurRules = [
@@ -2311,7 +2363,7 @@
           if (!v) return; // só valida se preencheu algo
           const parts = v.split('/');
           const d=parseInt(parts[0],10), m=parseInt(parts[1],10), y=parseInt(parts[2],10);
-          const date = new Date(y,m-1,d);
+          const date = new Date(0); date.setFullYear(y, m-1, d);
           const valid = parts.length===3 && date.getDate()===d && date.getMonth()===m-1
                         && date.getFullYear()===y && y>=1900 && date<new Date();
           if (!valid) fieldError('f-dob','Data inválida'); else fieldOk('f-dob');
