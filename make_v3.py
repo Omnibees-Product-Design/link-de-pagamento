@@ -19,32 +19,29 @@ M3_CSS = r"""    .field-row {
     }
     .m3-input {
       width: 100%;
-      height: 56px;
-      padding: 16px;
-      border: 1px solid #79747E;
+      height: 48px;
+      padding: 0 16px;
+      border: 1px solid #C5C5C5;
       border-radius: 4px;
       background: #fff;
-      font-size: 16px;
+      font-size: 14px;
       font-family: 'Open Sans', sans-serif;
-      color: #1C1B1F;
+      color: #273240;
       outline: none;
       transition: border-color 0.15s;
       box-sizing: border-box;
       appearance: none;
       -webkit-appearance: none;
     }
-    .m3-input:hover { border-color: #1C1B1F; }
-    .m3-input:focus {
-      border: 2px solid #F5AF04;
-      padding: 15px;
-    }
+    .m3-input:hover { border-color: #4E4076; }
+    .m3-input:focus { border-color: #4E4076; }
     .m3-label {
       position: absolute;
       left: 12px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 16px;
-      color: #49454F;
+      font-size: 14px;
+      color: #9C9C9C;
       background: #fff;
       padding: 0 4px;
       pointer-events: none;
@@ -56,27 +53,26 @@ M3_CSS = r"""    .field-row {
     .m3-input:focus ~ .m3-label,
     .m3-input:not(:placeholder-shown) ~ .m3-label {
       top: 0;
-      font-size: 12px;
-      color: #49454F;
+      font-size: 11px;
+      color: #273240;
       transform: translateY(-50%);
     }
-    .m3-input:focus ~ .m3-label { color: #F5AF04; }
     .m3-label--float {
       top: 0 !important;
-      font-size: 12px !important;
+      font-size: 11px !important;
       transform: translateY(-50%) !important;
-      color: #49454F;
+      color: #273240;
     }
     .m3-field--combo { position: relative; }
     .m3-combo-input {
-      border: 1px solid #79747E;
+      border: 1px solid #C5C5C5;
       border-radius: 4px;
       background: #fff;
-      min-height: 56px;
+      min-height: 48px;
       transition: border-color 0.15s;
     }
-    .m3-combo-input:hover { border-color: #1C1B1F; }
-    .m3-combo-input:focus-within { border: 2px solid #F5AF04; }
+    .m3-combo-input:hover { border-color: #4E4076; }
+    .m3-combo-input:focus-within { border-color: #4E4076; }
     .m3-trailing {
       position: absolute;
       right: 8px;
@@ -232,7 +228,7 @@ def transform_v3(src_file, dst_file, is_pay=False):
     h = h.replace('.cep-loading input { opacity: 0.7; }', '.cep-loading .m3-input { opacity: 0.7; }')
 
     # mobile combo height
-    h = h.replace('      .combo-field { height: 48px; }', '      .combo-field { min-height: 56px; }')
+    h = h.replace('      .combo-field { height: 48px; }', '      .combo-field { min-height: 48px; }')
 
     # ── Combo-field: align with MD3 (height 56px, yellow focus, dark hover) ──
     h = h.replace(
@@ -250,60 +246,20 @@ def transform_v3(src_file, dst_file, is_pay=False):
         '      box-shadow: none;\n'
         '      background: #fff;\n'
         '    }',
-        '      height: 56px;\n'
+        '      height: 48px;\n'
         '      background: #fff;\n'
-        '      border: 1px solid #79747E;\n'
+        '      border: 1px solid #C5C5C5;\n'
         '      border-radius: 4px;\n'
         '      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;\n'
         '      width: 100%;\n'
         '      box-sizing: border-box;\n'
         '    }\n'
-        '    .combo-field:hover:not(.combo-open) { border-color: #1C1B1F; }\n'
+        '    .combo-field:hover:not(.combo-open) { border-color: #4E4076; }\n'
         '    .combo-field:focus-within,\n'
         '    .combo-field.combo-open {\n'
-        '      border: 2px solid #F5AF04;\n'
+        '      border-color: #4E4076;\n'
         '      background: #fff;\n'
         '    }'
-    )
-
-    # Combo trigger/input font: 14px → 16px, color #273240 → #1C1B1F
-    h = h.replace(
-        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
-        '      font-size: 14px;\n'
-        '      color: #273240;\n'
-        '      white-space: nowrap;',
-        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
-        '      font-size: 16px;\n'
-        '      color: #1C1B1F;\n'
-        '      white-space: nowrap;'
-    )
-    h = h.replace(
-        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
-        '      font-size: 14px;\n'
-        '      color: #273240;\n'
-        '      cursor: pointer;\n'
-        '      padding: 0;\n'
-        '    }',
-        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
-        '      font-size: 16px;\n'
-        '      color: #1C1B1F;\n'
-        '      cursor: pointer;\n'
-        '      padding: 0;\n'
-        '    }'
-    )
-    h = h.replace(
-        '      padding: 0 16px;\n'
-        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
-        '      font-size: 14px;\n'
-        '      color: #273240;\n'
-        '    }\n'
-        '    .combo-input::placeholder',
-        '      padding: 0 16px;\n'
-        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
-        '      font-size: 16px;\n'
-        '      color: #1C1B1F;\n'
-        '    }\n'
-        '    .combo-input::placeholder'
     )
 
     # ── STEP 1: Nome completo ──
