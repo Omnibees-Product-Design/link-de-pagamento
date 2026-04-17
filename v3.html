@@ -439,7 +439,7 @@
       gap: 12px;
     }
 
-    .field-row .field-group { flex: 1; }
+    .field-row .field-group { flex: 1 1 0; min-width: 0; }
 
     /* ─── M3 OUTLINED TEXT FIELD ─── */
     .m3-field {
@@ -739,18 +739,18 @@
       position: relative;
       display: flex;
       align-items: center;
-      height: 48px;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid #C5C5C5;
+      height: 56px;
+      background: #fff;
+      border: 1px solid #79747E;
       border-radius: 4px;
       transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
       width: 100%;
+      box-sizing: border-box;
     }
-    .combo-field:hover:not(.combo-open) { border-color: #4E4076; }
+    .combo-field:hover:not(.combo-open) { border-color: #1C1B1F; }
     .combo-field:focus-within,
     .combo-field.combo-open {
-      border-color: #4E4076;
-      box-shadow: none;
+      border: 2px solid #F5AF04;
       background: #fff;
     }
     .combo-trigger {
@@ -764,8 +764,8 @@
       outline: none;
       cursor: pointer;
       font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 14px;
-      color: #273240;
+      font-size: 16px;
+      color: #1C1B1F;
       white-space: nowrap;
       flex-shrink: 0;
       border-radius: 4px 0 0 4px;
@@ -784,8 +784,8 @@
       box-shadow: none !important;
       background: transparent !important;
       font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 14px;
-      color: #273240;
+      font-size: 16px;
+      color: #1C1B1F;
       cursor: pointer;
       padding: 0;
     }
@@ -807,8 +807,8 @@
       background: transparent;
       padding: 0 16px;
       font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 14px;
-      color: #273240;
+      font-size: 16px;
+      color: #1C1B1F;
     }
     .combo-input::placeholder { color: #9C9C9C; }
     .combo-dropdown {

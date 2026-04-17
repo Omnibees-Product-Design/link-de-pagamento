@@ -11,7 +11,7 @@ M3_CSS = r"""    .field-row {
       gap: 12px;
     }
 
-    .field-row .field-group { flex: 1; }
+    .field-row .field-group { flex: 1 1 0; min-width: 0; }
 
     /* ─── M3 OUTLINED TEXT FIELD ─── */
     .m3-field {
@@ -233,6 +233,78 @@ def transform_v3(src_file, dst_file, is_pay=False):
 
     # mobile combo height
     h = h.replace('      .combo-field { height: 48px; }', '      .combo-field { min-height: 56px; }')
+
+    # ── Combo-field: align with MD3 (height 56px, yellow focus, dark hover) ──
+    h = h.replace(
+        '      height: 48px;\n'
+        '      background: rgba(255,255,255,0.8);\n'
+        '      border: 1px solid #C5C5C5;\n'
+        '      border-radius: 4px;\n'
+        '      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;\n'
+        '      width: 100%;\n'
+        '    }\n'
+        '    .combo-field:hover:not(.combo-open) { border-color: #4E4076; }\n'
+        '    .combo-field:focus-within,\n'
+        '    .combo-field.combo-open {\n'
+        '      border-color: #4E4076;\n'
+        '      box-shadow: none;\n'
+        '      background: #fff;\n'
+        '    }',
+        '      height: 56px;\n'
+        '      background: #fff;\n'
+        '      border: 1px solid #79747E;\n'
+        '      border-radius: 4px;\n'
+        '      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;\n'
+        '      width: 100%;\n'
+        '      box-sizing: border-box;\n'
+        '    }\n'
+        '    .combo-field:hover:not(.combo-open) { border-color: #1C1B1F; }\n'
+        '    .combo-field:focus-within,\n'
+        '    .combo-field.combo-open {\n'
+        '      border: 2px solid #F5AF04;\n'
+        '      background: #fff;\n'
+        '    }'
+    )
+
+    # Combo trigger/input font: 14px → 16px, color #273240 → #1C1B1F
+    h = h.replace(
+        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
+        '      font-size: 14px;\n'
+        '      color: #273240;\n'
+        '      white-space: nowrap;',
+        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
+        '      font-size: 16px;\n'
+        '      color: #1C1B1F;\n'
+        '      white-space: nowrap;'
+    )
+    h = h.replace(
+        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
+        '      font-size: 14px;\n'
+        '      color: #273240;\n'
+        '      cursor: pointer;\n'
+        '      padding: 0;\n'
+        '    }',
+        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
+        '      font-size: 16px;\n'
+        '      color: #1C1B1F;\n'
+        '      cursor: pointer;\n'
+        '      padding: 0;\n'
+        '    }'
+    )
+    h = h.replace(
+        '      padding: 0 16px;\n'
+        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
+        '      font-size: 14px;\n'
+        '      color: #273240;\n'
+        '    }\n'
+        '    .combo-input::placeholder',
+        '      padding: 0 16px;\n'
+        '      font-family: \'Open Sans\', -apple-system, sans-serif;\n'
+        '      font-size: 16px;\n'
+        '      color: #1C1B1F;\n'
+        '    }\n'
+        '    .combo-input::placeholder'
+    )
 
     # ── STEP 1: Nome completo ──
     h = h.replace(
