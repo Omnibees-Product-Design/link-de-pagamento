@@ -56,7 +56,7 @@
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid #F5F5F5;
+      border: 1px solid #E6E6E6;
       border-radius: 20px;
     }
 
@@ -148,7 +148,7 @@
       transition: background 0.1s;
     }
     .lang-option:hover { background: #F5F5F5; }
-    .lang-option.selected { background: #F5F5F5; font-weight: 600; }
+    .lang-option.selected { background: #F5F5F5; }
     .lang-option .fi { border-radius: 2px; font-size: 15px; }
 
     /* Hotel info */
@@ -584,9 +584,43 @@
 
     .btn-pay {
       border-radius: 4px;
-      height: 56px;
-      font-size: 16px;
+      height: 52px;
+      font-size: 14px;
+      background: #4BAF4F;
+      color: #FFFFFF;
     }
+    .btn-pay:hover  { background: #409644; }
+    .btn-pay:active { background: #409644; }
+
+
+    .btn-row {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .btn-row .btn-primary   { flex: 1 1 0; height: 52px; }
+    .btn-row .btn-back-wrap { flex: 1 1 0; display: flex; align-items: center; justify-content: center; }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0C83D9;
+      cursor: pointer;
+      transition: color 0.15s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-back:hover { color: #0057A8; text-decoration: underline; }
+    .btn-back:hover svg { transform: translateX(-2px); }
+    .btn-back svg { transition: transform 0.15s; }
 
     /* Security note */
     .security-note {
@@ -620,7 +654,7 @@
       transition: border-color 0.15s;
     }
     .parc-trigger:hover { border-color: #4E4076; }
-    .parc-trigger.open  { border-color: #C5C5C5; }
+    .parc-trigger.open  { border-color: #4E4076; }
 
     .parc-trigger .parc-arrow {
       width: 18px;
@@ -636,34 +670,40 @@
 
     .parc-dropdown {
       display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      width: 100%;
+      position: fixed;
+      top: 0; left: 0;
+      width: 200px;
       background: #fff;
-      border: 1px solid #D3D3D3;
+      border: none;
       border-radius: 4px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-      z-index: 300;
-      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.30), 0 2px 6px 2px rgba(0,0,0,0.15);
+      z-index: 9999;
+      max-height: 320px;
+      overflow-y: auto;
+      overflow-x: hidden;
       box-sizing: border-box;
+      padding: 8px 0;
     }
+    .parc-dropdown::-webkit-scrollbar { width: 4px; }
+    .parc-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .parc-dropdown::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 2px; }
+    .parc-dropdown::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.32); }
     .parc-dropdown.open { display: block; }
 
     .parc-option {
       display: flex;
       align-items: center;
-      height: 40px;
-      padding: 0 16px;
+      height: 48px;
+      padding: 0 12px;
       font-family: 'Open Sans', sans-serif;
-      font-size: 13px;
+      font-size: 14px;
       color: #273240;
       cursor: pointer;
       transition: background 0.1s;
+      white-space: nowrap;
     }
-    .parc-option:hover,
+    .parc-option:hover { background: #F5F5F5; }
     .parc-option.selected { background: #F5F5F5; }
-    .parc-option.selected { font-weight: 600; }
 
     /* ─── SUCCESS PAGE ─── */
     #success-page {
@@ -1263,8 +1303,8 @@
       <!-- Pay button -->
       <button class="btn-primary btn-pay" onclick="processPay(this)">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
-          <rect x="2" y="6" width="12" height="8" rx="2" stroke="#273240" stroke-width="1.6"/>
-          <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#273240" stroke-width="1.6" stroke-linecap="round"/>
+          <rect x="2" y="6" width="12" height="8" rx="2" stroke="#FFFFFF" stroke-width="1.6"/>
+          <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
         Pagar R$ 5.120,00
       </button>
@@ -1409,19 +1449,44 @@
     const dropdown = document.getElementById('parc-dropdown');
     const labelEl  = document.getElementById('parc-label');
     if (!wrap || !trigger || !dropdown) return;
-    const options  = dropdown.querySelectorAll('.parc-option');
 
-    function open()  { trigger.setAttribute('aria-expanded','true');  trigger.classList.add('open');  dropdown.classList.add('open'); }
-    function close() { trigger.setAttribute('aria-expanded','false'); trigger.classList.remove('open'); dropdown.classList.remove('open'); }
+    // Teleport dropdown to body to escape backdrop-filter stacking context
+    document.body.appendChild(dropdown);
+
+    function positionDropdown() {
+      const rect = trigger.getBoundingClientRect();
+      dropdown.style.left  = rect.left + 'px';
+      dropdown.style.width = rect.width + 'px';
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (spaceBelow >= 140) {
+        dropdown.style.top    = (rect.bottom + 4) + 'px';
+        dropdown.style.bottom = 'auto';
+      } else {
+        dropdown.style.top    = 'auto';
+        dropdown.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+      }
+    }
+
+    function open()  {
+      positionDropdown();
+      trigger.setAttribute('aria-expanded','true');
+      trigger.classList.add('open');
+      dropdown.classList.add('open');
+    }
+    function close() {
+      trigger.setAttribute('aria-expanded','false');
+      trigger.classList.remove('open');
+      dropdown.classList.remove('open');
+    }
 
     trigger.addEventListener('click', e => {
       e.stopPropagation();
       dropdown.classList.contains('open') ? close() : open();
     });
 
-    options.forEach(opt => {
+    dropdown.querySelectorAll('.parc-option').forEach(opt => {
       opt.addEventListener('click', () => {
-        options.forEach(o => o.classList.remove('selected'));
+        dropdown.querySelectorAll('.parc-option').forEach(o => o.classList.remove('selected'));
         opt.classList.add('selected');
         labelEl.textContent = opt.textContent.trim();
         close();
@@ -1429,8 +1494,10 @@
     });
 
     document.addEventListener('click', e => {
-      if (!wrap.contains(e.target)) close();
+      if (!wrap.contains(e.target) && !dropdown.contains(e.target)) close();
     });
+    window.addEventListener('scroll', () => { if (dropdown.classList.contains('open')) positionDropdown(); }, true);
+    window.addEventListener('resize', () => { if (dropdown.classList.contains('open')) positionDropdown(); });
   })();
 
   // ─── CARD NUMBER MASK & BRAND DETECTION ─────────────────────────
