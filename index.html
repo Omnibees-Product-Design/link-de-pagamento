@@ -2273,17 +2273,10 @@
       if (el) el.addEventListener('input', () => { if ((el.value||'').trim()) fieldOk(id); });
     });
 
-    // E-mail: valida em tempo real se já tem @ (usuário claramente tentou escrever)
+    // E-mail: só valida no blur — enquanto digita, limpa o erro se o campo ficou vazio
     const emailEl = document.getElementById('f-email');
     if (emailEl) emailEl.addEventListener('input', () => {
-      const v = emailEl.value.trim();
-      if (!v) { fieldOk('f-email'); return; }
-      if (v.includes('@')) {
-        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) fieldOk('f-email');
-        else fieldError('f-email', 'E-mail inválido');
-      } else {
-        fieldOk('f-email'); // ainda digitando, sem julgamento
-      }
+      if (!emailEl.value.trim()) fieldOk('f-email');
     });
 
     // Data: valida em tempo real quando atingir 10 chars (DD/MM/YYYY completo)
