@@ -2277,11 +2277,9 @@
       if (el) el.addEventListener('input', () => { if ((el.value||'').trim()) fieldOk(id); });
     });
 
-    // E-mail: só valida no blur — enquanto digita, limpa o erro se o campo ficou vazio
+    // E-mail: limpa o erro assim que o utilizador começa a digitar — valida apenas no blur
     const emailEl = document.getElementById('f-email');
-    if (emailEl) emailEl.addEventListener('input', () => {
-      if (!emailEl.value.trim()) fieldOk('f-email');
-    });
+    if (emailEl) emailEl.addEventListener('input', () => { fieldOk('f-email'); });
 
     // Data: valida em tempo real quando atingir 10 chars (DD/MM/YYYY completo)
     const dobEl = document.getElementById('f-dob');
