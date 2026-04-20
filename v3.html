@@ -869,8 +869,31 @@
     }
     .combo-option:hover,
     .parc-option:hover { background: #F5F5F5; }
-    .combo-option.selected { background: #FFF8E1; font-weight: 600; }
-    .parc-option.selected  { background: #FFF8E1; font-weight: 600; }
+
+    /* MD3: selected usa secondary-container (#F5F5F5) + checkmark — sem font-weight diferente */
+    .combo-option.selected,
+    .parc-option.selected  { background: #F5F5F5; }
+    .combo-option.selected::after,
+    .parc-option.selected::after {
+      content: '✓';
+      margin-left: auto;
+      font-size: 16px;
+      color: #4E4076;
+      flex-shrink: 0;
+    }
+
+    /* MD3: scrollbar discreta nos dropdowns */
+    .combo-dropdown::-webkit-scrollbar,
+    .parc-dropdown::-webkit-scrollbar { width: 4px; }
+    .combo-dropdown::-webkit-scrollbar-track,
+    .parc-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .combo-dropdown::-webkit-scrollbar-thumb,
+    .parc-dropdown::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.18);
+      border-radius: 2px;
+    }
+    .combo-dropdown::-webkit-scrollbar-thumb:hover,
+    .parc-dropdown::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.32); }
 
     /* ─── BUTTONS ─── */
     .btn-primary {
