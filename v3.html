@@ -918,21 +918,24 @@
     .btn-back {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      gap: 8px;
       background: none;
-      border: none;
-      padding: 4px 0;
+      border: 1.5px solid #D1D5DB;
+      border-radius: 4px;
+      padding: 0 20px;
+      height: 52px;
       font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 13px;
-      font-weight: 400;
-      color: #64748B;
+      font-size: 15px;
+      font-weight: 700;
+      color: #273240;
       cursor: pointer;
-      transition: color 0.15s;
-      line-height: 1;
-      text-decoration: none;
+      transition: background 0.12s, border-color 0.12s, transform 0.12s;
       white-space: nowrap;
+      flex-shrink: 0;
     }
-    .btn-back:hover { color: #273240; text-decoration: underline; }
+    .btn-back:hover { background: #F5F5F5; border-color: #B0B0B0; }
+    .btn-back:active { transform: scale(0.97); }
     .btn-back:hover svg { transform: translateX(-2px); }
     .btn-back svg { transition: transform 0.15s; }
 
@@ -952,12 +955,12 @@
 
     .btn-row {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 10px;
     }
 
-    .btn-row .btn-primary { width: 100%; height: 52px; }
+    .btn-row .btn-primary { flex: 1; height: 52px; }
     .btn-row .btn-secondary { flex: 0 0 auto; width: auto; padding: 0 24px; height: 52px; }
 
     /* Security note */
@@ -1857,7 +1860,7 @@
             </svg>
           </button>
           <button class="btn-back" onclick="goToStep(1, true)">
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             Voltar
@@ -1971,7 +1974,7 @@
             Pagar R$ 5.120,00
           </button>
           <button class="btn-back" onclick="goToStep(2, true)">
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             Voltar
