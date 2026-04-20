@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(145deg, #F0F4FF 0%, #FFFBEA 50%, #F5F3FF 100%);
+      background: linear-gradient(145deg, #FFFFFF 29%, #F8F5FB 70%);
       min-height: 100vh;
       color: #273240;
       -webkit-font-smoothing: antialiased;
@@ -56,7 +56,7 @@
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid #F5F5F5;
+      border: 1px solid #E6E6E6;
       border-radius: 20px;
     }
 
@@ -148,7 +148,7 @@
       transition: background 0.1s;
     }
     .lang-option:hover { background: #F5F5F5; }
-    .lang-option.selected { background: #F5F5F5; font-weight: 600; }
+    .lang-option.selected { background: #F5F5F5; }
     .lang-option .fi { border-radius: 2px; font-size: 15px; }
 
     /* Hotel info */
@@ -298,19 +298,123 @@
       max-height: 100vh;
     }
 
-    /* ─── PAYMENT TITLE ─── */
-    .payment-title {
+    /* ─── STEP INDICATOR ─── */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+      min-width: 72px;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .step-circle.done {
+      background: #F5AF04;
+      border: none;
+      color: #273240;
+    }
+
+    .step-circle.active {
+      background: #F5AF04;
+      border: none;
+      color: #273240;
+    }
+
+    .step-circle.pending {
+      background: transparent;
+      border: 2px solid #D1D5DB;
+      color: #CBD5E1;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+
+    .step-item.done .step-label  { color: #F5AF04; }
+    .step-item.active .step-label { color: #273240; }
+    .step-item.pending .step-label { color: #94A3B8; }
+
+    /* Connecting line */
+    .step-line {
+      flex: 1;
+      height: 2px;
+      position: relative;
+      margin-bottom: 22px;
+      min-width: 24px;
+    }
+
+    .step-line-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.08);
+      border-radius: 2px;
+    }
+
+    .step-line-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #F5AF04, #FFC107);
+      transition: width 0.4s ease;
+    }
+
+    .step-line.done .step-line-fill    { width: 100%; }
+    .step-line.pending .step-line-fill { width: 0%; }
+
+    /* ─── FORM STEP ─── */
+    .form-step {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: stepEnter 0.35s ease forwards;
+    }
+
+    .form-step.active { display: flex; }
+
+    @keyframes stepEnter {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .step-title {
       font-size: 20px;
       font-weight: 700;
       color: #273240;
-      margin-bottom: 4px;
       text-wrap: balance;
+      margin-bottom: 6px;
     }
 
-    .payment-subtitle {
+    .step-subtitle {
       font-size: 13px;
       color: #9C9C9C;
       margin-top: 0;
+      margin-bottom: 8px;
     }
 
     /* ─── FIELD GROUPS ─── */
@@ -584,9 +688,43 @@
 
     .btn-pay {
       border-radius: 4px;
-      height: 56px;
-      font-size: 16px;
+      height: 52px;
+      font-size: 14px;
+      background: #4BAF4F;
+      color: #FFFFFF;
     }
+    .btn-pay:hover  { background: #409644; }
+    .btn-pay:active { background: #409644; }
+
+
+    .btn-row {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .btn-row .btn-primary   { flex: 1 1 0; height: 52px; }
+    .btn-row .btn-back-wrap { flex: 1 1 0; display: flex; align-items: center; justify-content: center; }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0C83D9;
+      cursor: pointer;
+      transition: color 0.15s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-back:hover { color: #0057A8; text-decoration: underline; }
+    .btn-back:hover svg { transform: translateX(-2px); }
+    .btn-back svg { transition: transform 0.15s; }
 
     /* Security note */
     .security-note {
@@ -609,18 +747,14 @@
       width: 100%;
       height: 48px;
       padding: 0 14px;
-      background: #fff;
-      border: 1px solid #C5C5C5;
-      border-radius: 4px;
+      background: transparent;
+      border: none;
       cursor: pointer;
       font-family: 'Open Sans', sans-serif;
       font-size: 14px;
       color: #273240;
       box-sizing: border-box;
-      transition: border-color 0.15s;
     }
-    .parc-trigger:hover { border-color: #4E4076; }
-    .parc-trigger.open  { border-color: #C5C5C5; }
 
     .parc-trigger .parc-arrow {
       width: 18px;
@@ -636,34 +770,40 @@
 
     .parc-dropdown {
       display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      width: 100%;
+      position: fixed;
+      top: 0; left: 0;
+      width: 200px;
       background: #fff;
-      border: 1px solid #D3D3D3;
+      border: none;
       border-radius: 4px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-      z-index: 300;
-      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.30), 0 2px 6px 2px rgba(0,0,0,0.15);
+      z-index: 9999;
+      max-height: 320px;
+      overflow-y: auto;
+      overflow-x: hidden;
       box-sizing: border-box;
+      padding: 8px 0;
     }
+    .parc-dropdown::-webkit-scrollbar { width: 4px; }
+    .parc-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .parc-dropdown::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 2px; }
+    .parc-dropdown::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.32); }
     .parc-dropdown.open { display: block; }
 
     .parc-option {
       display: flex;
       align-items: center;
-      height: 40px;
-      padding: 0 16px;
+      height: 48px;
+      padding: 0 12px;
       font-family: 'Open Sans', sans-serif;
-      font-size: 13px;
+      font-size: 14px;
       color: #273240;
       cursor: pointer;
       transition: background 0.1s;
+      white-space: nowrap;
     }
-    .parc-option:hover,
+    .parc-option:hover { background: #F5F5F5; }
     .parc-option.selected { background: #F5F5F5; }
-    .parc-option.selected { font-weight: 600; }
 
     /* ─── SUCCESS PAGE ─── */
     #success-page {
@@ -1160,116 +1300,113 @@
     <!-- ── RIGHT PANEL ── -->
     <div class="panel-right glass-card">
 
-      <!-- Payment title (replaces step indicator) -->
-      <div>
-        <div class="payment-title">Dados do Cartão</div>
-        <div class="payment-subtitle">Pagamento seguro e criptografado</div>
-      </div>
-
-      <!-- Card number -->
-      <div class="field-group">
-        <div class="m3-field">
-          <input type="text" id="f-cardnum" class="m3-input" placeholder=" " maxlength="19" inputmode="numeric" autocomplete="new-password"
-            oninput="handleCardNumber(this)" style="padding-right:52px;" />
-          <label class="m3-label" for="f-cardnum">Número do cartão</label>
-          <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
-            <div class="card-generic-icon">
-              <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/>
-                <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
-              </svg>
-            </div>
+      <!-- ───── STEP 3: Pagamento ───── -->
+      <div class="form-step active" id="step-3">
+        <div>
+          <div class="step-title">Dados do Cartão</div>
+          <div class="step-subtitle">Pagamento seguro e criptografado</div>
         </div>
-      </div>
 
-      <!-- Expiry + CVV -->
-      <div class="field-row">
         <div class="field-group">
           <div class="m3-field">
-            <input type="text" id="f-expiry" class="m3-input" placeholder=" " maxlength="5" inputmode="numeric" autocomplete="new-password"
-              oninput="handleExpiry(this)" />
-            <label class="m3-label" for="f-expiry">Validade</label>
+            <input type="text" id="f-cardnum" class="m3-input" placeholder=" " maxlength="19" inputmode="numeric" autocomplete="new-password"
+              oninput="handleCardNumber(this)" style="padding-right:52px;" />
+            <label class="m3-label" for="f-cardnum">Número do cartão</label>
+            <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
+              <div class="card-generic-icon">
+                <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/>
+                  <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="field-group">
-          <div class="m3-field cvv-wrap">
-            <input type="text" id="f-cvv" class="m3-input" placeholder=" " maxlength="4" inputmode="numeric" autocomplete="new-password" style="padding-right:42px;" />
-            <label class="m3-label" for="f-cvv">CVV</label>
-            <span class="cvv-info" id="cvv-info-icon" tabindex="0" aria-label="O que é o CVV?">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
-                <path d="M8 7v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <circle cx="8" cy="4.5" r="0.75" fill="currentColor"/>
-              </svg>
-            </span>
-            <!-- Tooltip CVV -->
-            <div class="cvv-tooltip" id="cvv-tooltip">
-              <div class="cvv-tip-section">
-                <p>Para American Express, digite os <strong>4 dígitos</strong> na parte da frente do seu cartão:</p>
-                <div class="cvv-card-img cvv-card-amex-img">
-                  <span class="cvv-card-logo-amex">AMEX</span>
-                  <span class="cvv-card-nums">1234 &nbsp;123456 &nbsp;12345</span>
-                  <span class="cvv-card-code-badge">1234</span>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="m3-field">
+              <input type="text" id="f-expiry" class="m3-input" placeholder=" " maxlength="5" inputmode="numeric" autocomplete="new-password"
+                oninput="handleExpiry(this)" />
+              <label class="m3-label" for="f-expiry">Validade</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <div class="m3-field cvv-wrap">
+              <input type="text" id="f-cvv" class="m3-input" placeholder=" " maxlength="4" inputmode="numeric" autocomplete="new-password" style="padding-right:42px;" />
+              <label class="m3-label" for="f-cvv">CVV</label>
+              <span class="cvv-info" id="cvv-info-icon" tabindex="0" aria-label="O que é o CVV?">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M8 7v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="8" cy="4.5" r="0.75" fill="currentColor"/>
+                </svg>
+              </span>
+              <!-- Tooltip CVV -->
+              <div class="cvv-tooltip" id="cvv-tooltip">
+                <div class="cvv-tip-section">
+                  <p>Para American Express, digite os <strong>4 dígitos</strong> na parte da frente do seu cartão:</p>
+                  <div class="cvv-card-img cvv-card-amex-img">
+                    <span class="cvv-card-logo-amex">AMEX</span>
+                    <span class="cvv-card-nums">1234 &nbsp;123456 &nbsp;12345</span>
+                    <span class="cvv-card-code-badge">1234</span>
+                  </div>
                 </div>
-              </div>
-              <div class="cvv-tip-divider"></div>
-              <div class="cvv-tip-section">
-                <p>Para outros cartões, digite os <strong>3 dígitos</strong> na parte de trás do seu cartão:</p>
-                <div class="cvv-card-img cvv-card-other-img">
-                  <div class="cvv-card-stripe"></div>
-                  <div class="cvv-card-sig">
-                    <span class="cvv-card-code-badge">123</span>
+                <div class="cvv-tip-divider"></div>
+                <div class="cvv-tip-section">
+                  <p>Para outros cartões, digite os <strong>3 dígitos</strong> na parte de trás do seu cartão:</p>
+                  <div class="cvv-card-img cvv-card-other-img">
+                    <div class="cvv-card-stripe"></div>
+                    <div class="cvv-card-sig">
+                      <span class="cvv-card-code-badge">123</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field">
+            <input type="text" id="f-cardname" class="m3-input" placeholder=" " autocomplete="new-password"
+              oninput="this.value = this.value.toUpperCase()" />
+            <label class="m3-label" for="f-cardname">Nome no cartão</label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field m3-field--combo">
+          <div class="installment-wrap m3-combo-input" id="parc-wrap">
+            <button type="button" class="parc-trigger" id="parc-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span id="parc-label">1× de R$ 5.120,00 (sem juros)</span>
+              <span class="parc-arrow"></span>
+            </button>
+            <div class="parc-dropdown" id="parc-dropdown" role="listbox">
+              <div class="parc-option selected" data-value="1" role="option">1× de R$ 5.120,00 (sem juros)</div>
+              <div class="parc-option" data-value="2" role="option">2× de R$ 2.560,00 (sem juros)</div>
+              <div class="parc-option" data-value="3" role="option">3× de R$ 1.706,67 (sem juros)</div>
+              <div class="parc-option" data-value="4" role="option">4× de R$ 1.337,20 (1,99% a.m.)</div>
+              <div class="parc-option" data-value="5" role="option">5× de R$ 1.081,25 (1,99% a.m.)</div>
+              <div class="parc-option" data-value="6" role="option">6× de R$ 909,87 (1,99% a.m.)</div>
+              <div class="parc-option" data-value="10" role="option">10× de R$ 563,50 (2,49% a.m.)</div>
+              <div class="parc-option" data-value="12" role="option">12× de R$ 476,22 (2,49% a.m.)</div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Card holder name -->
-      <div class="field-group">
-        <div class="m3-field">
-          <input type="text" id="f-cardname" class="m3-input" placeholder=" " autocomplete="new-password"
-            oninput="this.value = this.value.toUpperCase()" />
-          <label class="m3-label" for="f-cardname">Nome no cartão</label>
-        </div>
-      </div>
-
-      <!-- Installments -->
-      <div class="field-group">
-        <div class="m3-field m3-field--combo">
-        <div class="installment-wrap m3-combo-input" id="parc-wrap">
-          <button type="button" class="parc-trigger" id="parc-trigger" aria-haspopup="listbox" aria-expanded="false">
-            <span id="parc-label">1× de R$ 5.120,00 (sem juros)</span>
-            <span class="parc-arrow"></span>
-          </button>
-          <div class="parc-dropdown" id="parc-dropdown" role="listbox">
-            <div class="parc-option selected" data-value="1" role="option">1× de R$ 5.120,00 (sem juros)</div>
-            <div class="parc-option" data-value="2" role="option">2× de R$ 2.560,00 (sem juros)</div>
-            <div class="parc-option" data-value="3" role="option">3× de R$ 1.706,67 (sem juros)</div>
-            <div class="parc-option" data-value="4" role="option">4× de R$ 1.337,20 (1,99% a.m.)</div>
-            <div class="parc-option" data-value="5" role="option">5× de R$ 1.081,25 (1,99% a.m.)</div>
-            <div class="parc-option" data-value="6" role="option">6× de R$ 909,87 (1,99% a.m.)</div>
-            <div class="parc-option" data-value="10" role="option">10× de R$ 563,50 (2,49% a.m.)</div>
-            <div class="parc-option" data-value="12" role="option">12× de R$ 476,22 (2,49% a.m.)</div>
+          <label class="m3-label m3-label--float">Parcelamento</label>
           </div>
         </div>
-        <label class="m3-label m3-label--float">Parcelamento</label>
-        </div>
+
+        <button class="btn-primary btn-pay" onclick="processPay(this)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+            <rect x="2" y="6" width="12" height="8" rx="2" stroke="#FFFFFF" stroke-width="1.6"/>
+            <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          Pagar R$ 5.120,00
+        </button>
+
+        <p class="security-note">🔒 Seus dados são protegidos com criptografia de ponta-a-ponta</p>
       </div>
-
-      <!-- Pay button -->
-      <button class="btn-primary btn-pay" onclick="processPay(this)">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
-          <rect x="2" y="6" width="12" height="8" rx="2" stroke="#273240" stroke-width="1.6"/>
-          <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#273240" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-        Pagar R$ 5.120,00
-      </button>
-
-      <p class="security-note">🔒 Seus dados são protegidos com criptografia de ponta-a-ponta</p>
 
     </div>
     <!-- /RIGHT PANEL -->
@@ -1409,19 +1546,44 @@
     const dropdown = document.getElementById('parc-dropdown');
     const labelEl  = document.getElementById('parc-label');
     if (!wrap || !trigger || !dropdown) return;
-    const options  = dropdown.querySelectorAll('.parc-option');
 
-    function open()  { trigger.setAttribute('aria-expanded','true');  trigger.classList.add('open');  dropdown.classList.add('open'); }
-    function close() { trigger.setAttribute('aria-expanded','false'); trigger.classList.remove('open'); dropdown.classList.remove('open'); }
+    // Teleport dropdown to body to escape backdrop-filter stacking context
+    document.body.appendChild(dropdown);
+
+    function positionDropdown() {
+      const rect = trigger.getBoundingClientRect();
+      dropdown.style.left  = rect.left + 'px';
+      dropdown.style.width = rect.width + 'px';
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (spaceBelow >= 140) {
+        dropdown.style.top    = (rect.bottom + 4) + 'px';
+        dropdown.style.bottom = 'auto';
+      } else {
+        dropdown.style.top    = 'auto';
+        dropdown.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+      }
+    }
+
+    function open()  {
+      positionDropdown();
+      trigger.setAttribute('aria-expanded','true');
+      trigger.classList.add('open');
+      dropdown.classList.add('open');
+    }
+    function close() {
+      trigger.setAttribute('aria-expanded','false');
+      trigger.classList.remove('open');
+      dropdown.classList.remove('open');
+    }
 
     trigger.addEventListener('click', e => {
       e.stopPropagation();
       dropdown.classList.contains('open') ? close() : open();
     });
 
-    options.forEach(opt => {
+    dropdown.querySelectorAll('.parc-option').forEach(opt => {
       opt.addEventListener('click', () => {
-        options.forEach(o => o.classList.remove('selected'));
+        dropdown.querySelectorAll('.parc-option').forEach(o => o.classList.remove('selected'));
         opt.classList.add('selected');
         labelEl.textContent = opt.textContent.trim();
         close();
@@ -1429,8 +1591,10 @@
     });
 
     document.addEventListener('click', e => {
-      if (!wrap.contains(e.target)) close();
+      if (!wrap.contains(e.target) && !dropdown.contains(e.target)) close();
     });
+    window.addEventListener('scroll', () => { if (dropdown.classList.contains('open')) positionDropdown(); }, true);
+    window.addEventListener('resize', () => { if (dropdown.classList.contains('open')) positionDropdown(); });
   })();
 
   // ─── CARD NUMBER MASK & BRAND DETECTION ─────────────────────────
@@ -1684,15 +1848,6 @@
     transition: opacity 0.2s ease;
   }
   .version-switcher:hover { opacity: 1; }
-  .vs-label {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 8px;
-    font-weight: 600;
-    color: rgba(0,0,0,0.32);
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    margin-bottom: 4px;
-  }
   .vs-btn {
     width: 38px;
     height: 38px;
@@ -1710,28 +1865,10 @@
   .vs-btn:hover { background: rgba(245,175,4,0.09); color: #F5AF04; }
   .vs-btn:active { transform: scale(0.96); }
   .vs-btn.vs-active { background: linear-gradient(135deg,#F5AF04,#FFC107); color: #273240; }
-  .vs-divider {
-    width: 20px;
-    height: 1px;
-    background: rgba(0,0,0,0.08);
-    margin: 2px 0;
-  }
 </style>
 <nav class="version-switcher" aria-label="Versões do protótipo">
-  <div class="vs-label">Completo</div>
-  <a href="index.html" class="vs-btn" title="V1 — Fluxo completo">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2.html" class="vs-btn" title="V2 — Fluxo completo">V2</a>
-  <div class="vs-divider" style="margin-top:6px;"></div>
-  <div class="vs-label">Pagar</div>
-  <a href="v1-pay.html" class="vs-btn" title="V1 — Somente Pagamento">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2-pay.html" class="vs-btn" title="V2 — Somente Pagamento">V2</a>
-  <div class="vs-divider" style="margin-top:6px;"></div>
-  <div class="vs-label">V3 / M3</div>
-  <a href="v3.html" class="vs-btn" title="V3 — Fluxo completo (Material Design 3)">V3</a>
-  <div class="vs-divider"></div>
-  <a href="v3-pay.html" class="vs-btn vs-active" title="V3 — Pagar (Material Design 3)" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#273240;">Pagar</a>
+  <a href="v3.html" class="vs-btn" title="V3 — Fluxo completo (Material Design 3)">Full</a>
+  <a href="v3-pay.html" class="vs-btn vs-active" title="V3 — Somente Pagamento (Material Design 3)" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#273240;">Pay</a>
 </nav>
 
 </body>

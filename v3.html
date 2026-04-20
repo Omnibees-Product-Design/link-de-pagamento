@@ -56,7 +56,7 @@
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid #F5F5F5;
+      border: 1px solid #E6E6E6;
       border-radius: 20px;
     }
 
@@ -314,6 +314,7 @@
       gap: 6px;
       position: relative;
       z-index: 1;
+      min-width: 72px; /* garante largura >= label mais larga ("Pagamento") → círculo sempre centrado com margem igual dos dois lados */
     }
 
     .step-circle {
@@ -869,8 +870,23 @@
     }
     .combo-option:hover,
     .parc-option:hover { background: #F5F5F5; }
-    .combo-option.selected { background: #FFF8E1; font-weight: 600; }
-    .parc-option.selected  { background: #FFF8E1; font-weight: 600; }
+
+    /* MD3: selected usa #F5F5F5 — sem font-weight diferente */
+    .combo-option.selected,
+    .parc-option.selected  { background: #F5F5F5; }
+
+    /* MD3: scrollbar discreta nos dropdowns */
+    .combo-dropdown::-webkit-scrollbar,
+    .parc-dropdown::-webkit-scrollbar { width: 4px; }
+    .combo-dropdown::-webkit-scrollbar-track,
+    .parc-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .combo-dropdown::-webkit-scrollbar-thumb,
+    .parc-dropdown::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.18);
+      border-radius: 2px;
+    }
+    .combo-dropdown::-webkit-scrollbar-thumb:hover,
+    .parc-dropdown::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.32); }
 
     /* ─── BUTTONS ─── */
     .btn-primary {
@@ -902,23 +918,20 @@
     .btn-back {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       background: none;
       border: none;
-      padding: 0;
+      padding: 4px 8px;
       font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 13px;
-      font-weight: 400;
+      font-size: 15px;
+      font-weight: 700;
       color: #0C83D9;
       cursor: pointer;
       transition: color 0.15s;
-      line-height: 1;
-      text-decoration: none;
       white-space: nowrap;
-      flex-shrink: 0;
-      align-self: center;
+      text-decoration: none;
     }
-    .btn-back:hover { text-decoration: underline; }
+    .btn-back:hover { color: #0057A8; text-decoration: underline; }
     .btn-back:hover svg { transform: translateX(-2px); }
     .btn-back svg { transition: transform 0.15s; }
 
@@ -938,12 +951,14 @@
 
     .btn-row {
       display: flex;
+      flex-direction: row;
       align-items: stretch;
-      gap: 10px;
+      gap: 12px;
     }
 
+    .btn-row .btn-primary   { flex: 1 1 0; height: 52px; }
+    .btn-row .btn-back-wrap { flex: 1 1 0; display: flex; align-items: center; justify-content: center; }
     .btn-row .btn-secondary { flex: 0 0 auto; width: auto; padding: 0 24px; height: 52px; }
-    .btn-row .btn-primary   { flex: 1; height: 52px; }
 
     /* Security note */
     .security-note {
@@ -1306,16 +1321,6 @@
     }
     .version-switcher:hover { opacity: 1; }
 
-    .vs-label {
-      font-family: 'Open Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 600;
-      color: rgba(0,0,0,0.32);
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      margin-bottom: 4px;
-    }
-
     .vs-btn {
       width: 38px;
       height: 38px;
@@ -1333,13 +1338,6 @@
 
     .vs-btn:hover { background: rgba(245,175,4,0.09); color: #F5AF04; }
     .vs-btn:active { transform: scale(0.96); }
-
-    .vs-divider {
-      width: 20px;
-      height: 1px;
-      background: rgba(0,0,0,0.08);
-      margin: 2px 0;
-    }
 
     /* ─── RESPONSIVE ─── */
 
@@ -1852,12 +1850,14 @@
         </div>
 
         <div class="btn-row">
-          <button class="btn-back" onclick="goToStep(1, true)">
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Voltar
-          </button>
+          <div class="btn-back-wrap">
+            <button class="btn-back" onclick="goToStep(1, true)">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Voltar
+            </button>
+          </div>
           <button class="btn-primary" onclick="goToStep(3)">
             Próximo
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -1965,12 +1965,14 @@
         </div>
 
         <div class="btn-row" style="margin-top:4px;">
-          <button class="btn-back" onclick="goToStep(2, true)">
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-              <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Voltar
-          </button>
+          <div class="btn-back-wrap">
+            <button class="btn-back" onclick="goToStep(2, true)">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Voltar
+            </button>
+          </div>
           <button class="btn-primary btn-pay" onclick="processPay(this)">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
               <rect x="2" y="6" width="12" height="8" rx="2" stroke="#FFFFFF" stroke-width="1.6"/>
@@ -2116,21 +2118,9 @@
 <!-- ══════════════════════════════════════════
      VERSION SWITCHER
 ══════════════════════════════════════════ -->
-<nav class="version-switcher" aria-label="Versões do protótipo">
-  <div class="vs-label">Completo</div>
-  <a href="index.html" class="vs-btn" title="V1 — Fluxo completo">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2.html" class="vs-btn vs-active" title="V2 — Fluxo completo" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#273240;">V2</a>
-  <div class="vs-divider" style="margin-top:6px;"></div>
-  <div class="vs-label">Pagar</div>
-  <a href="v1-pay.html" class="vs-btn" title="V1 — Somente Pagamento">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2-pay.html" class="vs-btn" title="V2 — Somente Pagamento">V2</a>
-  <div class="vs-divider" style="margin-top:6px;"></div>
-  <div class="vs-label">V3 / M3</div>
-  <a href="v3.html" class="vs-btn vs-active" title="V3 — Fluxo completo (Material Design 3)" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#273240;">V3</a>
-  <div class="vs-divider"></div>
-  <a href="v3-pay.html" class="vs-btn" title="V3 — Pagar (Material Design 3)">Pagar</a>
+<nav class="version-switcher" aria-label="Versoes do prototipo">
+  <a href="v3.html" class="vs-btn vs-active" title="V3 - Fluxo completo" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#273240;">Full</a>
+  <a href="v3-pay.html" class="vs-btn" title="V3 - Somente Pagamento">Pay</a>
 </nav>
 
 <!-- ══════════════════════════════════════════
@@ -2287,18 +2277,9 @@
       if (el) el.addEventListener('input', () => { if ((el.value||'').trim()) fieldOk(id); });
     });
 
-    // E-mail: valida em tempo real se já tem @ (usuário claramente tentou escrever)
+    // E-mail: limpa o erro assim que o utilizador começa a digitar — valida apenas no blur
     const emailEl = document.getElementById('f-email');
-    if (emailEl) emailEl.addEventListener('input', () => {
-      const v = emailEl.value.trim();
-      if (!v) { fieldOk('f-email'); return; }
-      if (v.includes('@')) {
-        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) fieldOk('f-email');
-        else fieldError('f-email', 'E-mail inválido');
-      } else {
-        fieldOk('f-email'); // ainda digitando, sem julgamento
-      }
-    });
+    if (emailEl) emailEl.addEventListener('input', () => { fieldOk('f-email'); });
 
     // Data: valida em tempo real quando atingir 10 chars (DD/MM/YYYY completo)
     const dobEl = document.getElementById('f-dob');
@@ -3027,19 +3008,19 @@
     document.getElementById('combo-ddi-flag').className = 'fi fi-' + flag;
     document.getElementById('combo-ddi-label').textContent = label;
     document.getElementById('f-ddi').value = value;
-    document.querySelectorAll('#combo-ddi-dd .combo-option').forEach(o => {
+    document.querySelectorAll('[data-combo-owner="combo-ddi"] .combo-option, #combo-ddi-dd .combo-option').forEach(o => {
       o.classList.toggle('selected', o.dataset.value === value);
     });
-    document.getElementById('combo-ddi').classList.remove('combo-open');
+    closeAllCombos();
   }
 
   function selectDoctype(value) {
     document.getElementById('combo-doc-label').textContent = value;
     document.getElementById('f-doctype').value = value;
-    document.querySelectorAll('#combo-doc-dd .combo-option').forEach(o => {
+    document.querySelectorAll('[data-combo-owner="combo-doc"] .combo-option, #combo-doc-dd .combo-option').forEach(o => {
       o.classList.toggle('selected', o.dataset.value === value);
     });
-    document.getElementById('combo-doc').classList.remove('combo-open');
+    closeAllCombos();
     const placeholders = { CPF: '000.000.000-00', RG: '00.000.000-0', Passaporte: 'AB123456', CNH: '00000000000' };
     document.getElementById('f-docnum').placeholder = placeholders[value] || '';
     document.getElementById('f-docnum').value = '';
