@@ -3013,19 +3013,19 @@
     document.getElementById('combo-ddi-flag').className = 'fi fi-' + flag;
     document.getElementById('combo-ddi-label').textContent = label;
     document.getElementById('f-ddi').value = value;
-    document.querySelectorAll('#combo-ddi-dd .combo-option').forEach(o => {
+    document.querySelectorAll('[data-combo-owner="combo-ddi"] .combo-option, #combo-ddi-dd .combo-option').forEach(o => {
       o.classList.toggle('selected', o.dataset.value === value);
     });
-    document.getElementById('combo-ddi').classList.remove('combo-open');
+    closeAllCombos();
   }
 
   function selectDoctype(value) {
     document.getElementById('combo-doc-label').textContent = value;
     document.getElementById('f-doctype').value = value;
-    document.querySelectorAll('#combo-doc-dd .combo-option').forEach(o => {
+    document.querySelectorAll('[data-combo-owner="combo-doc"] .combo-option, #combo-doc-dd .combo-option').forEach(o => {
       o.classList.toggle('selected', o.dataset.value === value);
     });
-    document.getElementById('combo-doc').classList.remove('combo-open');
+    closeAllCombos();
     const placeholders = { CPF: '000.000.000-00', RG: '00.000.000-0', Passaporte: 'AB123456', CNH: '00000000000' };
     document.getElementById('f-docnum').placeholder = placeholders[value] || '';
     document.getElementById('f-docnum').value = '';
