@@ -1644,15 +1644,6 @@
     transition: opacity 0.2s ease;
   }
   .version-switcher:hover { opacity: 1; }
-  .vs-label {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 8px;
-    font-weight: 600;
-    color: rgba(0,0,0,0.32);
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    margin-bottom: 4px;
-  }
   .vs-btn {
     width: 38px;
     height: 38px;
@@ -1670,23 +1661,10 @@
   .vs-btn:hover { background: rgba(245,175,4,0.09); color: #F5AF04; }
   .vs-btn:active { transform: scale(0.96); }
   .vs-btn.vs-active { background: linear-gradient(135deg,#F5AF04,#FFC107); color: #273240; }
-  .vs-divider {
-    width: 20px;
-    height: 1px;
-    background: rgba(0,0,0,0.08);
-    margin: 2px 0;
-  }
 </style>
-<nav class="version-switcher" aria-label="Versões do protótipo">
-  <div class="vs-label">Completo</div>
-  <a href="index.html" class="vs-btn" title="V1 — Fluxo completo">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2.html" class="vs-btn" title="V2 — Fluxo completo">V2</a>
-  <div class="vs-divider" style="margin-top:6px;"></div>
-  <div class="vs-label">Pagar</div>
-  <a href="v1-pay.html" class="vs-btn" title="V1 — Somente Pagamento">V1</a>
-  <div class="vs-divider"></div>
-  <a href="v2-pay.html" class="vs-btn vs-active" title="V2 — Somente Pagamento">V2</a>
+<nav class="version-switcher" aria-label="Versoes do prototipo">
+  <a href="v3.html" class="vs-btn" title="V3 - Fluxo completo">Full</a>
+  <a href="v3-pay.html" class="vs-btn" title="V3 - Somente Pagamento">Pay</a>
 </nav>
 
 </body>
