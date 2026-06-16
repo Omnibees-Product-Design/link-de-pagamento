@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Static export of the separate "Discovery Clarity" project (build artifact)
+discovery-clarity-preview/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
