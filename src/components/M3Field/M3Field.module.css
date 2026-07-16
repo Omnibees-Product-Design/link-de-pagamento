@@ -1,0 +1,80 @@
+/* Campo de texto "Material 3 outlined" com label flutuante — porta 1:1 de
+   .m3-field / .m3-input / .m3-label (prototypes/v3.html). O truque da label
+   flutuante é puro CSS: input tem placeholder=" " (um espaço), e a label
+   sobe quando o input tem foco OU já não está vazio (:not(:placeholder-shown)). */
+
+.field {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  height: var(--input-height);
+  padding: 0 16px;
+  border: 1px solid var(--color-gray-400);
+  border-radius: var(--input-border-radius);
+  background: var(--color-white);
+  font-size: 14px;
+  font-family: var(--font-family);
+  color: var(--color-gray-800);
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+.input:hover,
+.input:focus {
+  border-color: var(--color-secondary-blue);
+}
+
+.hasTrailing {
+  padding-right: 52px;
+}
+
+.label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--color-gray-500);
+  background: var(--color-white);
+  padding: 0 4px;
+  pointer-events: none;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.input:focus ~ .label,
+.input:not(:placeholder-shown) ~ .label {
+  top: 0;
+  font-size: 11px;
+  color: var(--color-gray-800);
+}
+
+.trailing {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.error .input {
+  border-color: var(--color-error) !important;
+}
+
+.error .label {
+  color: var(--color-error) !important;
+}
+
+.helper {
+  font-size: 11px;
+  color: var(--color-error);
+  margin-top: 4px;
+  padding-left: 4px;
+  line-height: 1.4;
+}

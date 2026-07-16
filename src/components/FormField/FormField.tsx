@@ -15,7 +15,6 @@ export default function FormField({
   type = 'text',
   selectOptions = [],
   prefixOptions = [],
-  prefixValue,
 }: FormFieldProps) {
   if (type === 'select') {
     return (

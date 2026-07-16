@@ -1,0 +1,96 @@
+/* Indicador de passos (círculos + linhas) — porta 1:1 de .step-indicator /
+   .step-item / .step-circle / .step-line (prototypes/v3.html). */
+
+.indicator {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+  min-width: 72px; /* >= largura do label mais largo ("Pagamento") → círculo sempre centrado */
+}
+
+.circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.circle.done,
+.circle.active {
+  background: var(--color-primary);
+  border: none;
+  color: var(--color-gray-800);
+}
+
+.circle.pending {
+  background: transparent;
+  border: 2px solid var(--color-step-pending-border);
+  color: var(--color-step-pending-text);
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.item.done .label {
+  color: var(--color-primary);
+}
+
+.item.active .label {
+  color: var(--color-gray-800);
+}
+
+.item.pending .label {
+  color: var(--color-step-label-pending);
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  position: relative;
+  margin-bottom: 22px;
+  min-width: 24px;
+}
+
+.lineBg {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
+}
+
+.lineFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-primary), #FFC107);
+  transition: width 0.4s ease;
+}
+
+.line.done .lineFill {
+  width: 100%;
+}
+
+.line.pending .lineFill {
+  width: 0%;
+}

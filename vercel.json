@@ -1,7 +1,7 @@
 {
-  "outputDirectory": ".",
-  "buildCommand": null,
-  "devCommand": null,
+  "outputDirectory": "dist",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
   "cleanUrls": true,
   "trailingSlash": false
 }

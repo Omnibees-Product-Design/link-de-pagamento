@@ -1,0 +1,56 @@
+/* Badge de bandeira do cartão — porta 1:1 de .card-brand-badge e variantes
+   (prototypes/v3.html: detectCardBrand). */
+
+.badge {
+  width: 24px;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid #D9D9D9;
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.generic {
+  background: transparent;
+  border: none;
+  overflow: visible;
+}
+
+.text {
+  font-family: 'Inter', sans-serif;
+  font-size: 6px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.2px;
+  text-align: center;
+  line-height: 1;
+}
+
+.visa { background: #1A1F71; }
+.mc { background: #fff; }
+.amex { background: #007BC1; }
+.elo { background: #000; color: #FFD100 !important; }
+.hipercard { background: #B0060C; }
+.discover { background: linear-gradient(135deg, #f60 0%, #e65c00 100%); }
+.diners { background: #004A97; }
+.jcb { background: linear-gradient(135deg, #003087 33%, #CC0000 33%, #CC0000 66%, #009900 66%); }
+.unionpay { background: linear-gradient(135deg, #D0021B 0%, #8B0000 100%); }
+.maestro { background: #fff; }
+.aura { background: #008000; }
+
+.mcCircles, .maestroCircles {
+  position: relative;
+  width: 17px;
+  height: 11px;
+  display: flex;
+  align-items: center;
+}
+
+.mcLeft { position: absolute; left: 0; width: 11px; height: 11px; border-radius: 50%; background: #EB001B; }
+.mcRight { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #F9A000; opacity: 0.9; }
+.maestroLeft { position: absolute; left: 0; width: 11px; height: 11px; border-radius: 50%; background: #CC0000; }
+.maestroRight { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #0057A8; opacity: 0.9; }
