@@ -1,0 +1,157 @@
+/* Campo "combo" unificado (selector + input opcional) — porta 1:1 de
+   .combo-field / .combo-trigger / .combo-dropdown / .combo-option
+   (prototypes/v3.html). Usado por CountryField, PhoneField, DocumentField,
+   EstadoField e InstallmentField. */
+
+.field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--input-height);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-400);
+  border-radius: var(--input-border-radius);
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.field:hover:not(.open) {
+  border-color: var(--color-secondary-blue);
+}
+
+.field.open,
+.field:focus-within {
+  border-color: var(--color-secondary-blue);
+}
+
+.field.error {
+  border-color: var(--color-error) !important;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 28px 0 16px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--color-gray-800);
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-radius: var(--input-border-radius) 0 0 var(--input-border-radius);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 16px;
+}
+
+.trigger:hover {
+  background-color: #F8F8F8;
+}
+
+.triggerFlex {
+  flex: 1;
+  justify-content: space-between;
+  border-radius: var(--input-border-radius);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  width: 0;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--color-gray-800);
+  cursor: pointer;
+  padding: 0;
+}
+
+.searchInput::placeholder {
+  color: var(--color-gray-500);
+}
+
+.searchInput:focus {
+  cursor: text;
+}
+
+.sep {
+  width: 1px;
+  height: 24px;
+  background: rgba(245, 175, 4, 0.2);
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 16px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--color-gray-800);
+}
+
+.input::placeholder {
+  color: var(--color-gray-500);
+}
+
+.flag {
+  font-size: 16px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Painel flutuante (MD3 menu) ── */
+.panel {
+  position: fixed;
+  background: var(--color-white);
+  border-radius: var(--input-border-radius);
+  box-shadow: var(--shadow-md3-menu);
+  z-index: 9999;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding: 8px 0;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 12px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--color-gray-800);
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.option:hover,
+.option.selected {
+  background: #F5F5F5;
+}
+
+.helper {
+  font-size: 11px;
+  color: var(--color-error);
+  margin-top: 4px;
+  padding-left: 4px;
+  line-height: 1.4;
+}

@@ -1,0 +1,3035 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagamento — V3 Bee2Pay Material Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.15.0/css/flag-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(145deg, #FFFFFF 29%, #F8F5FB 70%);
+      min-height: 100vh;
+      color: #273240;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(245,175,4,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── PAGE WRAPPER ─── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    /* ─── TWO-PANEL LAYOUT ─── */
+    .checkout-wrapper {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      max-width: 1120px;
+      align-items: flex-start;
+    }
+
+    /* ─── GLASS CARD ─── */
+    .glass-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid #E6E6E6;
+      border-radius: 20px;
+    }
+
+    /* ─── LEFT PANEL ─── */
+    .panel-left {
+      flex: 0 0 42%;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Logo row */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 32px;
+      width: auto;
+      filter: none;
+      display: block;
+    }
+
+    .logo-fallback {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #273240;
+    }
+
+    /* Language selector */
+    .lang-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+    .lang-selector {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1px solid #EDEDED;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #273240;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .lang-selector:hover,
+    .lang-selector.open { background: #F8F8F8; border-color: #D5D5D5; }
+    .lang-selector .fi { font-size: 14px; border-radius: 2px; }
+    .lang-selector .lang-chevron { transition: transform 0.2s; }
+    .lang-selector.open .lang-chevron { transform: rotate(180deg); }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid #EDEDED;
+      border-radius: 4px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.05);
+      min-width: 160px;
+      z-index: 600;
+      padding: 4px;
+      overflow: hidden;
+    }
+    .lang-dropdown.open { display: block; }
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #273240;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.1s;
+    }
+    .lang-option:hover { background: #F5F5F5; }
+    .lang-option.selected { background: #F5F5F5; font-weight: 600; }
+    .lang-option .fi { border-radius: 2px; font-size: 15px; }
+
+    /* Hotel info */
+    .hotel-section { display: flex; flex-direction: column; gap: 8px; }
+
+    .hotel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .hotel-chevron {
+      display: none;
+      flex-shrink: 0;
+      color: #94A3B8;
+      transition: transform 0.25s ease;
+    }
+
+    .hotel-collapsible {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hotel-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #273240;
+      text-wrap: balance;
+      line-height: 1.3;
+    }
+
+    .hotel-room {
+      font-size: 13px;
+      color: #9C9C9C;
+    }
+
+    .hotel-cancel {
+      font-size: 11px;
+      color: #059669;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(0,0,0,0.07);
+      margin: 4px 0;
+    }
+
+    /* Reservation table */
+    .reservation-table {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .res-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .res-label { font-size: 12px; color: #9C9C9C; white-space: nowrap; }
+    .res-value { font-size: 12px; color: #273240; font-weight: 500; text-align: right; }
+
+    /* Price breakdown */
+    .price-section { display: flex; flex-direction: column; gap: 10px; }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price-label { font-size: 13px; color: #9C9C9C; }
+    .price-value { font-size: 13px; color: #273240; font-variant-numeric: tabular-nums; }
+
+    .price-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid rgba(0,0,0,0.07);
+    }
+
+    .price-total-label { font-size: 15px; font-weight: 700; color: #273240; }
+    .price-total-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #273240;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+
+    /* Badges footer — só visível no mobile */
+    .badges-footer { display: none; }
+
+    /* Security badges */
+    .badges-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .badges-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #9C9C9C;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #C8E7CA;
+      border-radius: 1000px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4BAF4F;
+      letter-spacing: 0;
+      line-height: 16px;
+      white-space: nowrap;
+    }
+
+    .badge svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ─── RIGHT PANEL ─── */
+    .panel-right {
+      flex: 1;
+      padding: 40px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+
+    /* ─── STEP INDICATOR ─── */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+      min-width: 72px;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .step-circle.done {
+      background: #F5AF04;
+      border: none;
+      color: #273240;
+    }
+
+    .step-circle.active {
+      background: #F5AF04;
+      border: none;
+      color: #273240;
+    }
+
+    .step-circle.pending {
+      background: transparent;
+      border: 2px solid #D1D5DB;
+      color: #CBD5E1;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+
+    .step-item.done .step-label { color: #F5AF04; }
+    .step-item.active .step-label { color: #273240; }
+    .step-item.pending .step-label { color: #94A3B8; }
+
+    /* Connecting line */
+    .step-line {
+      flex: 1;
+      height: 2px;
+      position: relative;
+      margin-bottom: 22px;
+      min-width: 24px;
+    }
+
+    .step-line-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.08);
+      border-radius: 2px;
+    }
+
+    .step-line-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #F5AF04, #FFC107);
+      transition: width 0.4s ease;
+    }
+
+    .step-line.done .step-line-fill { width: 100%; }
+    .step-line.pending .step-line-fill { width: 0%; }
+
+    /* ─── FORM STEPS ─── */
+    .form-step {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: stepEnter 0.35s ease forwards;
+    }
+
+    .form-step.active {
+      display: flex;
+    }
+
+    @keyframes stepEnter {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes stepEnterLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .form-step.going-back {
+      animation: stepEnterLeft 0.35s ease forwards;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #273240;
+      text-wrap: balance;
+      margin-bottom: 6px;
+    }
+
+    .step-subtitle {
+      font-size: 13px;
+      color: #9C9C9C;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    /* ─── FIELD GROUPS ─── */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .field-row .field-group { flex: 1 1 0; min-width: 0; }
+
+    /* ─── M3 OUTLINED TEXT FIELD ─── */
+    .m3-field {
+      position: relative;
+    }
+    .m3-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      border: 1px solid #C5C5C5;
+      border-radius: 4px;
+      background: #fff;
+      font-size: 14px;
+      font-family: 'Open Sans', sans-serif;
+      color: #273240;
+      outline: none;
+      transition: border-color 0.15s;
+      box-sizing: border-box;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .m3-input:hover { border-color: #4E4076; }
+    .m3-input:focus { border-color: #4E4076; }
+    .m3-label {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #9C9C9C;
+      background: #fff;
+      padding: 0 4px;
+      pointer-events: none;
+      transition: all 0.15s cubic-bezier(0.4,0,0.2,1);
+      line-height: 1;
+      z-index: 1;
+      white-space: nowrap;
+    }
+    .m3-input:focus ~ .m3-label,
+    .m3-input:not(:placeholder-shown) ~ .m3-label {
+      top: 0;
+      font-size: 11px;
+      color: #273240;
+      transform: translateY(-50%);
+    }
+    .m3-label--float {
+      top: 0 !important;
+      font-size: 11px !important;
+      transform: translateY(-50%) !important;
+      color: #273240;
+    }
+    .m3-field--combo { position: relative; }
+    .m3-combo-input {
+      border: 1px solid #C5C5C5;
+      border-radius: 4px;
+      background: #fff;
+      min-height: 48px;
+      transition: border-color 0.15s;
+    }
+    .m3-combo-input:hover { border-color: #4E4076; }
+    .m3-combo-input:focus-within { border-color: #4E4076; }
+    .m3-trailing {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    .m3-field.error .m3-input { border-color: #B3261E !important; }
+    .m3-field.error .m3-label,
+    .m3-field.error .m3-label--float { color: #B3261E !important; }
+    .m3-field.error .m3-combo-input,
+    .m3-field.error .combo-field { border-color: #B3261E !important; }
+    .m3-helper {
+      display: none;
+      font-size: 11px;
+      color: #B3261E;
+      margin-top: 4px;
+      padding-left: 4px;
+      line-height: 1.4;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+    .btn-shake { animation: shake 0.35s ease; }
+
+    /* Wrapper for inputs with icons/addons (kept for compat) */
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-addon-right {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0;
+      font: inherit;
+      justify-content: center;
+      padding: 8px;
+      background: #ffffff;
+      border: 1px solid #C5C5C5;
+      border-radius: 4px;
+      color: #273240;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    .input-addon-right:hover {
+      background: #E6E6E6;
+      border-color: #C5C5C5;
+    }
+    .input-addon-right:active {
+      transform: translateY(-50%) scale(0.96);
+    }
+    .input-addon-right svg { flex-shrink: 0; }
+
+    /* Card brand badge */
+    .card-brand-badge {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 16px;
+      border-radius: 2px;
+      border: 1px solid #D9D9D9;
+      background: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .card-brand-badge.visible { display: flex; }
+    .card-brand-badge.brand-generic { background: transparent; border: none; overflow: visible; }
+    .card-generic-icon { display: flex; align-items: center; justify-content: center; }
+    .card-brand-badge.brand-visa { background: #1A1F71; }
+    .card-brand-badge.brand-mc { background: #fff; }
+    .mc-circles { position: relative; width: 17px; height: 11px; display: flex; align-items: center; }
+    .mc-left  { position: absolute; left: 0;   width: 11px; height: 11px; border-radius: 50%; background: #EB001B; }
+    .mc-right { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #F9A000; opacity: 0.9; }
+    .card-brand-badge.brand-amex      { background: #007BC1; }
+    .card-brand-badge.brand-elo       { background: #000; color: #FFD100 !important; }
+    .card-brand-badge.brand-hipercard { background: #B0060C; }
+    .card-brand-badge.brand-discover  { background: linear-gradient(135deg, #f60 0%, #e65c00 100%); }
+    .card-brand-badge.brand-diners    { background: #004A97; }
+    .card-brand-badge.brand-jcb       { background: linear-gradient(135deg, #003087 33%, #CC0000 33%, #CC0000 66%, #009900 66%); }
+    .card-brand-badge.brand-unionpay  { background: linear-gradient(135deg, #D0021B 0%, #8B0000 100%); }
+    .card-brand-badge.brand-maestro   { background: #fff; }
+    .maestro-circles { position: relative; width: 17px; height: 11px; display: flex; align-items: center; }
+    .maestro-left  { position: absolute; left: 0;   width: 11px; height: 11px; border-radius: 50%; background: #CC0000; }
+    .maestro-right { position: absolute; left: 6px; width: 11px; height: 11px; border-radius: 50%; background: #0057A8; opacity: 0.9; }
+    .card-brand-badge.brand-aura { background: #008000; }
+    .card-brand-badge.brand-text {
+      font-family: 'Inter', sans-serif; font-size: 6px; font-weight: 900;
+      color: #fff; letter-spacing: 0.2px; text-align: center; line-height: 1;
+    }
+
+    /* CVV wrap + info icon + tooltip */
+    .cvv-wrap { position: relative; }
+    .cvv-wrap input { width: 100%; }
+    .cvv-info {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      cursor: help;
+      display: flex;
+      align-items: center;
+      pointer-events: auto;
+      outline: none;
+    }
+    .cvv-info:hover, .cvv-info:focus { color: #6b7280; }
+    .cvv-tooltip {
+      display: none;
+      position: fixed;
+      width: 300px;
+      background: #1B2B3A;
+      color: #fff;
+      border-radius: 4px;
+      padding: 16px;
+      z-index: 9999;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      font-size: 12px;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+    .cvv-tooltip.visible { display: block; }
+    .cvv-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: 16px;
+      width: 0; height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #1B2B3A;
+    }
+    .cvv-tip-section { margin-bottom: 12px; }
+    .cvv-tip-section:last-child { margin-bottom: 0; }
+    .cvv-tip-section p { margin: 0 0 8px; }
+    .cvv-tip-section strong { font-weight: 700; }
+    .cvv-tip-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 12px 0; }
+    .cvv-card-img {
+      border-radius: 6px; height: 56px; position: relative;
+      display: flex; align-items: center; overflow: hidden;
+    }
+    .cvv-card-amex-img {
+      background: linear-gradient(135deg, #2E7D9E 0%, #1A5276 100%);
+      justify-content: space-between; padding: 0 10px;
+    }
+    .cvv-card-other-img {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      flex-direction: column; justify-content: flex-end; padding: 0;
+    }
+    .cvv-card-logo-amex {
+      font-size: 9px; font-weight: 900; color: #fff;
+      letter-spacing: 0.5px; position: absolute; top: 8px; left: 10px;
+    }
+    .cvv-card-nums {
+      position: absolute; bottom: 8px; left: 10px;
+      font-size: 7px; color: rgba(255,255,255,0.7); letter-spacing: 1px;
+    }
+    .cvv-card-code-badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 3px; padding: 2px 6px;
+      font-size: 11px; font-weight: 700; color: #fff; position: absolute;
+    }
+    .cvv-card-amex-img .cvv-card-code-badge { right: 12px; top: 50%; transform: translateY(-50%); }
+    .cvv-card-stripe {
+      width: 100%; height: 16px; background: #111;
+      position: absolute; top: 12px; left: 0;
+    }
+    .cvv-card-sig {
+      width: calc(100% - 20px); height: 18px;
+      background: repeating-linear-gradient(90deg, #ddd 0, #ddd 4px, #bbb 4px, #bbb 8px);
+      position: absolute; bottom: 10px; left: 10px;
+      border-radius: 2px; display: flex; align-items: center; justify-content: flex-end;
+    }
+    .cvv-card-sig .cvv-card-code-badge {
+      position: relative; right: auto; top: auto; transform: none;
+      background: #fff; color: #333; border-color: #ccc;
+      margin-right: -1px; border-radius: 0 2px 2px 0;
+    }
+
+    /* Phone DDI row */
+    .phone-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ddi-select-wrap {
+      position: relative;
+      flex: 0 0 110px;
+    }
+
+    .ddi-select-wrap select {
+      padding-left: 10px;
+      padding-right: 24px;
+      font-size: 13px;
+    }
+
+    .ddi-select-wrap::after {
+      content: "";
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events: none;
+    }
+
+    .select-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .select-wrap select {
+      padding-right: 36px;
+    }
+
+    .select-wrap::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events: none;
+    }
+
+    /* ── Combo Field: unified selector + input ── */
+    .combo-field {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 48px;
+      background: #fff;
+      border: 1px solid #C5C5C5;
+      border-radius: 4px;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .combo-field:hover:not(.combo-open) { border-color: #4E4076; }
+    .combo-field:focus-within,
+    .combo-field.combo-open {
+      border-color: #4E4076;
+      background: #fff;
+    }
+    .combo-trigger {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      padding: 0 28px 0 16px;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      color: #273240;
+      white-space: nowrap;
+      flex-shrink: 0;
+      border-radius: 4px 0 0 4px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      background-size: 16px;
+    }
+    .combo-trigger:hover { background-color: #F8F8F8; }
+    .combo-search-input {
+      flex: 1;
+      min-width: 0;
+      width: 0;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      color: #273240;
+      cursor: pointer;
+      padding: 0;
+    }
+    .combo-search-input::placeholder { color: #9C9C9C; }
+    .combo-search-input:focus { cursor: text; }
+    .flag-select-field .combo-trigger { flex: 1; border-radius: 4px; }
+    .combo-sep {
+      width: 1px;
+      height: 24px;
+      background: rgba(245,175,4,0.20);
+      flex-shrink: 0;
+    }
+    .combo-input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 0 16px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      color: #273240;
+    }
+    .combo-input::placeholder { color: #9C9C9C; }
+    /* ─── MD3 Menu (shared by combo-dropdown & parc-dropdown) ─── */
+    .combo-dropdown,
+    .parc-dropdown {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200px;
+      background: #fff;
+      border: none;
+      border-radius: 4px;
+      /* MD3 elevation-2 */
+      box-shadow: 0 1px 2px rgba(0,0,0,0.30), 0 2px 6px 2px rgba(0,0,0,0.15);
+      z-index: 9999;
+      max-height: 320px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
+      padding: 8px 0;
+    }
+    .combo-dropdown.combo-dd-open,
+    .parc-dropdown.open { display: block; }
+
+    .combo-option,
+    .parc-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 48px;
+      padding: 0 12px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      color: #273240;
+      cursor: pointer;
+      transition: background 0.1s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .combo-option:hover,
+    .parc-option:hover { background: #F5F5F5; }
+
+    /* MD3: selected usa #F5F5F5 — sem font-weight diferente */
+    .combo-option.selected,
+    .parc-option.selected  { background: #F5F5F5; }
+
+    /* MD3: scrollbar discreta nos dropdowns */
+    .combo-dropdown::-webkit-scrollbar,
+    .parc-dropdown::-webkit-scrollbar { width: 4px; }
+    .combo-dropdown::-webkit-scrollbar-track,
+    .parc-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .combo-dropdown::-webkit-scrollbar-thumb,
+    .parc-dropdown::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.18);
+      border-radius: 2px;
+    }
+    .combo-dropdown::-webkit-scrollbar-thumb:hover,
+    .parc-dropdown::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.32); }
+
+    /* ─── BUTTONS ─── */
+    .btn-primary {
+      width: 100%;
+      height: 52px;
+      border-radius: 4px;
+      background: #FEC437;
+      border: none;
+      color: #273240;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.12s, transform 0.12s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover { background: #F5AF04; }
+
+    .btn-primary:active { background: #F5AF04; transform: scale(0.97); }
+    .form-step > .btn-primary,
+    .form-step .btn-row {
+      margin-top: 20px;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0C83D9;
+      cursor: pointer;
+      transition: color 0.15s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-back:hover { color: #0057A8; text-decoration: underline; }
+    .btn-back:hover svg { transform: translateX(-2px); }
+    .btn-back svg { transition: transform 0.15s; }
+
+    .btn-pay {
+      border-radius: 4px;
+      height: 52px;
+      font-size: 14px;
+      background: #4BAF4F;
+      color: #FFFFFF;
+    }
+    .btn-pay:hover  { background: #409644; }
+    .btn-pay:active { background: #409644; }
+
+
+    .btn-secondary:hover { background: #E6E6E6; border-color: #D1D5DB; color: #273240; }
+    .btn-secondary:active { background: #E6E6E6; color: #273240; transform: scale(0.97); }
+
+    .btn-row {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .btn-row .btn-primary   { flex: 1 1 0; height: 52px; }
+    .btn-row .btn-back-wrap { flex: 1 1 0; display: flex; align-items: center; justify-content: center; }
+    .btn-row .btn-secondary { flex: 0 0 auto; width: auto; padding: 0 24px; height: 52px; }
+
+    /* Security note */
+    .security-note {
+      text-align: center;
+      font-size: 11px;
+      color: #64748B;
+      letter-spacing: 0.02em;
+      margin-top: -8px;
+    }
+
+    /* ─── INSTALLMENT CUSTOM DROPDOWN ─── */
+    .installment-wrap {
+      position: relative;
+    }
+
+    .parc-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #273240;
+      box-sizing: border-box;
+    }
+    .m3-combo-input.open,
+    .m3-combo-input:has(.parc-trigger.open) { border-color: #4E4076; }
+
+    .parc-trigger .parc-arrow {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239c9c9c' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 18px;
+      transition: transform 0.15s;
+    }
+    .parc-trigger.open .parc-arrow { transform: rotate(180deg); }
+
+    /* parc-dropdown styles merged into .combo-dropdown / .parc-dropdown block above */
+
+    /* ─── SUCCESS PAGE ─── */
+    #success-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: linear-gradient(145deg, #FFFFFF 29%, #F8F5FB 70%);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    #success-page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(245,175,4,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    #success-page.visible {
+      display: flex;
+    }
+
+    .success-card {
+      position: relative;
+      z-index: 1;
+      max-width: 540px;
+      width: 100%;
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      text-align: center;
+    }
+
+    .success-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Animated checkmark */
+    .check-wrap {
+      width: 80px;
+      height: 80px;
+      position: relative;
+    }
+
+    .check-svg { width: 80px; height: 80px; }
+
+    .check-circle {
+      fill: none;
+      stroke: #34D399;
+      stroke-width: 3;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      stroke-linecap: round;
+      animation: drawCircle 0.6s ease forwards 0.1s;
+    }
+
+    .check-mark {
+      fill: none;
+      stroke: #34D399;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 0.4s ease forwards 0.65s;
+    }
+
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .success-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #273240;
+      text-wrap: balance;
+      line-height: 1.3;
+    }
+
+    .success-subtitle {
+      font-size: 14px;
+      color: #64748B;
+      margin-top: -12px;
+    }
+
+    /* Payment details nested card */
+    .payment-details {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .pd-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pd-label { font-size: 12px; color: #64748B; }
+    .pd-value { font-size: 12px; color: #273240; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .pd-value.green { font-size: 14px; color: #273240; font-weight: 700; }
+
+    /* Receipt section */
+    .receipt-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .receipt-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748B;
+      text-align: left;
+    }
+
+    .receipt-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .receipt-row input {
+      flex: 1;
+      height: 48px;
+    }
+    .receipt-row input:focus {
+      border-color: #4E4076;
+      box-shadow: none;
+      outline: none;
+    }
+
+    .btn-receipt {
+      height: 48px;
+      padding: 0 24px;
+      border-radius: 4px;
+      background: #FEC437;
+      border: none;
+      color: #273240;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s, transform 0.12s;
+      letter-spacing: 0.01em;
+    }
+    .btn-receipt:hover { background: #F5AF04; }
+    .btn-receipt:active { background: #F5AF04; transform: scale(0.97); }
+
+    /* ─── PROCESSING OVERLAY ─── */
+    #processing-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    #processing-overlay.fade-out { opacity: 0; pointer-events: none; }
+    .proc-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .proc-spinner { animation: spin 0.9s linear infinite; }
+    .proc-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+    }
+    .proc-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      margin: -8px 0 0;
+    }
+
+    /* ─── EMAIL SENT MODAL ─── */
+    #email-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    #email-modal.visible { display: flex; }
+
+    .modal-card {
+      max-width: 400px;
+      width: 100%;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.93) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes iconBounceIn {
+      0%   { transform: scale(0);    opacity: 0; }
+      55%  { transform: scale(1.2);  opacity: 1; }
+      75%  { transform: scale(0.92); }
+      90%  { transform: scale(1.06); }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+    @keyframes iconRing {
+      0%   { box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+      65%  { box-shadow: 0 0 0 14px rgba(52,211,153,0); }
+      100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+    }
+
+    .modal-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(52,211,153,0.12);
+      border-radius: 50%;
+      animation: iconBounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both,
+                 iconRing 0.9s ease-out 0.6s both;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #273240;
+    }
+
+    .modal-text {
+      font-size: 13px;
+      color: #64748B;
+      line-height: 1.6;
+    }
+
+    .btn-modal-close {
+      margin-top: 8px;
+      height: 44px;
+      padding: 0 28px;
+      border-radius: 4px;
+      background: #ffffff;
+      border: 1px solid #D1D5DB;
+      color: #273240;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .btn-modal-close:hover { background: #F8FAFC; }
+    .btn-modal-close:active { transform: scale(0.97); }
+
+    /* ─── VERSION SWITCHER ─── */
+    .version-switcher {
+      position: fixed;
+      left: 20px;
+      bottom: 28px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(245,175,4,0.15);
+      border-radius: 4px;
+      padding: 10px 7px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .version-switcher:hover { opacity: 1; }
+
+    .vs-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      color: rgba(0,0,0,0.44);
+      transition: background 0.14s, color 0.14s, transform 0.1s;
+    }
+
+    .vs-btn:hover { background: rgba(245,175,4,0.09); color: #F5AF04; }
+    .vs-btn:active { transform: scale(0.96); }
+
+    /* ─── RESPONSIVE ─── */
+
+    /* Tablet: reduz padding lateral */
+    @media (max-width: 1024px) {
+      .checkout-wrapper { gap: 12px; padding: 0 16px; }
+      .panel-left  { padding: 32px 28px; }
+      .panel-right { padding: 32px 28px; }
+    }
+
+    /* Mobile: stack vertical */
+    @media (max-width: 768px) {
+      body { background: #f4f6fa; }
+
+      .page {
+        padding: 0;
+        align-items: flex-start;
+      }
+
+      .checkout-wrapper {
+        flex-direction: column;
+        max-width: 100%;
+        width: 100%;
+        gap: 0;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .panel-left {
+        flex: none;
+        width: 100%;
+        border-radius: 0;
+        padding: 24px 20px;
+        gap: 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(245,175,4,0.15);
+      }
+
+      /* Badges: oculta no panel-left e mostra no footer */
+      .panel-left .badges-wrap { display: none; }
+      .badges-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 20px 20px 28px;
+        background: #fff;
+        width: 100%;
+        box-sizing: border-box;
+        max-width: 520px;
+      }
+      .badges-footer .badges { justify-content: center; }
+
+      /* Colapso do hotel-section no mobile */
+      .hotel-header { cursor: pointer; user-select: none; }
+      .hotel-chevron { display: block; }
+      .hotel-collapsible {
+        display: none;
+        overflow: hidden;
+      }
+      .hotel-section.open .hotel-collapsible { display: flex; }
+      .hotel-section.open .hotel-chevron { transform: rotate(180deg); }
+
+      .panel-right {
+        width: 100%;
+        flex: 1;
+        border-radius: 0;
+        padding: 24px 20px;
+        background: #fff;
+        min-height: calc(100vh - 180px);
+      }
+
+      .field-row {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn-row {
+        flex-direction: column-reverse;
+        gap: 10px;
+      }
+
+      .btn-row .btn-secondary,
+      .btn-row .btn-primary {
+        width: 100%;
+        padding: 0 16px;
+        height: 52px;
+        min-height: 52px;
+      }
+
+      .combo-field { min-height: 48px; }
+    }
+
+    /* Telas muito pequenas */
+    @media (max-width: 400px) {
+      .panel-left, .panel-right { padding: 20px 16px; }
+    }
+
+    /* State: CEP loading */
+    .cep-loading .m3-input { opacity: 0.7; }
+    .cep-loading .input-addon-right { animation: pulse 0.8s ease-in-out infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     CHECKOUT PAGE
+══════════════════════════════════════════ -->
+<div class="page" id="checkout-page">
+  <div class="checkout-wrapper">
+
+    <!-- ── LEFT PANEL ── -->
+    <div class="panel-left glass-card">
+
+      <!-- Logo + Lang -->
+      <div class="logo-row">
+        <img
+          src="assets/bee2pay-logo.png"
+          alt="Bee2Pay"
+          class="logo-img"
+          onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';"
+        />
+        <span id="logo-fallback" class="logo-fallback" style="display:none;">Bee2Pay</span>
+
+        <div class="lang-wrap" id="lang-wrap">
+          <div class="lang-selector" id="lang-selector" onclick="toggleLangDropdown()">
+            <span class="fi fi-br" id="lang-flag"></span>
+            <span id="lang-text">PT</span>
+            <svg class="lang-chevron" width="8" height="8" viewBox="0 0 8 8" fill="none">
+              <path d="M1 2.5L4 5.5L7 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <div class="lang-option selected" data-flag="br" data-code="PT" onclick="selectLang('br','PT',this)">
+              <span class="fi fi-br"></span> Português BR
+            </div>
+            <div class="lang-option" data-flag="pt" data-code="PT" onclick="selectLang('pt','PT',this)">
+              <span class="fi fi-pt"></span> Português PT
+            </div>
+            <div class="lang-option" data-flag="us" data-code="EN" onclick="selectLang('us','EN',this)">
+              <span class="fi fi-us"></span> English
+            </div>
+            <div class="lang-option" data-flag="es" data-code="ES" onclick="selectLang('es','ES',this)">
+              <span class="fi fi-es"></span> Español
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel info -->
+      <div class="hotel-section" id="hotel-section">
+        <div class="hotel-header" onclick="toggleHotelInfo()">
+          <div class="hotel-name">Blue Tree Premium Congonhas Airport</div>
+          <svg class="hotel-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 5.5L8 10.5L13 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="hotel-collapsible" id="hotel-collapsible">
+          <div class="hotel-room">Quarto Superior Duplo</div>
+          <div class="hotel-cancel">
+            <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;flex-shrink:0;">
+              <circle cx="6" cy="6" r="5.25" stroke="#34D399" stroke-width="1.5"/>
+              <path d="M3.5 6L5.2 7.8L8.5 4.5" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Cancelamento grátis antes de 6 jun 2024
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="reservation-table">
+            <div class="res-row">
+              <span class="res-label">Hóspede</span>
+              <span class="res-value">Alberto Roberto</span>
+            </div>
+            <div class="res-row">
+              <span class="res-label">Reserva</span>
+              <span class="res-value">RES024562-12648</span>
+            </div>
+            <div class="res-row">
+              <span class="res-label">Check-in</span>
+              <span class="res-value">08/06/2024</span>
+            </div>
+            <div class="res-row">
+              <span class="res-label">Check-out</span>
+              <span class="res-value">10/06/2024</span>
+            </div>
+            <div class="res-row">
+              <span class="res-label">Período</span>
+              <span class="res-value">2 noites</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price breakdown -->
+      <div class="price-section">
+        <div class="price-row">
+          <span class="price-label">Hospedagem</span>
+          <span class="price-value">R$ 5.000,00</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Taxas e encargos</span>
+          <span class="price-value">R$ 120,00</span>
+        </div>
+        <div class="price-total-row">
+          <span class="price-total-label">Total</span>
+          <span class="price-total-value">R$ 5.120,00</span>
+        </div>
+      </div>
+
+      <!-- Security badges -->
+      <div class="badges-wrap">
+      <div class="badges-label">Este link é protegido por:</div>
+      <div class="badges">
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M6 8.5L7.5 10L10.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 4.5A1.5 1.5 0 014.5 3h7A1.5 1.5 0 0113 4.5v7A1.5 1.5 0 0111.5 13h-7A1.5 1.5 0 013 11.5v-7z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          LGPD
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <rect x="3" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5.5 6V4.5a2.5 2.5 0 015 0V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="10" r="1" fill="currentColor"/>
+          </svg>
+          PCI Compliant
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M8 1.5L13 4v4c0 3-2.5 5.5-5 6.5C5.5 13.5 3 11 3 8V4L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M6 8l1.5 1.5L10 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          SSL Secure
+        </span>
+      </div>
+      </div><!-- /badges-wrap -->
+    </div>
+    <!-- /LEFT PANEL -->
+
+    <!-- ── RIGHT PANEL ── -->
+    <div class="panel-right glass-card">
+
+      <!-- Step indicator -->
+      <div class="step-indicator" id="step-indicator">
+        <!-- Step 1 -->
+        <div class="step-item active" id="si-1">
+          <div class="step-circle active" id="sc-1">1</div>
+          <div class="step-label">Dados</div>
+        </div>
+        <!-- Line 1-2 -->
+        <div class="step-line pending" id="sl-1">
+          <div class="step-line-bg"></div>
+          <div class="step-line-fill"></div>
+        </div>
+        <!-- Step 2 -->
+        <div class="step-item pending" id="si-2">
+          <div class="step-circle pending" id="sc-2">2</div>
+          <div class="step-label">Endereço</div>
+        </div>
+        <!-- Line 2-3 -->
+        <div class="step-line pending" id="sl-2">
+          <div class="step-line-bg"></div>
+          <div class="step-line-fill"></div>
+        </div>
+        <!-- Step 3 -->
+        <div class="step-item pending" id="si-3">
+          <div class="step-circle pending" id="sc-3">3</div>
+          <div class="step-label">Pagamento</div>
+        </div>
+      </div>
+
+      <!-- ───── STEP 1: Dados Pessoais ───── -->
+      <div class="form-step active" id="step-1">
+        <div>
+          <div class="step-title">Dados Pessoais</div>
+          <div class="step-subtitle">Preencha seus dados de identificação</div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field">
+            <input type="text" id="f-nome" class="m3-input" placeholder=" " autocomplete="name" value="Alberto Roberto" />
+            <label class="m3-label" for="f-nome">Nome completo</label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field">
+            <input type="email" id="f-email" class="m3-input" placeholder=" " autocomplete="email" />
+            <label class="m3-label" for="f-email">E-mail</label>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="m3-field">
+              <input type="text" id="f-dob" class="m3-input" placeholder=" " maxlength="10" inputmode="numeric" />
+              <label class="m3-label" for="f-dob">Data de nascimento</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <div class="m3-field m3-field--combo">
+              <div class="combo-field flag-select-field m3-combo-input" id="combo-pais">
+              <div class="combo-trigger" id="combo-pais-trigger" onclick="openComboSearch('combo-pais')">
+                <span class="fi fi-br" id="combo-pais-flag"></span>
+                <input type="text" class="combo-search-input" id="combo-pais-search"
+                       autocomplete="off" placeholder="País" value="Brasil"
+                       oninput="filterCombo('combo-pais', this.value)"
+                       onfocus="openComboSearch('combo-pais')" />
+              </div>
+              <input type="hidden" id="f-pais" value="BR">
+              <div class="combo-dropdown" id="combo-pais-dd">
+                <div class="combo-option selected" data-value="BR" onclick="selectComboItem('combo-pais','BR','br','f-pais','Brasil')"><span class="fi fi-br"></span> Brasil</div>
+                <div class="combo-option" data-value="AR" onclick="selectComboItem('combo-pais','AR','ar','f-pais','Argentina')"><span class="fi fi-ar"></span> Argentina</div>
+                <div class="combo-option" data-value="BO" onclick="selectComboItem('combo-pais','BO','bo','f-pais','Bolívia')"><span class="fi fi-bo"></span> Bolívia</div>
+                <div class="combo-option" data-value="CL" onclick="selectComboItem('combo-pais','CL','cl','f-pais','Chile')"><span class="fi fi-cl"></span> Chile</div>
+                <div class="combo-option" data-value="CO" onclick="selectComboItem('combo-pais','CO','co','f-pais','Colômbia')"><span class="fi fi-co"></span> Colômbia</div>
+                <div class="combo-option" data-value="EC" onclick="selectComboItem('combo-pais','EC','ec','f-pais','Equador')"><span class="fi fi-ec"></span> Equador</div>
+                <div class="combo-option" data-value="MX" onclick="selectComboItem('combo-pais','MX','mx','f-pais','México')"><span class="fi fi-mx"></span> México</div>
+                <div class="combo-option" data-value="PY" onclick="selectComboItem('combo-pais','PY','py','f-pais','Paraguai')"><span class="fi fi-py"></span> Paraguai</div>
+                <div class="combo-option" data-value="PE" onclick="selectComboItem('combo-pais','PE','pe','f-pais','Peru')"><span class="fi fi-pe"></span> Peru</div>
+                <div class="combo-option" data-value="UY" onclick="selectComboItem('combo-pais','UY','uy','f-pais','Uruguai')"><span class="fi fi-uy"></span> Uruguai</div>
+                <div class="combo-option" data-value="VE" onclick="selectComboItem('combo-pais','VE','ve','f-pais','Venezuela')"><span class="fi fi-ve"></span> Venezuela</div>
+                <div class="combo-option" data-value="US" onclick="selectComboItem('combo-pais','US','us','f-pais','Estados Unidos')"><span class="fi fi-us"></span> Estados Unidos</div>
+                <div class="combo-option" data-value="PT" onclick="selectComboItem('combo-pais','PT','pt','f-pais','Portugal')"><span class="fi fi-pt"></span> Portugal</div>
+                <div class="combo-option" data-value="ES" onclick="selectComboItem('combo-pais','ES','es','f-pais','Espanha')"><span class="fi fi-es"></span> Espanha</div>
+                <div class="combo-option" data-value="DE" onclick="selectComboItem('combo-pais','DE','de','f-pais','Alemanha')"><span class="fi fi-de"></span> Alemanha</div>
+                <div class="combo-option" data-value="FR" onclick="selectComboItem('combo-pais','FR','fr','f-pais','França')"><span class="fi fi-fr"></span> França</div>
+                <div class="combo-option" data-value="IT" onclick="selectComboItem('combo-pais','IT','it','f-pais','Itália')"><span class="fi fi-it"></span> Itália</div>
+                <div class="combo-option" data-value="GB" onclick="selectComboItem('combo-pais','GB','gb','f-pais','Reino Unido')"><span class="fi fi-gb"></span> Reino Unido</div>
+                <div class="combo-option" data-value="JP" onclick="selectComboItem('combo-pais','JP','jp','f-pais','Japão')"><span class="fi fi-jp"></span> Japão</div>
+                <div class="combo-option" data-value="CN" onclick="selectComboItem('combo-pais','CN','cn','f-pais','China')"><span class="fi fi-cn"></span> China</div>
+              </div>
+              </div>
+              <label class="m3-label m3-label--float">País</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+        <div class="field-group">
+          <div class="m3-field m3-field--combo">
+            <div class="combo-field m3-combo-input" id="combo-ddi">
+            <button type="button" class="combo-trigger" id="combo-ddi-trigger" onclick="toggleCombo('combo-ddi')">
+              <span class="fi fi-br" id="combo-ddi-flag"></span>
+              <span id="combo-ddi-label">+55</span>
+            </button>
+            <input type="hidden" id="f-ddi" value="+55">
+            <div class="combo-sep"></div>
+            <input type="tel" class="combo-input" id="f-tel" placeholder="(11) 99999-9999" inputmode="numeric" maxlength="15">
+            <div class="combo-dropdown" id="combo-ddi-dd">
+              <div class="combo-option selected" data-value="+55" onclick="selectDDI('+55','br','+55')"><span class="fi fi-br"></span> +55 Brasil</div>
+              <div class="combo-option" data-value="+54" onclick="selectDDI('+54','ar','+54')"><span class="fi fi-ar"></span> +54 Argentina</div>
+              <div class="combo-option" data-value="+591" onclick="selectDDI('+591','bo','+591')"><span class="fi fi-bo"></span> +591 Bolívia</div>
+              <div class="combo-option" data-value="+56" onclick="selectDDI('+56','cl','+56')"><span class="fi fi-cl"></span> +56 Chile</div>
+              <div class="combo-option" data-value="+57" onclick="selectDDI('+57','co','+57')"><span class="fi fi-co"></span> +57 Colômbia</div>
+              <div class="combo-option" data-value="+593" onclick="selectDDI('+593','ec','+593')"><span class="fi fi-ec"></span> +593 Equador</div>
+              <div class="combo-option" data-value="+52" onclick="selectDDI('+52','mx','+52')"><span class="fi fi-mx"></span> +52 México</div>
+              <div class="combo-option" data-value="+595" onclick="selectDDI('+595','py','+595')"><span class="fi fi-py"></span> +595 Paraguai</div>
+              <div class="combo-option" data-value="+51" onclick="selectDDI('+51','pe','+51')"><span class="fi fi-pe"></span> +51 Peru</div>
+              <div class="combo-option" data-value="+598" onclick="selectDDI('+598','uy','+598')"><span class="fi fi-uy"></span> +598 Uruguai</div>
+              <div class="combo-option" data-value="+58" onclick="selectDDI('+58','ve','+58')"><span class="fi fi-ve"></span> +58 Venezuela</div>
+              <div class="combo-option" data-value="+1" onclick="selectDDI('+1','us','+1')"><span class="fi fi-us"></span> +1 EUA</div>
+              <div class="combo-option" data-value="+351" onclick="selectDDI('+351','pt','+351')"><span class="fi fi-pt"></span> +351 Portugal</div>
+              <div class="combo-option" data-value="+34" onclick="selectDDI('+34','es','+34')"><span class="fi fi-es"></span> +34 Espanha</div>
+              <div class="combo-option" data-value="+44" onclick="selectDDI('+44','gb','+44')"><span class="fi fi-gb"></span> +44 Reino Unido</div>
+            </div>
+          </div>
+            <label class="m3-label m3-label--float">Telefone / Celular</label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field m3-field--combo">
+            <div class="combo-field m3-combo-input" id="combo-doc">
+            <button type="button" class="combo-trigger" id="combo-doc-trigger" onclick="toggleCombo('combo-doc')">
+              <span id="combo-doc-label">CPF</span>
+            </button>
+            <input type="hidden" id="f-doctype" value="CPF">
+            <div class="combo-sep"></div>
+            <input type="text" class="combo-input" id="f-docnum" placeholder="000.000.000-00" maxlength="18" inputmode="numeric">
+            <div class="combo-dropdown" id="combo-doc-dd">
+              <div class="combo-option selected" data-value="CPF" onclick="selectDoctype('CPF')">CPF</div>
+              <div class="combo-option" data-value="RG" onclick="selectDoctype('RG')">RG</div>
+              <div class="combo-option" data-value="Passaporte" onclick="selectDoctype('Passaporte')">Passaporte</div>
+              <div class="combo-option" data-value="CNH" onclick="selectDoctype('CNH')">CNH</div>
+            </div>
+          </div>
+            <label class="m3-label m3-label--float">Documento</label>
+          </div>
+        </div>
+        </div><!-- /field-row telefone+documento -->
+
+        <button class="btn-primary" onclick="goToStep(2)">
+          Próximo
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- ───── STEP 2: Endereço ───── -->
+      <div class="form-step" id="step-2">
+        <div>
+          <div class="step-title">Endereço de Cobrança</div>
+          <div class="step-subtitle">Informe o endereço vinculado ao seu cartão</div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field" id="cep-wrap">
+            <input type="text" id="f-cep" class="m3-input" placeholder=" " maxlength="9" inputmode="numeric" style="padding-right:52px;" />
+            <label class="m3-label" for="f-cep">CEP</label>
+            <button type="button" class="m3-trailing input-addon-right" onclick="lookupCEP()" aria-label="Buscar CEP" title="Buscar CEP">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="display:block;">
+                <circle cx="6.5" cy="6.5" r="4.5" stroke="#273240" stroke-width="1.5"/>
+                <path d="M11 11l3 3" stroke="#273240" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="flex:1;">
+            <div class="m3-field">
+              <input type="text" id="f-logradouro" class="m3-input" placeholder=" " autocomplete="street-address" />
+              <label class="m3-label" for="f-logradouro">Logradouro</label>
+            </div>
+          </div>
+          <div class="field-group" style="flex:0 0 120px;">
+            <div class="m3-field">
+              <input type="text" id="f-numero" class="m3-input" placeholder=" " />
+              <label class="m3-label" for="f-numero">Número</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group" style="flex:1;">
+            <div class="m3-field">
+              <input type="text" id="f-complemento" class="m3-input" placeholder=" " />
+              <label class="m3-label" for="f-complemento">Complemento</label>
+            </div>
+          </div>
+          <div class="field-group" style="flex:1;">
+            <div class="m3-field">
+              <input type="text" id="f-bairro" class="m3-input" placeholder=" " />
+              <label class="m3-label" for="f-bairro">Bairro</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="m3-field m3-field--combo">
+              <div class="combo-field estado-combo m3-combo-input" id="estado-combo" style="min-height:48px;">
+              <button type="button" class="combo-trigger" id="estado-trigger"
+                style="flex:1; border-radius:4px; justify-content:space-between; padding-right:12px;"
+                onclick="toggleEstado()">
+                <span id="estado-label" style="color:#9C9C9C;">Selecione</span>
+              </button>
+              <div class="combo-dropdown" id="estado-dropdown" style="width:100%; min-width:unset;">
+                <div class="combo-option" data-value="" style="color:#9C9C9C;" onclick="selectEstado(this)">Selecione</div>
+                <div class="combo-option" data-value="AC" onclick="selectEstado(this)">AC</div>
+                <div class="combo-option" data-value="AL" onclick="selectEstado(this)">AL</div>
+                <div class="combo-option" data-value="AM" onclick="selectEstado(this)">AM</div>
+                <div class="combo-option" data-value="AP" onclick="selectEstado(this)">AP</div>
+                <div class="combo-option" data-value="BA" onclick="selectEstado(this)">BA</div>
+                <div class="combo-option" data-value="CE" onclick="selectEstado(this)">CE</div>
+                <div class="combo-option" data-value="DF" onclick="selectEstado(this)">DF</div>
+                <div class="combo-option" data-value="ES" onclick="selectEstado(this)">ES</div>
+                <div class="combo-option" data-value="GO" onclick="selectEstado(this)">GO</div>
+                <div class="combo-option" data-value="MA" onclick="selectEstado(this)">MA</div>
+                <div class="combo-option" data-value="MG" onclick="selectEstado(this)">MG</div>
+                <div class="combo-option" data-value="MS" onclick="selectEstado(this)">MS</div>
+                <div class="combo-option" data-value="MT" onclick="selectEstado(this)">MT</div>
+                <div class="combo-option" data-value="PA" onclick="selectEstado(this)">PA</div>
+                <div class="combo-option" data-value="PB" onclick="selectEstado(this)">PB</div>
+                <div class="combo-option" data-value="PE" onclick="selectEstado(this)">PE</div>
+                <div class="combo-option" data-value="PI" onclick="selectEstado(this)">PI</div>
+                <div class="combo-option" data-value="PR" onclick="selectEstado(this)">PR</div>
+                <div class="combo-option" data-value="RJ" onclick="selectEstado(this)">RJ</div>
+                <div class="combo-option" data-value="RN" onclick="selectEstado(this)">RN</div>
+                <div class="combo-option" data-value="RO" onclick="selectEstado(this)">RO</div>
+                <div class="combo-option" data-value="RR" onclick="selectEstado(this)">RR</div>
+                <div class="combo-option" data-value="RS" onclick="selectEstado(this)">RS</div>
+                <div class="combo-option" data-value="SC" onclick="selectEstado(this)">SC</div>
+                <div class="combo-option" data-value="SE" onclick="selectEstado(this)">SE</div>
+                <div class="combo-option selected" data-value="SP" onclick="selectEstado(this)">SP</div>
+                <div class="combo-option" data-value="TO" onclick="selectEstado(this)">TO</div>
+              </div>
+              </div>
+              <label class="m3-label m3-label--float">Estado</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <div class="m3-field">
+              <input type="text" id="f-cidade" class="m3-input" placeholder=" " />
+              <label class="m3-label" for="f-cidade">Cidade</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <div class="btn-back-wrap">
+            <button class="btn-back" onclick="goToStep(1, true)">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Voltar
+            </button>
+          </div>
+          <button class="btn-primary" onclick="goToStep(3)">
+            Próximo
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ───── STEP 3: Pagamento ───── -->
+      <div class="form-step" id="step-3">
+        <div>
+          <div class="step-title">Dados do Cartão</div>
+          <div class="step-subtitle">Pagamento seguro e criptografado</div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field">
+            <input type="text" id="f-cardnum" class="m3-input" placeholder=" " maxlength="19" inputmode="numeric" autocomplete="new-password"
+              oninput="handleCardNumber(this)" style="padding-right:52px;" />
+            <label class="m3-label" for="f-cardnum">Número do cartão</label>
+            <div class="card-brand-badge visible brand-generic" id="card-brand-badge">
+              <div class="card-generic-icon">
+                <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/>
+                  <rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="m3-field">
+              <input type="text" id="f-expiry" class="m3-input" placeholder=" " maxlength="5" inputmode="numeric" autocomplete="new-password"
+                oninput="handleExpiry(this)" />
+              <label class="m3-label" for="f-expiry">Validade</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <div class="m3-field cvv-wrap">
+              <input type="text" id="f-cvv" class="m3-input" placeholder=" " maxlength="4" inputmode="numeric" autocomplete="new-password" style="padding-right:42px;" />
+              <label class="m3-label" for="f-cvv">CVV</label>
+              <span class="cvv-info" id="cvv-info-icon" tabindex="0" aria-label="O que é o CVV?">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M8 7v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="8" cy="4.5" r="0.75" fill="currentColor"/>
+                </svg>
+              </span>
+              <!-- Tooltip CVV -->
+              <div class="cvv-tooltip" id="cvv-tooltip">
+                <div class="cvv-tip-section">
+                  <p>Para American Express, digite os <strong>4 dígitos</strong> na parte da frente do seu cartão:</p>
+                  <div class="cvv-card-img cvv-card-amex-img">
+                    <span class="cvv-card-logo-amex">AMEX</span>
+                    <span class="cvv-card-nums">1234 &nbsp;123456 &nbsp;12345</span>
+                    <span class="cvv-card-code-badge">1234</span>
+                  </div>
+                </div>
+                <div class="cvv-tip-divider"></div>
+                <div class="cvv-tip-section">
+                  <p>Para outros cartões, digite os <strong>3 dígitos</strong> na parte de trás do seu cartão:</p>
+                  <div class="cvv-card-img cvv-card-other-img">
+                    <div class="cvv-card-stripe"></div>
+                    <div class="cvv-card-sig">
+                      <span class="cvv-card-code-badge">123</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field">
+            <input type="text" id="f-cardname" class="m3-input" placeholder=" " autocomplete="new-password"
+              oninput="this.value = this.value.toUpperCase()" />
+            <label class="m3-label" for="f-cardname">Nome no cartão</label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="m3-field m3-field--combo">
+          <div class="installment-wrap m3-combo-input" id="parc-wrap">
+            <button type="button" class="parc-trigger" id="parc-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span id="parc-label">1× de R$ 5.120,00 (sem juros)</span>
+              <span class="parc-arrow"></span>
+            </button>
+            <div class="parc-dropdown" id="parc-dropdown" role="listbox">
+              <div class="parc-option selected" data-value="1" role="option">1× de R$ 5.120,00 (sem juros)</div>
+              <div class="parc-option" data-value="2" role="option">2× de R$ 2.560,00 (sem juros)</div>
+              <div class="parc-option" data-value="3" role="option">3× de R$ 1.706,67 (sem juros)</div>
+              <div class="parc-option" data-value="4" role="option">4× de R$ 1.337,20 (1,99% a.m.)</div>
+              <div class="parc-option" data-value="5" role="option">5× de R$ 1.081,25 (1,99% a.m.)</div>
+              <div class="parc-option" data-value="6" role="option">6× de R$ 909,87 (1,99% a.m.)</div>
+              <div class="parc-option" data-value="10" role="option">10× de R$ 563,50 (2,49% a.m.)</div>
+              <div class="parc-option" data-value="12" role="option">12× de R$ 476,22 (2,49% a.m.)</div>
+            </div>
+          </div>
+          <label class="m3-label m3-label--float">Parcelamento</label>
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top:4px;">
+          <div class="btn-back-wrap">
+            <button class="btn-back" onclick="goToStep(2, true)">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M16 10H4M9 15l-5-5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Voltar
+            </button>
+          </div>
+          <button class="btn-primary btn-pay" onclick="processPay(this)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+              <rect x="2" y="6" width="12" height="8" rx="2" stroke="#FFFFFF" stroke-width="1.6"/>
+              <path d="M5 6V4.5a3 3 0 016 0V6" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            Pagar R$ 5.120,00
+          </button>
+        </div>
+
+        <p class="security-note">🔒 Seus dados são protegidos com criptografia de ponta-a-ponta</p>
+      </div>
+
+    </div>
+    <!-- /RIGHT PANEL -->
+
+    <!-- Badges mobile (visível só em mobile, fica no final da página) -->
+    <div class="badges-footer">
+      <div class="badges-label">Este link é protegido por:</div>
+      <div class="badges">
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M6 8.5L7.5 10L10.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 4.5A1.5 1.5 0 014.5 3h7A1.5 1.5 0 0113 4.5v7A1.5 1.5 0 0111.5 13h-7A1.5 1.5 0 013 11.5v-7z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          LGPD
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <rect x="3" y="6" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5.5 6V4.5a2.5 2.5 0 015 0V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="10" r="1" fill="currentColor"/>
+          </svg>
+          PCI Compliant
+        </span>
+        <span class="badge">
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+            <path d="M8 1.5L13 4v4c0 3-2.5 5.5-5 6.5C5.5 13.5 3 11 3 8V4L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M6 8l1.5 1.5L10 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          SSL Secure
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SUCCESS PAGE
+══════════════════════════════════════════ -->
+<div id="success-page">
+  <div class="success-card glass-card">
+
+    <!-- Animated checkmark + title -->
+    <div class="success-header">
+      <div class="check-wrap">
+        <svg class="check-svg" viewBox="0 0 80 80">
+          <circle class="check-circle" cx="40" cy="40" r="35" transform="rotate(-90 40 40)"/>
+          <path class="check-mark" d="M24 40 L35 52 L56 28"/>
+        </svg>
+      </div>
+      <div>
+        <div class="success-title">Pagamento realizado com sucesso!</div>
+        <div class="success-subtitle" style="margin-top:8px;">Sua reserva está confirmada. Obrigado, Alberto!</div>
+      </div>
+    </div>
+
+    <!-- Payment details -->
+    <div class="payment-details">
+      <div class="pd-row">
+        <span class="pd-label">Hotel</span>
+        <span class="pd-value">Blue Tree Premium Congonhas</span>
+      </div>
+      <div class="pd-row">
+        <span class="pd-label">Reserva</span>
+        <span class="pd-value">RES024562-12648</span>
+      </div>
+      <div class="pd-row">
+        <span class="pd-label">Período</span>
+        <span class="pd-value">08/06 — 10/06/2024</span>
+      </div>
+      <div class="pd-row">
+        <span class="pd-label">Parcelamento</span>
+        <span class="pd-value" id="success-parcelas">1× de R$ 5.120,00</span>
+      </div>
+      <div style="height:1px;background:rgba(0,0,0,0.07);margin:4px 0;"></div>
+      <div class="pd-row">
+        <span class="pd-label" style="font-weight:700;">Total pago</span>
+        <span class="pd-value green">R$ 5.120,00</span>
+      </div>
+    </div>
+
+    <!-- Receipt section -->
+    <div class="receipt-section">
+      <div class="receipt-title">Receber comprovante por e-mail</div>
+      <div class="receipt-row">
+        <div class="m3-field" style="flex:1;">
+          <input type="email" id="receipt-email" class="m3-input" placeholder=" " />
+          <label class="m3-label" for="receipt-email">seu@email.com</label>
+        </div>
+        <button class="btn-receipt" onclick="sendReceipt()">Enviar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     EMAIL SENT MODAL
+══════════════════════════════════════════ -->
+<div id="email-modal">
+  <div class="modal-card glass-card">
+    <div class="modal-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect x="3" y="6" width="22" height="16" rx="3" stroke="#34D399" stroke-width="1.8"/>
+        <path d="M3 10l11 7 11-7" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="modal-title">Comprovante enviado!</div>
+    <div class="modal-text">
+      Enviamos o comprovante para<br>
+      <strong id="modal-email" style="color:#273240;"></strong>.<br>
+      Verifique sua caixa de entrada.
+    </div>
+    <button class="btn-modal-close" onclick="closeModal()">Fechar</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROCESSING OVERLAY
+══════════════════════════════════════════ -->
+<div id="processing-overlay" style="display:none;">
+  <div class="proc-box">
+    <svg class="proc-spinner" width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <circle cx="26" cy="26" r="21" stroke="rgba(255,255,255,0.18)" stroke-width="4"/>
+      <path d="M26 5a21 21 0 0121 21" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <p class="proc-title">Processando pagamento...</p>
+    <p class="proc-sub">Não feche esta janela</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VERSION SWITCHER
+══════════════════════════════════════════ -->
+<nav class="version-switcher" aria-label="Versões do protótipo">
+  <a href="v3.html" class="vs-btn vs-active" title="V3 — Fluxo completo (Material Design 3)" style="background:linear-gradient(135deg,#F5AF04,#FFC107);color:#273240;">Full</a>
+  <a href="v3-pay.html" class="vs-btn" title="V3 — Somente Pagamento (Material Design 3)">Pay</a>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+  // ─── STEP MANAGEMENT ────────────────────────────────────────────
+  let currentStep = 1;
+
+/* ── VALIDATION HELPERS ── */
+  function fieldError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.add('error');
+    let helper = m3.parentElement.querySelector('.m3-helper');
+    if (!helper) {
+      helper = document.createElement('span');
+      helper.className = 'm3-helper';
+      m3.after(helper);
+    }
+    helper.textContent = msg;
+    helper.style.display = 'block';
+  }
+
+  function fieldOk(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.remove('error');
+    const helper = m3.parentElement.querySelector('.m3-helper');
+    if (helper) helper.style.display = 'none';
+  }
+
+  function comboError(comboId, msg) {
+    const el = document.getElementById(comboId);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.add('error');
+    let helper = m3.parentElement.querySelector('.m3-helper');
+    if (!helper) {
+      helper = document.createElement('span');
+      helper.className = 'm3-helper';
+      m3.after(helper);
+    }
+    helper.textContent = msg;
+    helper.style.display = 'block';
+  }
+
+  function comboOk(comboId) {
+    const el = document.getElementById(comboId);
+    if (!el) return;
+    const m3 = el.closest('.m3-field');
+    if (!m3) return;
+    m3.classList.remove('error');
+    const helper = m3.parentElement.querySelector('.m3-helper');
+    if (helper) helper.style.display = 'none';
+  }
+
+  function validateStep1() {
+    let first = null; // returns first invalid element, or null if all ok
+
+    // Nome completo
+    const nomeEl = document.getElementById('f-nome');
+    const nome = (nomeEl.value || '').trim();
+    if (!nome) { fieldError('f-nome', 'Nome obrigatório'); first = first || nomeEl; }
+    else if (nome.split(/\s+/).filter(Boolean).length < 2) { fieldError('f-nome', 'Informe nome e sobrenome'); first = first || nomeEl; }
+    else fieldOk('f-nome');
+
+    // E-mail
+    const emailEl = document.getElementById('f-email');
+    const email = (emailEl.value || '').trim();
+    if (!email) { fieldError('f-email', 'E-mail obrigatório'); first = first || emailEl; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('f-email', 'E-mail inválido'); first = first || emailEl; }
+    else fieldOk('f-email');
+
+    // Data de nascimento
+    const dobEl = document.getElementById('f-dob');
+    const dob = (dobEl.value || '').trim();
+    if (!dob) { fieldError('f-dob', 'Data obrigatória'); first = first || dobEl; }
+    else {
+      const parts = dob.split('/');
+      const d = parseInt(parts[0],10), m = parseInt(parts[1],10), y = parseInt(parts[2],10);
+      const date = new Date(0); date.setFullYear(y, m-1, d);
+      const valid = parts.length===3 && date.getDate()===d && date.getMonth()===m-1
+                    && date.getFullYear()===y && y>=1900 && date < new Date();
+      if (!valid) { fieldError('f-dob', 'Data inválida'); first = first || dobEl; }
+      else fieldOk('f-dob');
+    }
+
+    // Telefone
+    const telEl = document.getElementById('f-tel');
+    const tel = (telEl ? telEl.value : '').replace(/\D/g, '');
+    if (!tel || tel.length < 10) { comboError('combo-ddi', 'Telefone inválido'); first = first || telEl; }
+    else comboOk('combo-ddi');
+
+    // Documento
+    const docnumEl = document.getElementById('f-docnum');
+    const docnum = (docnumEl ? docnumEl.value : '').replace(/\D/g, '');
+    const doctype = document.getElementById('f-doctype') ? document.getElementById('f-doctype').value : 'CPF';
+    if (!docnum) { comboError('combo-doc', 'Documento obrigatório'); first = first || docnumEl; }
+    else if (doctype==='CPF' && docnum.length!==11) { comboError('combo-doc', 'CPF deve ter 11 dígitos'); first = first || docnumEl; }
+    else if (doctype==='CNPJ' && docnum.length!==14) { comboError('combo-doc', 'CNPJ deve ter 14 dígitos'); first = first || docnumEl; }
+    else comboOk('combo-doc');
+
+    return first; // null = tudo ok
+  }
+
+  function validateStep2() {
+    let first = null;
+
+    // CEP
+    const cepEl = document.getElementById('f-cep');
+    if ((cepEl.value||'').replace(/\D/g,'').length !== 8) { fieldError('f-cep', 'CEP inválido'); first = first || cepEl; }
+    else fieldOk('f-cep');
+
+    // Logradouro
+    const logEl = document.getElementById('f-logradouro');
+    if (!(logEl.value||'').trim()) { fieldError('f-logradouro', 'Logradouro obrigatório'); first = first || logEl; }
+    else fieldOk('f-logradouro');
+
+    // Número
+    const numEl = document.getElementById('f-numero');
+    if (!(numEl.value||'').trim()) { fieldError('f-numero', 'Número obrigatório'); first = first || numEl; }
+    else fieldOk('f-numero');
+
+    // Bairro
+    const bairroEl = document.getElementById('f-bairro');
+    if (!(bairroEl.value||'').trim()) { fieldError('f-bairro', 'Bairro obrigatório'); first = first || bairroEl; }
+    else fieldOk('f-bairro');
+
+    // Cidade
+    const cidadeEl = document.getElementById('f-cidade');
+    if (!(cidadeEl.value||'').trim()) { fieldError('f-cidade', 'Cidade obrigatória'); first = first || cidadeEl; }
+    else fieldOk('f-cidade');
+
+    // Estado
+    const estadoCombo = document.getElementById('estado-combo');
+    const estadoVal = estadoCombo ? estadoCombo.dataset.value : '';
+    if (!estadoVal) { comboError('estado-combo', 'Estado obrigatório'); first = first || estadoCombo; }
+    else comboOk('estado-combo');
+
+    return first; // null = tudo ok
+  }
+
+  /* ── CLEAR ERRORS ON INPUT ── */
+  function bindClearErrors() {
+    // Limpa erro simples ao digitar (campos de texto livre)
+    ['f-nome','f-logradouro','f-numero','f-bairro','f-cidade'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => { if ((el.value||'').trim()) fieldOk(id); });
+    });
+
+    // E-mail: limpa o erro assim que o utilizador começa a digitar — valida apenas no blur
+    const emailEl = document.getElementById('f-email');
+    if (emailEl) emailEl.addEventListener('input', () => { fieldOk('f-email'); });
+
+    // Data: valida em tempo real quando atingir 10 chars (DD/MM/YYYY completo)
+    const dobEl = document.getElementById('f-dob');
+    if (dobEl) {
+      // Máscara automática de data enquanto digita
+      dobEl.addEventListener('input', () => {
+        let v = dobEl.value.replace(/\D/g, '');
+        if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+        if (v.length > 5) v = v.slice(0,5) + '/' + v.slice(5,9);
+        dobEl.value = v;
+        // Valida quando data está completa (10 chars: DD/MM/YYYY)
+        if (dobEl.value.length === 10) {
+          const parts = dobEl.value.split('/');
+          const d=parseInt(parts[0],10), m=parseInt(parts[1],10), y=parseInt(parts[2],10);
+          const date = new Date(0); date.setFullYear(y, m-1, d);
+          const valid = date.getDate()===d && date.getMonth()===m-1
+                        && date.getFullYear()===y && y>=1900 && date<new Date();
+          if (!valid) fieldError('f-dob','Data inválida'); else fieldOk('f-dob');
+        } else if (dobEl.value.length < 10) {
+          fieldOk('f-dob'); // campo incompleto, não julgar ainda
+        }
+      });
+    }
+
+    // CEP: valida quando atingir 8 dígitos
+    const cepEl = document.getElementById('f-cep');
+    if (cepEl) cepEl.addEventListener('input', () => {
+      const v = (cepEl.value||'').replace(/\D/g,'');
+      if (v.length === 8) fieldOk('f-cep');
+      else if (v.length > 0 && v.length < 8) { /* ainda digitando */ }
+      else fieldOk('f-cep');
+    });
+
+    const telEl = document.getElementById('f-tel');
+    if (telEl) telEl.addEventListener('input', () => {
+      const v = (telEl.value||'').replace(/\D/g,'');
+      if (v.length >= 10) comboOk('combo-ddi');
+    });
+    const docnum = document.getElementById('f-docnum');
+    if (docnum) docnum.addEventListener('input', () => {
+      const v = (docnum.value||'').replace(/\D/g,'');
+      const dt = document.getElementById('f-doctype') ? document.getElementById('f-doctype').value : 'CPF';
+      if ((dt==='CPF' && v.length===11) || (dt==='CNPJ' && v.length===14)) comboOk('combo-doc');
+    });
+
+    // Valida ao sair do campo (blur) — feedback antecipado sem ser intrusivo
+    const blurRules = [
+      { id: 'f-nome', fn: () => {
+          const v = (document.getElementById('f-nome').value||'').trim();
+          if (!v) fieldError('f-nome','Nome obrigatório');
+          else if (v.split(/\s+/).filter(Boolean).length < 2) fieldError('f-nome','Informe nome e sobrenome');
+          else fieldOk('f-nome');
+      }},
+      { id: 'f-email', fn: () => {
+          const v = (document.getElementById('f-email').value||'').trim();
+          if (!v) fieldError('f-email','E-mail obrigatório');
+          else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) fieldError('f-email','E-mail inválido');
+          else fieldOk('f-email');
+      }},
+      { id: 'f-dob', fn: () => {
+          const v = (document.getElementById('f-dob').value||'').trim();
+          if (!v) return; // só valida se preencheu algo
+          const parts = v.split('/');
+          const d=parseInt(parts[0],10), m=parseInt(parts[1],10), y=parseInt(parts[2],10);
+          const date = new Date(0); date.setFullYear(y, m-1, d);
+          const valid = parts.length===3 && date.getDate()===d && date.getMonth()===m-1
+                        && date.getFullYear()===y && y>=1900 && date<new Date();
+          if (!valid) fieldError('f-dob','Data inválida'); else fieldOk('f-dob');
+      }},
+      { id: 'f-tel', fn: () => {
+          const v = (document.getElementById('f-tel').value||'').replace(/\D/g,'');
+          if (v && v.length < 10) comboError('combo-ddi','Telefone inválido');
+          else if (v.length >= 10) comboOk('combo-ddi');
+      }},
+      { id: 'f-docnum', fn: () => {
+          const v = (document.getElementById('f-docnum').value||'').replace(/\D/g,'');
+          const dt = document.getElementById('f-doctype') ? document.getElementById('f-doctype').value : 'CPF';
+          if (!v) return;
+          if (dt==='CPF' && v.length!==11) comboError('combo-doc','CPF deve ter 11 dígitos');
+          else if (dt==='CNPJ' && v.length!==14) comboError('combo-doc','CNPJ deve ter 14 dígitos');
+          else comboOk('combo-doc');
+      }},
+      { id: 'f-cep', fn: () => {
+          const v = (document.getElementById('f-cep').value||'').replace(/\D/g,'');
+          if (v && v.length !== 8) fieldError('f-cep','CEP inválido');
+          else if (v.length === 8) fieldOk('f-cep');
+      }},
+    ];
+    blurRules.forEach(({ id, fn }) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('blur', fn);
+    });
+  }
+
+  function goToStep(n, goingBack = false) {
+    const prev = document.getElementById('step-' + currentStep);
+    const next = document.getElementById('step-' + n);
+
+    // Validate before advancing
+    if (!goingBack) {
+      let firstInvalid = null;
+      if (currentStep === 1) firstInvalid = validateStep1();
+      if (currentStep === 2) firstInvalid = validateStep2();
+      if (firstInvalid !== null) {
+        // Shake the button
+        const btn = prev.querySelector('.btn-primary');
+        if (btn) {
+          btn.classList.remove('btn-shake');
+          void btn.offsetWidth;
+          btn.classList.add('btn-shake');
+          btn.addEventListener('animationend', () => btn.classList.remove('btn-shake'), { once: true });
+        }
+        // Scroll to first invalid field and focus it
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { try { firstInvalid.focus(); } catch(e) {} }, 350);
+        return;
+      }
+    }
+
+    prev.classList.remove('active');
+
+    if (goingBack) {
+      next.classList.add('going-back');
+    } else {
+      next.classList.remove('going-back');
+    }
+
+    // Force reflow so animation re-triggers
+    void next.offsetWidth;
+    next.classList.add('active');
+
+    // Remove going-back after animation
+    if (goingBack) {
+      setTimeout(() => next.classList.remove('going-back'), 400);
+    }
+
+    currentStep = n;
+    updateStepIndicator(n);
+
+    // Reabilita o botão de pagamento ao entrar no step 3
+    if (n === 3) {
+      const payBtn = document.querySelector('.btn-pay');
+      if (payBtn) payBtn.disabled = false;
+    }
+  }
+
+  function updateStepIndicator(active) {
+    for (let i = 1; i <= 3; i++) {
+      const item   = document.getElementById('si-' + i);
+      const circle = document.getElementById('sc-' + i);
+
+      item.className   = 'step-item';
+      circle.className = 'step-circle';
+
+      if (i < active) {
+        item.classList.add('done');
+        circle.classList.add('done');
+        circle.innerHTML = checkSVG();
+      } else if (i === active) {
+        item.classList.add('active');
+        circle.classList.add('active');
+        circle.textContent = i;
+      } else {
+        item.classList.add('pending');
+        circle.classList.add('pending');
+        circle.textContent = i;
+      }
+    }
+
+    // Lines
+    for (let l = 1; l <= 2; l++) {
+      const line = document.getElementById('sl-' + l);
+      line.className = 'step-line ' + (l < active ? 'done' : 'pending');
+    }
+  }
+
+  function checkSVG() {
+    return `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M3 7L5.8 10L11 4.5" stroke="#273240" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  }
+
+  // ─── INPUT MASKS ─────────────────────────────────────────────────
+
+  // Date of birth: DD/MM/AAAA
+  document.getElementById('f-dob').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+    if (v.length > 5) v = v.slice(0,5) + '/' + v.slice(5);
+    this.value = v.slice(0, 10);
+  });
+
+  // CEP: 00000-000
+  document.getElementById('f-cep').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+    this.value = v.slice(0, 9);
+  });
+
+  document.getElementById('f-cep').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') lookupCEP();
+  });
+
+  // Phone: (XX) XXXXX-XXXX
+  document.getElementById('f-tel').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 0) v = '(' + v;
+    if (v.length > 3) v = v.slice(0,3) + ') ' + v.slice(3);
+    if (v.length > 10) v = v.slice(0,10) + '-' + v.slice(10);
+    this.value = v.slice(0, 15);
+  });
+
+  // CPF / doc formatting
+  document.getElementById('f-docnum').addEventListener('input', function() {
+    const type = document.getElementById('f-doctype').value;
+    let v = this.value.replace(/\D/g, '');
+    if (type === 'CPF') {
+      if (v.length > 3) v = v.slice(0,3) + '.' + v.slice(3);
+      if (v.length > 7) v = v.slice(0,7) + '.' + v.slice(7);
+      if (v.length > 11) v = v.slice(0,11) + '-' + v.slice(11);
+      this.value = v.slice(0, 14);
+    } else {
+      this.value = this.value.slice(0, 18);
+    }
+  });
+
+  // f-doctype is now a hidden input; placeholder updates handled by selectDoctype()
+
+  // ─── PARCELAS CUSTOM DROPDOWN ────────────────────────────────────
+  (function initParcelas() {
+    const wrap     = document.getElementById('parc-wrap');
+    const trigger  = document.getElementById('parc-trigger');
+    const dropdown = document.getElementById('parc-dropdown');
+    const labelEl  = document.getElementById('parc-label');
+    if (!wrap || !trigger || !dropdown) return;
+
+    // Move dropdown to body to escape backdrop-filter stacking context
+    document.body.appendChild(dropdown);
+
+    function positionParcDropdown() {
+      const rect = wrap.getBoundingClientRect();
+      dropdown.style.width = rect.width + 'px';
+      dropdown.style.left  = rect.left + 'px';
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (spaceBelow >= 160) {
+        dropdown.style.top    = (rect.bottom + 4) + 'px';
+        dropdown.style.bottom = 'auto';
+      } else {
+        const ddH = Math.min(dropdown.scrollHeight, 320);
+        dropdown.style.top    = (rect.top - ddH - 4) + 'px';
+        dropdown.style.bottom = 'auto';
+      }
+    }
+
+    function open() {
+      trigger.setAttribute('aria-expanded', 'true');
+      trigger.classList.add('open');
+      wrap.classList.add('open');
+      positionParcDropdown();
+      dropdown.classList.add('open');
+    }
+
+    function close() {
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.classList.remove('open');
+      wrap.classList.remove('open');
+      dropdown.classList.remove('open');
+    }
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.contains('open') ? close() : open();
+    });
+
+    dropdown.querySelectorAll('.parc-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        dropdown.querySelectorAll('.parc-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        labelEl.textContent = opt.textContent.trim();
+        close();
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!wrap.contains(e.target) && !dropdown.contains(e.target)) close();
+    });
+  })();
+
+  // ─── CARD NUMBER MASK & BRAND DETECTION ─────────────────────────
+  function handleCardNumber(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 16);
+    let spaced = v.replace(/(.{4})/g, '$1 ').trim();
+    input.value = spaced;
+    detectCardBrand(v);
+  }
+
+  const GENERIC_CARD_SVG = '<div class="card-generic-icon"><svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.25" y="0.25" width="24.5" height="16.5" rx="2.25" fill="white" stroke="#D9D9D9" stroke-width="0.5"/><rect x="0.5" y="3.5" width="24" height="3" fill="#D9D9D9"/></svg></div>';
+
+  function detectCardBrand(digits) {
+    const badge = document.getElementById('card-brand-badge');
+    if (!badge) return;
+
+    badge.className = 'card-brand-badge';
+    badge.innerHTML = '';
+
+    if (!digits || digits.length === 0) {
+      badge.classList.add('visible', 'brand-generic');
+      badge.innerHTML = GENERIC_CARD_SVG;
+      document.getElementById('f-cardnum').style.paddingRight = '48px';
+      return;
+    }
+
+    const d = digits;
+    const n = parseInt(d.slice(0, 6).padEnd(6, '0'), 10);
+    const first  = d[0];
+    const first2 = parseInt(d.slice(0, 2) || '0', 10);
+    const first4 = parseInt(d.slice(0, 4).padEnd(4, '0'), 10);
+    const first6 = n;
+
+    let brand = null;
+
+    // Elo
+    const eloBins6 = [401178,401179,431274,438935,451416,457393,457631,457632,
+      504175,627780,636297,636368,650031,650032,650033,650035,650036,650037,
+      650038,650039,650040,650041,650042,650043,650044,650045,650046,650047,
+      650048,650049,650050,650051,650405,650406,650407,650408,650409,650410,
+      506699,506700,506701,506702,506703,506704,506705,506706,506707,506708,
+      506709,506710,506711,506712,506713,506714,506715,509000,509001,509002];
+    const eloBins4 = [4011,4312,4389,4514,4576];
+    if (eloBins6.includes(first6) || eloBins4.includes(first4)) brand = 'elo';
+
+    // Hipercard
+    if (!brand && (first6 === 606282 || first4 === 3841)) brand = 'hipercard';
+
+    // Aura
+    if (!brand && first2 === 50) brand = 'aura';
+
+    // Amex
+    if (!brand && first === '3' && (d[1] === '4' || d[1] === '7')) brand = 'amex';
+
+    // Diners
+    if (!brand && first === '3') {
+      if ((first2 >= 30 && first2 <= 35) || first2 === 36 || first2 === 38) brand = 'diners';
+    }
+
+    // JCB
+    if (!brand && first4 >= 3528 && first4 <= 3589) brand = 'jcb';
+
+    // UnionPay
+    if (!brand && first2 === 62) brand = 'unionpay';
+
+    // Discover
+    if (!brand) {
+      if (first4 === 6011 || (first6 >= 622126 && first6 <= 622925) ||
+          (first2 >= 64 && first2 <= 65)) brand = 'discover';
+    }
+
+    // Maestro
+    if (!brand) {
+      if ([6304,6759,6761,6762,6763].includes(first4)) brand = 'maestro';
+    }
+
+    // Mastercard
+    if (!brand) {
+      if ((first2 >= 51 && first2 <= 55) || (first4 >= 2221 && first4 <= 2720)) brand = 'mc';
+    }
+
+    // Visa (depois de Elo)
+    if (!brand && first === '4') brand = 'visa';
+
+    badge.classList.add('visible', 'brand-' + (brand || 'generic'));
+    document.getElementById('f-cardnum').style.paddingRight = '48px';
+
+    const renders = {
+      visa:       () => { badge.classList.add('brand-text'); badge.textContent = 'VISA'; },
+      mc:         () => { badge.innerHTML = '<div class="mc-circles"><div class="mc-left"></div><div class="mc-right"></div></div>'; },
+      amex:       () => { badge.classList.add('brand-text'); badge.textContent = 'AMEX'; },
+      discover:   () => { badge.classList.add('brand-text'); badge.textContent = 'DISC'; },
+      diners:     () => { badge.classList.add('brand-text'); badge.textContent = 'DINERS'; },
+      jcb:        () => { badge.classList.add('brand-text'); badge.textContent = 'JCB'; },
+      unionpay:   () => { badge.classList.add('brand-text'); badge.textContent = 'UP'; },
+      elo:        () => { badge.classList.add('brand-text'); badge.textContent = 'ELO'; },
+      hipercard:  () => { badge.classList.add('brand-text'); badge.textContent = 'HIPER'; },
+      maestro:    () => { badge.innerHTML = '<div class="maestro-circles"><div class="maestro-left"></div><div class="maestro-right"></div></div>'; },
+      aura:       () => { badge.classList.add('brand-text'); badge.textContent = 'AURA'; },
+    };
+
+    if (!brand) { badge.innerHTML = GENERIC_CARD_SVG; return; }
+    if (renders[brand]) renders[brand]();
+  }
+
+  // ─── CVV TOOLTIP ─────────────────────────────────────────────────
+  (function initCVVTooltip() {
+    const icon    = document.getElementById('cvv-info-icon');
+    const tooltip = document.getElementById('cvv-tooltip');
+    if (!icon || !tooltip) return;
+
+    function show() {
+      // Move para body para escapar do stacking context do form-step (que tem transform)
+      if (tooltip.parentElement !== document.body) document.body.appendChild(tooltip);
+      tooltip.classList.add('visible');
+      const r    = icon.getBoundingClientRect();
+      const tipW = tooltip.offsetWidth  || 300;
+      const tipH = tooltip.offsetHeight || 0;
+      let left = r.right - tipW;
+      const maxLeft = window.innerWidth - tipW - 8;
+      if (left > maxLeft) left = maxLeft;
+      if (left < 8) left = 8;
+      let top = r.top - tipH - 14;
+      if (top < 8) top = r.bottom + 8;
+      tooltip.style.left = left + 'px';
+      tooltip.style.top  = top  + 'px';
+    }
+    function hide() { tooltip.classList.remove('visible'); }
+
+    icon.addEventListener('mouseenter', show);
+    icon.addEventListener('mouseleave', hide);
+    icon.addEventListener('focus',      show);
+    icon.addEventListener('blur',       hide);
+  })();
+
+  // ─── EXPIRY MASK ─────────────────────────────────────────────────
+  function handleExpiry(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 4);
+    if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+    input.value = v;
+  }
+
+  // ─── VIA CEP LOOKUP ──────────────────────────────────────────────
+  async function lookupCEP() {
+    const cep = document.getElementById('f-cep').value.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+
+    const wrap = document.getElementById('cep-wrap');
+    wrap.classList.add('cep-loading');
+
+    try {
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await res.json();
+      if (!data.erro) {
+        document.getElementById('f-logradouro').value = data.logradouro || '';
+        document.getElementById('f-bairro').value     = data.bairro     || '';
+        document.getElementById('f-cidade').value     = data.localidade  || '';
+        if (data.uf) setEstado(data.uf);
+        document.getElementById('f-numero').focus();
+      }
+    } catch(e) {
+      // silent fail
+    } finally {
+      wrap.classList.remove('cep-loading');
+    }
+  }
+
+  // ─── PAYMENT PROCESSING ──────────────────────────────────────────
+  function processPay(btn) {
+    btn.disabled = true;
+
+    // Update installments on success page
+    const parcSelected = document.querySelector('#parc-dropdown .parc-option.selected');
+    const parcText = parcSelected ? parcSelected.textContent.trim() : '';
+    const match = parcText.match(/^(\d+)× de (R\$[^(]+)/);
+    if (match) {
+      document.getElementById('success-parcelas').textContent = match[1] + '× de ' + match[2].trim();
+    }
+
+    // Bandeira
+    const brandNames = {
+      visa: 'Visa', mc: 'Mastercard', amex: 'American Express',
+      elo: 'Elo', hipercard: 'Hipercard', discover: 'Discover',
+      diners: 'Diners Club', jcb: 'JCB', unionpay: 'UnionPay',
+      maestro: 'Maestro', aura: 'Aura'
+    };
+    const badgeEl = document.getElementById('card-brand-badge');
+    let detectedBrand = null;
+    if (badgeEl) {
+      badgeEl.classList.forEach(cls => {
+        if (cls.startsWith('brand-') && cls !== 'brand-generic') {
+          detectedBrand = cls.replace('brand-', '');
+        }
+      });
+    }
+    const sucBrand = document.getElementById('suc-brand');
+    if (sucBrand) sucBrand.textContent =
+      detectedBrand ? (brandNames[detectedBrand] || detectedBrand) : 'Cartão';
+
+    // Número do cartão — **** **** **** XXXX
+    const rawCard = (document.getElementById('f-cardnum').value || '').replace(/\s/g, '');
+    const sucCard = document.getElementById('suc-card');
+    if (sucCard && rawCard.length >= 4) {
+      sucCard.textContent = '**** **** **** ' + rawCard.slice(-4);
+    }
+
+    // Nome do titular
+    const holderName = (document.getElementById('f-cardname').value || '').trim();
+    const sucName = document.getElementById('suc-name');
+    if (sucName) sucName.textContent = holderName || '—';
+
+    // Pre-fill receipt email
+    const email = document.getElementById('f-email').value;
+    if (email) document.getElementById('receipt-email').value = email;
+
+    // Mostra overlay (success page ainda não aparece)
+    const overlay = document.getElementById('processing-overlay');
+    overlay.style.display = 'flex';
+    overlay.style.opacity = '1';
+
+    // Após 2.4s: fade out overlay → só então revela a tela de sucesso
+    setTimeout(() => {
+      overlay.classList.add('fade-out');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('fade-out');
+        showSuccess();
+      }, 500);
+    }, 2400);
+  }
+
+  function showSuccess() {
+    document.getElementById('success-page').classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // ─── RECEIPT / MODAL ─────────────────────────────────────────────
+  function sendReceipt() {
+    const email = document.getElementById('receipt-email').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('receipt-email').focus();
+      document.getElementById('receipt-email').style.borderColor = 'rgba(248,113,113,0.6)';
+      document.getElementById('receipt-email').style.boxShadow  = '0 0 0 3px rgba(248,113,113,0.12)';
+      setTimeout(() => {
+        document.getElementById('receipt-email').style.borderColor = '';
+        document.getElementById('receipt-email').style.boxShadow  = '';
+      }, 2000);
+      return;
+    }
+    document.getElementById('modal-email').textContent = email;
+    document.getElementById('email-modal').classList.add('visible');
+  }
+
+  function closeModal() {
+    document.getElementById('email-modal').classList.remove('visible');
+  }
+
+  // Close modal on backdrop click
+  document.getElementById('email-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ─── ESTADO CUSTOM DROPDOWN ─────────────────────────────────────
+  function toggleEstado() {
+    const combo = document.getElementById('estado-combo');
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="estado-combo"]');
+    const wasOpen = combo.classList.contains('combo-open');
+    closeAllCombos();
+    if (!wasOpen) {
+      combo.classList.add('combo-open');
+      if (dd) { positionComboDropdown(combo, dd); dd.classList.add('combo-dd-open'); }
+    }
+  }
+
+  function selectEstado(opt) {
+    const combo   = document.getElementById('estado-combo');
+    const labelEl = document.getElementById('estado-label');
+    const dd      = document.querySelector('.combo-dropdown[data-combo-owner="estado-combo"]');
+    // clear all selections in the body-level dropdown
+    if (dd) dd.querySelectorAll('.combo-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    const val = opt.dataset.value;
+    labelEl.textContent = val || 'Selecione';
+    labelEl.style.color = val ? '#273240' : '#9C9C9C';
+    combo.dataset.value = val;
+    closeAllCombos();
+  }
+
+  function setEstado(uf) {
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="estado-combo"]');
+    if (!dd) return;
+    dd.querySelectorAll('.combo-option').forEach(opt => {
+      opt.classList.remove('selected');
+      if (opt.dataset.value === uf) selectEstado(opt);
+    });
+  }
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.combo-field') && !e.target.closest('.combo-dropdown')) {
+      closeAllCombos();
+    }
+  });
+
+  // ─── HOTEL INFO COLLAPSE (mobile only) ──────────────────────────
+  function toggleHotelInfo() {
+    if (window.innerWidth > 768) return; // só colapsa em mobile
+    document.getElementById('hotel-section').classList.toggle('open');
+  }
+
+  // ─── LANGUAGE CYCLE ──────────────────────────────────────────────
+  function toggleLangDropdown() {
+    const selector = document.getElementById('lang-selector');
+    const dropdown = document.getElementById('lang-dropdown');
+    const isOpen = dropdown.classList.contains('open');
+    dropdown.classList.toggle('open', !isOpen);
+    selector.classList.toggle('open', !isOpen);
+  }
+
+  function selectLang(flag, code, optionEl) {
+    document.getElementById('lang-flag').className = 'fi fi-' + flag;
+    document.getElementById('lang-text').textContent = code;
+    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('selected'));
+    optionEl.classList.add('selected');
+    document.getElementById('lang-dropdown').classList.remove('open');
+    document.getElementById('lang-selector').classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#lang-wrap')) {
+      document.getElementById('lang-dropdown').classList.remove('open');
+      document.getElementById('lang-selector').classList.remove('open');
+    }
+  });
+
+  // ─── SPIN ANIMATION (for processing state) ───────────────────────
+  const spinStyle = document.createElement('style');
+  spinStyle.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+  document.head.appendChild(spinStyle);
+
+  // ─── COMBO FIELD LOGIC ───────────────────────────────────────────
+
+  // Move all combo dropdowns to <body> to escape backdrop-filter stacking context
+  document.querySelectorAll('.combo-field .combo-dropdown').forEach(dd => {
+    dd.dataset.comboOwner = dd.closest('.combo-field') ? dd.closest('.combo-field').id : '';
+    document.body.appendChild(dd);
+  });
+
+  // Positions a body-level fixed dropdown under its anchor
+  function positionComboDropdown(anchorEl, ddEl) {
+    if (!anchorEl || !ddEl) return;
+    const rect = anchorEl.getBoundingClientRect();
+    ddEl.style.left  = rect.left + 'px';
+    ddEl.style.width = rect.width + 'px';
+    const spaceBelow = window.innerHeight - rect.bottom;
+    if (spaceBelow >= 140) {
+      ddEl.style.top    = (rect.bottom + 4) + 'px';
+      ddEl.style.bottom = 'auto';
+    } else {
+      const ddH = Math.min(ddEl.scrollHeight, 240);
+      ddEl.style.top    = (rect.top - ddH - 4) + 'px';
+      ddEl.style.bottom = 'auto';
+    }
+  }
+
+  function closeAllCombos() {
+    document.querySelectorAll('.combo-field.combo-open').forEach(c => c.classList.remove('combo-open'));
+    document.querySelectorAll('.combo-dropdown.combo-dd-open').forEach(d => d.classList.remove('combo-dd-open'));
+  }
+
+  function toggleCombo(id) {
+    const el = document.getElementById(id);
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="' + id + '"]');
+    const wasOpen = el.classList.contains('combo-open');
+    closeAllCombos();
+    if (!wasOpen) {
+      el.classList.add('combo-open');
+      if (dd) { positionComboDropdown(el, dd); dd.classList.add('combo-dd-open'); }
+    }
+  }
+
+  function openComboSearch(id) {
+    const el = document.getElementById(id);
+    const dd = document.querySelector('.combo-dropdown[data-combo-owner="' + id + '"]');
+    const searchInput = document.getElementById(id + '-search');
+    closeAllCombos();
+    el.classList.add('combo-open');
+    if (dd) { positionComboDropdown(el, dd); dd.classList.add('combo-dd-open'); }
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.focus();
+      filterCombo(id, '');
+    }
+  }
+
+  function filterCombo(id, query) {
+    const dd = document.getElementById(id + '-dd');
+    if (!dd) return;
+    const q = query.trim().toLowerCase();
+    dd.querySelectorAll('.combo-option').forEach(opt => {
+      const text = opt.textContent.trim().toLowerCase();
+      opt.style.display = text.startsWith(q) || q === '' ? '' : 'none';
+    });
+  }
+
+  // Mapa país → DDI (código + iso da bandeira)
+  const COUNTRY_DDI = {
+    BR: { ddi: '+55',  iso: 'br' }, AR: { ddi: '+54',  iso: 'ar' },
+    BO: { ddi: '+591', iso: 'bo' }, CL: { ddi: '+56',  iso: 'cl' },
+    CO: { ddi: '+57',  iso: 'co' }, EC: { ddi: '+593', iso: 'ec' },
+    MX: { ddi: '+52',  iso: 'mx' }, PY: { ddi: '+595', iso: 'py' },
+    PE: { ddi: '+51',  iso: 'pe' }, UY: { ddi: '+598', iso: 'uy' },
+    VE: { ddi: '+58',  iso: 've' }, US: { ddi: '+1',   iso: 'us' },
+    PT: { ddi: '+351', iso: 'pt' }, ES: { ddi: '+34',  iso: 'es' },
+    DE: { ddi: '+49',  iso: 'de' }, FR: { ddi: '+33',  iso: 'fr' },
+    IT: { ddi: '+39',  iso: 'it' }, GB: { ddi: '+44',  iso: 'gb' },
+    JP: { ddi: '+81',  iso: 'jp' }, CN: { ddi: '+86',  iso: 'cn' },
+  };
+
+  function selectComboItem(comboId, value, flag, inputId, label) {
+    const flagEl    = document.getElementById(comboId + '-flag');
+    const labelEl   = document.getElementById(comboId + '-label');
+    const searchEl  = document.getElementById(comboId + '-search');
+    if (flagEl)  flagEl.className = 'fi fi-' + flag;
+    if (labelEl) labelEl.textContent = label;
+    if (searchEl) { searchEl.value = label; filterCombo(comboId, ''); }
+    document.getElementById(inputId).value = value;
+    document.querySelectorAll('[data-combo-owner="' + comboId + '"] .combo-option, #' + comboId + '-dd .combo-option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.value === value);
+    });
+    closeAllCombos();
+
+    // Ao mudar o país, sincroniza o DDI do telefone
+    if (comboId === 'combo-pais' && COUNTRY_DDI[value]) {
+      const { ddi, iso } = COUNTRY_DDI[value];
+      selectDDI(ddi, iso, ddi);
+    }
+  }
+
+  function selectDDI(value, flag, label) {
+    document.getElementById('combo-ddi-flag').className = 'fi fi-' + flag;
+    document.getElementById('combo-ddi-label').textContent = label;
+    document.getElementById('f-ddi').value = value;
+    document.querySelectorAll('[data-combo-owner="combo-ddi"] .combo-option, #combo-ddi-dd .combo-option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.value === value);
+    });
+    closeAllCombos();
+  }
+
+  function selectDoctype(value) {
+    document.getElementById('combo-doc-label').textContent = value;
+    document.getElementById('f-doctype').value = value;
+    document.querySelectorAll('[data-combo-owner="combo-doc"] .combo-option, #combo-doc-dd .combo-option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.value === value);
+    });
+    closeAllCombos();
+    const placeholders = { CPF: '000.000.000-00', RG: '00.000.000-0', Passaporte: 'AB123456', CNH: '00000000000' };
+    document.getElementById('f-docnum').placeholder = placeholders[value] || '';
+    document.getElementById('f-docnum').value = '';
+  }
+
+  // click-outside handled by the unified listener above
+
+  bindClearErrors();
+</script>
+
+</body>
+</html>

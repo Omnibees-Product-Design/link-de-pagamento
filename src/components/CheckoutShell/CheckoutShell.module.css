@@ -1,0 +1,61 @@
+/* Layout de duas colunas do checkout — porta .page / .checkout-wrapper /
+   .panel-right (prototypes/v3.html). Partilhado pelos dois fluxos
+   (CardUpdateApp e PaymentApp) — só o conteúdo do painel direito muda. */
+
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.wrapper {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 1120px;
+  align-items: flex-start;
+}
+
+.panelRight {
+  flex: 1;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  .wrapper { gap: 12px; padding: 0 16px; }
+  .panelRight { padding: 32px 28px; }
+}
+
+@media (max-width: 768px) {
+  .page { padding: 0; align-items: flex-start; }
+  .wrapper {
+    flex-direction: column;
+    max-width: 100%;
+    width: 100%;
+    gap: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .panelRight {
+    width: 100%;
+    flex: 1;
+    border-radius: 0;
+    padding: 24px 20px;
+    background: var(--color-white);
+    min-height: calc(100vh - 180px);
+  }
+}
+
+@media (max-width: 400px) {
+  .panelRight { padding: 20px 16px; }
+}

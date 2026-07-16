@@ -13,6 +13,30 @@
   --color-success: #409644;
   --color-success-light: #4BAF4F;
   --color-success-border: #C8E7CA;
+  --color-success-check: #34D399;
+  --color-error: #B3261E;
+  --color-info: #0C83D9;
+  --color-info-hover: #0057A8;
+
+  /* Step indicator */
+  --color-step-pending-border: #D1D5DB;
+  --color-step-pending-text: #CBD5E1;
+  --color-step-label-pending: #94A3B8;
+
+  /* Page background (glass-morphism sobre gradiente pontilhado) */
+  --page-gradient: linear-gradient(145deg, #FFFFFF 29%, #F8F5FB 70%);
+  --page-dots: radial-gradient(circle, rgba(245, 175, 4, 0.08) 1px, transparent 1px);
+
+  /* Glass card */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: #E6E6E6;
+  --glass-blur: 24px;
+  --glass-radius: 20px;
+
+  /* Sombras */
+  --shadow-dropdown: 0 8px 28px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md3-menu: 0 1px 2px rgba(0, 0, 0, 0.30), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --shadow-tooltip: 0 8px 24px rgba(0, 0, 0, 0.3);
 
   /* Typography */
   --font-family: 'Open Sans', sans-serif;
