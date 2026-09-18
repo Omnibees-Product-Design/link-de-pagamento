@@ -1,4 +1,5 @@
 import FormField from '../FormField/FormField';
+import PaymentStep from '../PaymentStep/PaymentStep';
 import styles from './PaymentForm.module.css';
 
 export default function PaymentForm() {
@@ -60,11 +61,12 @@ export default function PaymentForm() {
         <span className={styles.stepLabelDisabled}>Endereço</span>
       </div>
 
-      {/* Step 3 - Disabled */}
+      {/* Step 3 - Pagamento */}
       <div className={styles.stepDisabled}>
-        <span className={styles.stepNumberDisabled}>3.</span>
-        <span className={styles.stepLabelDisabled}>Dados de pagamento</span>
+        <span className={styles.stepNumberActive}>3.</span>
+        <span className={styles.stepLabelActive}>Pagamento</span>
       </div>
+      <PaymentStep />
     </div>
   );
 }
